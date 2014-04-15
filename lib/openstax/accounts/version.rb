@@ -1,5 +1,5 @@
 module OpenStax
   module Accounts
-    VERSION = "0.1.1.alpha"
+    VERSION = "0.1.0"
   end
 end
