@@ -1,0 +1,33 @@
+<%# Copyright 2011-2012 Rice University. Licensed under the Affero General Public 
+    License version 3 or later.  See the COPYRIGHT file for details. %>
+
+<%
+  users ||= []
+%>
+
+<% if list.num_columns > 0 %>
+  <table class="list" width="100%">
+    <% if list.has_headings? %>
+      <tr>  
+        <% for ii in 0..list.num_columns - 1 %>
+          <th><%= list.get_heading(ii) %></th>
+        <% end %>
+      </tr>
+    <% end %>
+
+    <% if users.empty? %>
+      <tr>
+        <td colspan="<%= list.num_columns %>">No results</td>
+      </tr>
+    <% else %>
+      <% users.all.each_with_index do |user, uu| %>
+        <tr>
+          <% for cc in 0..list.num_columns - 1 %>
+            <% width = uu == 0 ? list.get_width(cc) : nil %>
+            <td <%= "width=#{width}" if width %>><%= list.get_data(cc, user) %></td>
+          <% end %>
+        </tr>
+      <% end %>
+    <% end %>
+  </table>
+<% end %>

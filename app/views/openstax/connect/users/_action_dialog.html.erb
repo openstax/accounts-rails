@@ -1,0 +1,10 @@
+<%# Copyright 2011-2012 Rice University. Licensed under the Affero General Public 
+    License version 3 or later.  See the COPYRIGHT file for details. %>
+
+<div id="user_action_dialog" style="display:none" title="<%= @action_dialog_title %>">
+  <div id="user_action_dialog_errors"></div>
+  
+  <%= render :partial => 'users/action_search', 
+             :locals => { :action_search_path => @action_search_path } %>
+                          
+</div>
