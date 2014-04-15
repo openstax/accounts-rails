@@ -103,15 +103,26 @@ module OpenStax
         token.request(http_method, api_url, options)
       end
 
-      # Creates an ApplicationUser in Accounts for this app and the given
-      # OpenStax::Accounts::User.
+      # Creates an ApplicationUser in Accounts for the configured app
+      # and the given OpenStax::Accounts::User.
       # Also takes an optional API version parameter. Defaults to :v1.
       # On failure, throws an Exception, just like api_call.
       # On success, returns an OAuth2::Response object.
-      def create_application_user(user, version = nil)
+      def create_application_user(user, version = :v1)
         options = {:access_token => user.access_token,
-                   :api_version => (version.nil? ? :v1 : version)}
+                   :api_version => version}
         api_call(:post, 'application_users', options)
+      end
+
+      # Performs a user search in Accounts for the configured app.
+      # Takes a query parameter and an optional API version parameter.
+      # API version currently defaults to :v1.
+      # On failure, throws an Exception, just like api_call.
+      # On success, returns an OAuth2::Response object.
+      def user_search(query, version = :v1)
+        options = {:params => {:q => query},
+                   :api_version => version}
+        api_call(:get, 'users/search', options)
       end
 
     protected
