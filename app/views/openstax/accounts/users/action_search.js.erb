@@ -1,0 +1,8 @@
+<%= unless_errors errors_html_id: (errors_html_id ||= 'action-search-errors') do %>
+  <% contents = render 'openstax/accounts/users/action_list', 
+                       users: users, 
+                       list: list %>
+  
+  $("#action-search-results-list").html("<%= j(contents) %>");  
+<% end %>
+

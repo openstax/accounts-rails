@@ -7,7 +7,7 @@ module OmniAuth
       option :name, "openstax"
 
       option :client_options, {
-        :site => OpenStax::Connect.configuration.openstax_accounts_url,
+        :site => "http://accounts.openstax.org",
         :authorize_url => "/oauth/authorize"
       }
 
