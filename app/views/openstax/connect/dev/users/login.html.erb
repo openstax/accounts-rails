@@ -1,0 +1,17 @@
+
+<div class="openstax-connect development-login">
+
+  <% handler_errors.each do |error| %>
+    <%= error.translate %>
+  <% end %>
+
+  <%= osu.section_block "Development Login" do %>
+
+    <p>You need to login, but we're not connected to the Accounts server. Search for a user below 
+       and click the sign in link next to him or her.</p>
+
+    <%= render 'openstax/connect/users/action_search', action_search_path: search_dev_users_path %>
+
+  <% end %>
+
+</div>
