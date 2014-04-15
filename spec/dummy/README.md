@@ -1,1 +1,1 @@
-Dummy application used to test the OpenStax Connect engine.
+Dummy application used to test the OpenStax Accounts engine.

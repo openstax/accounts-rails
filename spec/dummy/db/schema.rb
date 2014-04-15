@@ -11,21 +11,21 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140410194004) do
+ActiveRecord::Schema.define(:version => 0) do
 
-  create_table "openstax_connect_users", :force => true do |t|
+  create_table "openstax_accounts_users", :force => true do |t|
     t.integer  "openstax_uid"
+    t.string   "username"
     t.string   "first_name"
     t.string   "last_name"
-    t.string   "username"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
     t.string   "full_name"
     t.string   "title"
     t.string   "access_token"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
   end
 
-  add_index "openstax_connect_users", ["openstax_uid"], :name => "index_openstax_connect_users_on_openstax_uid", :unique => true
-  add_index "openstax_connect_users", ["username"], :name => "index_openstax_connect_users_on_username", :unique => true
+  add_index "openstax_accounts_users", ["openstax_uid"], :name => "index_openstax_accounts_users_on_openstax_uid", :unique => true
+  add_index "openstax_accounts_users", ["username"], :name => "index_openstax_accounts_users_on_username", :unique => true
 
 end

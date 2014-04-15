@@ -4,4 +4,4 @@ require File.expand_path('../application', __FILE__)
 require "lev"
 
 # Initialize the rails application
-ConnectExample::Application.initialize!
+AccountsExample::Application.initialize!

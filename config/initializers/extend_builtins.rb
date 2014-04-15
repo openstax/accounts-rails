@@ -5,7 +5,7 @@ class ActionController::Base
     current_user_manager.current_user
   end
 
-  # Signs in the given user; the argument can be either a connect user or
+  # Signs in the given user; the argument can be either an accounts user or
   # an app user
   def sign_in(user)
     current_user_manager.sign_in(user)
@@ -25,7 +25,7 @@ class ActionController::Base
   def authenticate_user!
     return if signed_in?
     session[:return_to] = "#{request.protocol}#{request.host_with_port}#{request.fullpath}"
-    redirect_to openstax_connect.login_path
+    redirect_to openstax_accounts.login_path
   end
 
 protected
@@ -33,9 +33,9 @@ protected
   helper_method :current_user, :signed_in?
 
   def current_user_manager
-    @current_user_manager ||= OpenStax::Connect::CurrentUserManager.new(request,
-                                                                        session,
-                                                                        cookies)
+    @current_user_manager ||= OpenStax::Accounts::CurrentUserManager.new(request,
+                                                                         session,
+                                                                         cookies)
   end
 
 end

@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  mount OpenStax::Connect::Engine => "/connect"
+  mount OpenStax::Accounts::Engine => "/accounts"
 
   namespace :api do
     post "dummy", :to => "dummy#dummy"

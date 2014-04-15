@@ -1,0 +1,21 @@
+
+<%= render template: 'openstax/accounts/users/action_search',
+           locals: {
+             users: @handler_result.outputs[:users],
+             list: OpenStax::Accounts::ActionList.new(
+                     headings: ['First Name', 'Last Name', 'Username', ''],
+                     widths: ['25%', '25%', '25%', '25%'],
+                     data_procs:
+                       [
+                         Proc.new { |user| user.first_name },
+                         Proc.new { |user| user.last_name },
+                         Proc.new { |user| user.username },
+                         Proc.new { |user| 
+                          link_to 'Sign in as', 
+                                  become_dev_users_path(:user_id => user.id), 
+                                  method: :post 
+                         }
+                       ]
+                   )
+           }
+%>

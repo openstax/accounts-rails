@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>OpenStax Connect Example Application</title>
+  <title>OpenStax Accounts Example Application</title>
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
@@ -10,9 +10,9 @@
 
 <% if signed_in? %>
   Welcome, <%= current_user.casual_name %>
-  <%= link_to "Log out", openstax_connect.logout_path %>
+  <%= link_to "Log out", openstax_accounts.logout_path %>
 <% else %>
-  <%= link_to "Log in", openstax_connect.login_path %>
+  <%= link_to "Log in", openstax_accounts.login_path %>
 <% end %>
 
 
