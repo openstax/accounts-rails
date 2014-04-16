@@ -10,6 +10,11 @@ module OpenStax
   module Accounts
     class Engine < ::Rails::Engine
       isolate_namespace OpenStax::Accounts
+      
+      initializer "openstax_accounts.factories",
+        :after => "factory_girl.set_factory_paths" do
+        FactoryGirl.definition_file_paths << File.join(root, 'spec', 'factories') if defined?(FactoryGirl)
+      end
 
       config.generators do |g|
         g.test_framework :rspec, :view_specs => false, :fixture => false
