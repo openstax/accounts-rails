@@ -1,6 +1,8 @@
 require 'omniauth'
 require 'omniauth/strategies/openstax'
 require 'lev'
+require 'roar/decorator'
+require 'roar/representer/json'
 
 ActiveSupport::Inflector.inflections do |inflect|
   inflect.acronym 'OpenStax'
