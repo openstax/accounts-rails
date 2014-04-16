@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    openstax_accounts (0.2.1.alpha)
+    openstax_accounts (0.2.1)
       lev (>= 2.0)
       oauth2
       omniauth (>= 1.1)
