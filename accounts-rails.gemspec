@@ -21,10 +21,11 @@ Gem::Specification.new do |s|
   s.add_dependency "omniauth-oauth2", ">= 1.1"
   s.add_dependency "oauth2"
   s.add_dependency "squeel"
+  s.add_dependency "roar", ">= 0.8"
   s.add_dependency "lev", ">= 2.0"
-  s.add_dependency "openstax_utilities", ">= 1.2"
   s.add_dependency "sass-rails",   ">= 3.1"
   s.add_dependency "uglifier", ">= 1.0"
+  s.add_dependency "openstax_utilities", ">= 1.2"
 
   s.add_development_dependency "sqlite3"
   s.add_development_dependency "rspec-rails"
