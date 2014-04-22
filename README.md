@@ -1,6 +1,8 @@
 accounts-rails
 =============
 
+[![Build Status](https://travis-ci.org/openstax/accounts-rails.svg?branch=master)](https://travis-ci.org/openstax/accounts-rails)
+
 A rails engine for interfacing with OpenStax's accounts server.
 
 Usage
