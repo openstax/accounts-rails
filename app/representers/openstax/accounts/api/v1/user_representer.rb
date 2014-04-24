@@ -5,7 +5,8 @@ module OpenStax
         class UserRepresenter < Roar::Decorator
           include Roar::Representer::JSON
 
-          property :id,
+          property :openstax_uid,
+                   as: :id,
                    type: Integer
 
           property :username,

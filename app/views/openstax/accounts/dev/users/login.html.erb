@@ -1,4 +1,3 @@
-
 <div class="openstax-accounts development-login">
 
   <% handler_errors.each do |error| %>
@@ -7,10 +6,12 @@
 
   <%= osu.section_block "Development Login" do %>
 
-    <p>You need to login, but we're not connected to the Accounts server. Search for a user below 
-       and click the sign in link next to him or her.</p>
+    <p>You need to login, but we're not connected to the Accounts server.
+    Search for a user below and click the sign in link next to him or her.</p>
 
-    <%= render 'openstax/accounts/users/action_search', action_search_path: search_dev_users_path %>
+    <%= render 'openstax/accounts/shared/users/search',
+               :search_action_path => openstax_accounts.search_dev_users_path,
+               :remote => true %>
 
   <% end %>
 

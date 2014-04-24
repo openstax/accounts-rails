@@ -2,11 +2,10 @@ module OpenStax
   module Accounts
     class User < ActiveRecord::Base
 
-      validates :username, uniqueness: true
-      validates :username, presence: true
+      validates :username, uniqueness: true, presence: true
       validates :openstax_uid, presence: true
 
-      # first and last names are not required
+      attr_accessible :username, :first_name, :last_name
 
       def name
         (first_name || last_name) ? [first_name, last_name].compact.join(" ") : username
