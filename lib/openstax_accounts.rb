@@ -107,16 +107,16 @@ module OpenStax
           options[:headers] ||= {}
           options[:headers].merge!({ 'Accept' => "application/vnd.accounts.openstax.#{version.to_s}" })
         end
-        
+
         token_string = options.delete(:access_token)
         token = token_string.blank? ? client.client_credentials.get_token :
         OAuth2::AccessToken.new(client, token_string)
-        
+
         api_url = URI.join(configuration.openstax_accounts_url, 'api/', url)
-        
+
         token.request(http_method, api_url, options)
       end
-      
+
       # Creates an ApplicationUser in Accounts for the configured app
       # and the given OpenStax::Accounts::User.
       # Also takes an optional API version parameter. Defaults to :v1.
@@ -124,10 +124,10 @@ module OpenStax
       # On success, returns an OAuth2::Response object.
       def create_application_user(user, version = :v1)
         options = {:access_token => user.access_token,
-          :api_version => version}
+                   :api_version => version}
         api_call(:post, 'application_users', options)
       end
-      
+
       # Performs a user search in Accounts for the configured app.
       # Takes a query parameter and an optional API version parameter.
       # API version currently defaults to :v1.
@@ -135,16 +135,16 @@ module OpenStax
       # On success, returns an OAuth2::Response object.
       def user_search(query, version = :v1)
         options = {:params => {:q => query},
-          :api_version => version}
+                   :api_version => version}
         api_call(:get, 'users/search', options)
       end
-      
+
       protected
-      
+
       def client
         @client ||= OAuth2::Client.new(configuration.openstax_application_id,
-          configuration.openstax_application_secret,
-          :site => configuration.openstax_accounts_url)
+                      configuration.openstax_application_secret,
+                      :site => configuration.openstax_accounts_url)
       end
 
     end
