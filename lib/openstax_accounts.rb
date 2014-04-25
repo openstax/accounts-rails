@@ -110,7 +110,7 @@ module OpenStax
 
         token_string = options.delete(:access_token)
         token = token_string.blank? ? client.client_credentials.get_token :
-        OAuth2::AccessToken.new(client, token_string)
+                  OAuth2::AccessToken.new(client, token_string)
 
         api_url = URI.join(configuration.openstax_accounts_url, 'api/', url)
 

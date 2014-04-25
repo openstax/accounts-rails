@@ -1,7 +1,7 @@
 module OpenStax
   module Accounts
     module Dev
-      class UsersController < Openstax::Accounts::Dev::BaseController
+      class UsersController < OpenStax::Accounts::Dev::BaseController
 
         def login; end
 
