@@ -63,7 +63,7 @@ module OpenStax
       def exec(query, options={})
 
         if !OpenStax::Accounts.configuration.enable_stubbing? &&\
-           KeywordSearch.search(query).values_at('email',:default).compact.any?
+           KeywordSearch.search(query).values_at('email', :default).compact.any?
           # Delegate to Accounts
 
           response = OpenStax::Accounts.application_users_index(query)
@@ -89,7 +89,7 @@ module OpenStax
 
           KeywordSearch.search(query) do |with|
 
-            with.default_keyword :name
+            with.default_keyword :any
 
             with.keyword :username do |usernames|
               users = users.where{username.like_any my{prep_usernames(usernames)}}
@@ -120,6 +120,21 @@ module OpenStax
 
             with.keyword :email do |emails|
               users = OpenStax::Accounts::User.where('0=1')
+            end
+
+            # Rerun the queries above for 'any' terms (which are ones without a
+            # prefix).  
+
+            with.keyword :any do |terms|
+              names = prep_names(terms)
+
+              users = users.where{
+                                    (  lower(username).like_any  my{prep_usernames(terms)}) |
+                                    (lower(first_name).like_any  names)                     |
+                                    (lower(last_name).like_any   names)                     |
+                                    (lower(full_name).like_any   names)                     |
+                                    (id.in                       terms)
+                                 }
             end
 
           end
@@ -187,7 +202,7 @@ module OpenStax
       end
       
       def prep_usernames(usernames)
-        usernames.collect{|username| username.gsub(User::USERNAME_DISCARDED_CHAR_REGEX, '').downcase + '%'}
+        usernames.collect{|username| username.gsub(OpenStax::Accounts::User::USERNAME_DISCARDED_CHAR_REGEX, '').downcase + '%'}
       end
 
     end

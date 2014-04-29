@@ -1,6 +1,10 @@
 module OpenStax
   module Accounts
     class User < ActiveRecord::Base
+
+      USERNAME_DISCARDED_CHAR_REGEX = /[^A-Za-z\d_]/
+      USERNAME_MAX_LENGTH = 50
+
       attr_accessor :updating_from_accounts
 
       validates :username, uniqueness: true, presence: true
