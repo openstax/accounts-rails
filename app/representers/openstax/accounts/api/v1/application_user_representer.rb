@@ -11,7 +11,11 @@ module OpenStax
           property :application_id,
                    type: Integer
 
-          property :user_id,
+          property :user,
+                   class: User,
+                   decorator: UserRepresenter
+
+          property :unread_updates,
                    type: Integer
 
           property :default_contact_info_id,

@@ -17,15 +17,18 @@ module OpenStax
 
         response = OpenStax::Accounts.application_users_updates
 
-        app_users = OpenStruct.new
-        app_users_rep = OpenStax::Accounts::Api::V1::ApplicationUsersRepresenter.new(application_users)
+        app_users = []
+        app_users_rep = OpenStax::Accounts::Api::V1::ApplicationUsersRepresenter.new(app_users)
         app_users_rep.from_json(response.body)
+
+        return if app_users.empty?
 
         app_users_hash = {}
 
         app_users.each do |app_user|
-          app_user.user.updating_from_accounts = true
-          next unless app_user.user.save
+          user = User.where(:openstax_uid => app_user.user.openstax_uid).first
+          user.updating_from_accounts = true
+          next unless user.update_attributes(app_user.user.attributes)
           app_users_hash[app_user.id] = app_user.unread_updates
         end
 
