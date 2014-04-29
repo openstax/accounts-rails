@@ -6,9 +6,13 @@ require 'openstax/accounts/user_provider'
 require 'openstax/accounts/current_user_manager'
 
 require 'openstax_utilities'
+require 'oauth2'
+require 'uri'
 
 module OpenStax
   module Accounts
+
+    DEFAULT_API_VERSION = :v1
 
     class << self
 
@@ -64,7 +68,7 @@ module OpenStax
         # Class to be used for security transgression exceptions
         attr_accessor :security_transgression_exception
 
-        # See the "user_provider" discussion in the README 
+        # See the "user_provider" discussion in the README
         attr_accessor :user_provider
 
         def openstax_accounts_url=(url)
@@ -117,26 +121,58 @@ module OpenStax
         token.request(http_method, api_url, options)
       end
 
-      # Creates an ApplicationUser in Accounts for the configured app
-      # and the given OpenStax::Accounts::User.
-      # Also takes an optional API version parameter. Defaults to :v1.
+      # Performs an ApplicationUser search in Accounts for the configured app.
+      # Takes a query parameter and an optional API version parameter.
+      # API version currently defaults to :v1 (may change in the future).
       # On failure, throws an Exception, just like api_call.
       # On success, returns an OAuth2::Response object.
-      def create_application_user(user, version = :v1)
+      def application_users_index(query, version = DEFAULT_API_VERSION)
+        options = {:params => {:q => query},
+                   :api_version => version}
+        api_call(:get, 'application_users', options)
+      end
+
+      # Creates an ApplicationUser in Accounts for the configured app
+      # and the given OpenStax::Accounts::User.
+      # Also takes an optional API version parameter.
+      # API version currently defaults to :v1 (may change in the future).
+      # On failure, throws an Exception, just like api_call.
+      # On success, returns an OAuth2::Response object.
+      def application_user_create(user, version = DEFAULT_API_VERSION)
         options = {:access_token => user.access_token,
                    :api_version => version}
         api_call(:post, 'application_users', options)
       end
 
-      # Performs a user search in Accounts for the configured app.
-      # Takes a query parameter and an optional API version parameter.
-      # API version currently defaults to :v1.
+      # Retrieves information about ApplicationUsers that have been recently updated.
       # On failure, throws an Exception, just like api_call.
       # On success, returns an OAuth2::Response object.
-      def user_search(query, version = :v1)
-        options = {:params => {:q => query},
-                   :api_version => version}
-        api_call(:get, 'users/search', options)
+      def application_users_updates(version = DEFAULT_API_VERSION)
+        options = {:api_version => version}
+        api_call(:get, 'application_users/updates', options)
+      end
+
+      # Marks ApplicationUser updates as "read".
+      # The app_users parameter is a hash that maps ApplicationUser
+      # openstax_uid's to the value of the last received unread_updates.
+      # On failure, throws an Exception, just like api_call.
+      # On success, returns an OAuth2::Response object.
+      def application_users_updated(app_users, version = DEFAULT_API_VERSION)
+        options = {:api_version => version,
+                   :body => {:application_users => app_users}}
+        api_call(:put, 'application_users/updated', options)
+      end
+
+      # Updates an OpenStax::Accounts::User in Accounts for the configured app.
+      # Also takes an optional API version parameter.
+      # API version currently defaults to :v1 (may change in the future).
+      # On failure, throws an Exception, just like api_call.
+      # On success, returns an OAuth2::Response object.
+      def user_update(user, version = DEFAULT_API_VERSION)
+        options = {:access_token => user.access_token,
+                   :api_version => version,
+                   :body => user.attributes}
+        api_call(:put, "users/#{user.openstax_uid}", options)
       end
 
       protected

@@ -66,13 +66,13 @@ module OpenStax
            KeywordSearch.search(query).values_at('email',:default).compact.any?
           # Delegate to Accounts
 
-          response = OpenStax::Accounts.user_search(query)
+          response = OpenStax::Accounts.application_users_index(query)
 
           user_search = OpenStruct.new
           search_rep = OpenStax::Accounts::Api::V1::UserSearchRepresenter.new(user_search)
           search_rep.from_json(response.body)
 
-          # Need to query local database in order to obtain record id's (primary key)
+          # Need to query local database in order to obtain ID's (primary keys)
           outputs[:users] = OpenStax::Accounts::User.where{
                               openstax_uid.in user_search.users.collect{ |u| u.openstax_uid }
                             }

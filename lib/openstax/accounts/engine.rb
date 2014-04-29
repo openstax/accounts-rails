@@ -3,7 +3,6 @@ require 'omniauth/strategies/openstax'
 require 'lev'
 require 'roar/decorator'
 require 'roar/representer/json'
-require 'oauth2'
 require 'keyword_search'
 
 ActiveSupport::Inflector.inflections do |inflect|

@@ -1,11 +1,14 @@
 module OpenStax
   module Accounts
     class User < ActiveRecord::Base
+      attr_accessor :updating_from_accounts
 
       validates :username, uniqueness: true, presence: true
       validates :openstax_uid, presence: true
 
       attr_accessible :username, :first_name, :last_name
+
+      before_update :update_openstax_accounts
 
       def name
         (first_name || last_name) ? [first_name, last_name].compact.join(" ") : username
@@ -23,6 +26,11 @@ module OpenStax
 
       def self.anonymous
         @@anonymous ||= AnonymousUser.new
+      end
+
+      def update_openstax_accounts
+        return if updating_from_accounts || OpenStax::Accounts.enable_stubbing?
+        OpenStax::Accounts.user_update(self).status == 200
       end
 
       class AnonymousUser < User
