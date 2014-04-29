@@ -27,7 +27,6 @@ Gem::Specification.new do |s|
   s.add_dependency "uglifier", ">= 1.0"
   s.add_dependency "openstax_utilities", ">= 1.2"
   s.add_dependency "keyword_search", ">= 1.0.0"
-  s.add_dependency "whenever", ">= 0.1.2"
 
   s.add_development_dependency "sqlite3"
   s.add_development_dependency "rspec-rails"

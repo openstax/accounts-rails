@@ -13,19 +13,23 @@ module OpenStax
     end
 
     it 'makes api call to create application_user' do
+      Api::ApplicationUsersController.last_action = nil
+      Api::ApplicationUsersController.last_params = nil
       expect(Api::ApplicationUsersController.last_action).to be_nil
       expect(Api::ApplicationUsersController.last_params).to be_nil
-      Accounts.create_application_user(user)
+      Accounts.application_users_create(user)
       expect(Api::ApplicationUsersController.last_action).to eq :create
       expect(Api::ApplicationUsersController.last_params).not_to be_nil
     end
 
     it 'makes api call to user search' do
-      expect(Api::UsersController.last_action).to be_nil
-      expect(Api::UsersController.last_params).to be_nil
-      Accounts.user_search('sth')
-      expect(Api::UsersController.last_action).to eq :search
-      expect(Api::UsersController.last_params).to include :q => 'sth'
+      Api::ApplicationUsersController.last_action = nil
+      Api::ApplicationUsersController.last_params = nil
+      expect(Api::ApplicationUsersController.last_action).to be_nil
+      expect(Api::ApplicationUsersController.last_params).to be_nil
+      Accounts.application_users_index('sth')
+      expect(Api::ApplicationUsersController.last_action).to eq :index
+      expect(Api::ApplicationUsersController.last_params).to include :q => 'sth'
     end
   end
 end

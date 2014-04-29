@@ -5,7 +5,7 @@
 module OpenStax
   module Accounts
 
-    class UpdateUsers
+    class SyncUsers
       
       lev_routine transaction: :no_transaction
       
