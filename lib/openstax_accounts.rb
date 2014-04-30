@@ -71,6 +71,11 @@ module OpenStax
         # See the "user_provider" discussion in the README
         attr_accessor :user_provider
 
+        # The maximum number of users that can be returned in a call to SearchUsers
+        # If more would be returned, the result will be empty instead
+        # Can also be passed directly to SearchUsers
+        attr_accessor :max_matching_users
+
         def openstax_accounts_url=(url)
           url.gsub!(/https|http/,'https') if !(url =~ /localhost/)
           url = url + "/" if url[url.size-1] != '/'
@@ -88,6 +93,7 @@ module OpenStax
           @default_errors_added_trigger = 'openstax-accounts-errors-added'
           @security_transgression_exception = SecurityTransgression
           @user_provider = OpenStax::Accounts::UserProvider
+          @max_matching_users = 10
           super
         end
 

@@ -138,15 +138,8 @@ module OpenStax
             end
 
           end
-        
-          # If the query didn't result in any restrictions, either because it
-          # was blank or didn't have a keyword from above with appropriate
-          # values, then return no results.
           
-          users = OpenStax::Accounts::User.where('0=1') if users == OpenStax::Accounts::User.scoped
-          
-          # Pagination -- this is where we could modify the incoming values for
-          # page and per_page, depending on options
+          # Pagination
           
           page = options[:page] || 0
           per_page = options[:per_page] || 20
@@ -192,6 +185,11 @@ module OpenStax
           outputs[:num_matching_users] = users.except(:offset, :limit, :order).count
 
         end
+
+        # Return no results if query exceeds maximum allowed number of matches
+        max_users = options[:max_matching_users] || \
+                    OpenStax::Accounts.configuration.max_matching_users
+        outputs[:users] = [] if outputs[:num_matching_users] > max_users
 
       end
       

@@ -17,6 +17,10 @@ module OpenStax
   module Accounts
     module Dev
       class SearchUsers < OpenStax::Accounts::SearchUsers
+        def exec(query, options={})
+          options = options.merge!(:max_matching_users => Float::INFINITY)
+          super
+        end
       end
     end
   end

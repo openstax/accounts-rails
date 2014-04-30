@@ -11,7 +11,7 @@ module OpenStax
           attribute :page, type: Integer
         end
 
-        uses_routine SearchUsers,
+        uses_routine OpenStax::Accounts::Dev::SearchUsers,
                      as: :search_users,
                      translations: { outputs: {type: :verbatim} }
 
