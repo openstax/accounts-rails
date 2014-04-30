@@ -44,9 +44,9 @@ module OpenStax
         expect(outcome).to eq [user_2]
       end
 
-      it "should return no results if the query is empty" do
+      it "should return all results if the query is empty" do
         outcome = SearchUsers.call("").outputs.users.all
-        expect(outcome).to eq []
+        expect(outcome).to eq [user_4, user_3, user_1, user_2]
       end
 
       it "should match any field when no prefix given" do
@@ -98,6 +98,11 @@ module OpenStax
           outcome = SearchUsers.call("username:billy", page: 2).outputs.users.all
           expect(outcome.length).to eq 6
           expect(outcome[5]).to eq User.where{username.eq "billy_45"}.first
+        end
+
+        it "should return no results if the limit is exceeded" do
+          outcome = SearchUsers.call("").outputs.users.all
+          expect(outcome).to be_empty
         end
 
       end

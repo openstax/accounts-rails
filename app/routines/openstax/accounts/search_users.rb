@@ -189,7 +189,8 @@ module OpenStax
         # Return no results if query exceeds maximum allowed number of matches
         max_users = options[:max_matching_users] || \
                     OpenStax::Accounts.configuration.max_matching_users
-        outputs[:users] = [] if outputs[:num_matching_users] > max_users
+        outputs[:users] = OpenStax::Accounts::User.where('0=1') \
+          if outputs[:num_matching_users] > max_users
 
       end
       
