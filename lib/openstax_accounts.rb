@@ -173,7 +173,7 @@ module OpenStax
                    :api_version => version,
                    :body => user.attributes.slice('username', 'first_name',
                               'last_name', 'full_name', 'title').to_json}
-        api_call(:put, "users/#{user.openstax_uid}", options)
+        api_call(:put, 'user', options)
       end
 
       protected
