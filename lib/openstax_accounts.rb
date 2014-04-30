@@ -171,7 +171,8 @@ module OpenStax
       def user_update(user, version = DEFAULT_API_VERSION)
         options = {:access_token => user.access_token,
                    :api_version => version,
-                   :body => user.attributes}
+                   :body => user.attributes.slice('username', 'first_name',
+                              'last_name', 'full_name', 'title').to_json}
         api_call(:put, "users/#{user.openstax_uid}", options)
       end
 

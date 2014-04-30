@@ -33,8 +33,9 @@ module OpenStax
       end
 
       def update_openstax_accounts
-        return if updating_from_accounts || OpenStax::Accounts.enable_stubbing?
-        OpenStax::Accounts.user_update(self).status == 200
+        return if updating_from_accounts || \
+                  OpenStax::Accounts.configuration.enable_stubbing?
+        OpenStax::Accounts.user_update(self)
       end
 
       class AnonymousUser < User
