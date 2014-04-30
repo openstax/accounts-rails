@@ -1,7 +1,7 @@
 module OpenStax
   module Accounts
     module Dev
-      class UsersSearch
+      class UsersIndex
 
         lev_handler transaction: :no_transaction
 

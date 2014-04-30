@@ -24,11 +24,6 @@ module OpenStax
           property :title,
                    type: String
 
-# TODO: Not yet implemented in this gem
-#          collection :contact_infos,
-#                     class: OpenStax::Accounts::ContactInfo,
-#                     decorator: ContactInfoRepresenter
-
         end
       end
     end
