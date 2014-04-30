@@ -12,7 +12,7 @@ module OpenStax
                    type: Integer
 
           property :user,
-                   class: User,
+                   class: OpenStax::Accounts::User,
                    decorator: UserRepresenter
 
           property :unread_updates,

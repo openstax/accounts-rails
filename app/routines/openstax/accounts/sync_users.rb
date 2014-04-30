@@ -6,7 +6,10 @@ module OpenStax
   module Accounts
 
     class SyncUsers
-      
+
+      SYNC_ATTRIBUTES = ['username', 'first_name', 'last_name',
+                         'full_name', 'title']
+
       lev_routine transaction: :no_transaction
       
       protected
@@ -24,11 +27,10 @@ module OpenStax
         return if app_users.empty?
 
         app_users_hash = {}
-
         app_users.each do |app_user|
-          user = User.where(:openstax_uid => app_user.user.openstax_uid).first
+          user = OpenStax::Accounts::User.where(:openstax_uid => app_user.user.openstax_uid).first
           user.updating_from_accounts = true
-          next unless user.update_attributes(app_user.user.attributes)
+          next unless user.update_attributes(app_user.user.attributes.slice(*SYNC_ATTRIBUTES))
           app_users_hash[app_user.id] = app_user.unread_updates
         end
 

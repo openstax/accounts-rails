@@ -7,7 +7,8 @@ module OpenStax
         class ApplicationUsersRepresenter < Roar::Decorator
           include Representable::JSON::Collection
 
-          items class: ApplicationUser, decorator: ApplicationUserRepresenter
+          items class: OpenStax::Accounts::ApplicationUser,
+                decorator: ApplicationUserRepresenter
         end
       end
     end

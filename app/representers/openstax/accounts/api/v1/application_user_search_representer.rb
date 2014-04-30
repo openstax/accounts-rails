@@ -5,7 +5,7 @@ module OpenStax
         class ApplicationUserSearchRepresenter < UserSearchRepresenter
 
           collection :application_users,
-                     class: ApplicationUser,
+                     class: OpenStax::Accounts::ApplicationUser,
                      decorator: ApplicationUserRepresenter,
                      schema_info: {
                        description: "The ApplicationUsers associated with the matching Users",
