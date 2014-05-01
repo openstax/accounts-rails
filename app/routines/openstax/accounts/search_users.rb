@@ -4,14 +4,28 @@
 # https://github.com/bruce/keyword_search , e.g.:
 #
 #   "username:jps,richb" --> returns the "jps" and "richb" users
-#   "name:John" --> returns Users with first, last, or full name starting with "John"
+#   "name:John" --> returns Users with first, last, or full name
+#                   starting with "John"
 #
 # Query terms can be combined, e.g. "username:jp first_name:john"
 #
 # There are currently two options to control query pagination:
 #
-#   :per_page -- the max number of results to return (default: 20)
+#   :per_page -- the max number of results to return per page (default: 20)
 #   :page     -- the zero-indexed page to return (default: 0)
+#
+# There is also an option to control the ordering:
+#
+#   :order_by -- array containing a field names and sort orders
+#                (default: ['username', SORT_ASCENDING])
+#
+# Finally, you can also specify a maximum allowed number of results:
+#
+#   :max_matching_users -- the max number of results allowed (default: 10)
+#
+# This routine will return an empty relation if the number of results exceeds
+# max_matching_users. You can tell that this happened because the result will
+# have a non-zero num_matching_users.
 
 module OpenStax
   module Accounts
