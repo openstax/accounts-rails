@@ -16,8 +16,8 @@
 #
 # There is also an option to control the ordering:
 #
-#   :order_by -- array containing a field names and sort orders
-#                (default: ['username', SORT_ASCENDING])
+#   :order_by -- comma-separated list of fields to sort by, with an optional
+#                space-separated sort direction (default: "username ASC")
 #
 # Finally, you can also specify a maximum allowed number of results:
 #
