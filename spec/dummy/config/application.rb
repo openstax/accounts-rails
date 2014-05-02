@@ -50,7 +50,7 @@ module Dummy
     config.assets.version = '1.0'
 
     # Suppress warning
-    I18n.enforce_available_locales = true
+    config.i18n.enforce_available_locales = true
   end
 end
 
