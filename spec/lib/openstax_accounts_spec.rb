@@ -12,14 +12,6 @@ module OpenStax
       expect(Api::DummyController.last_params).to include 'test' => 'true'
     end
 
-    it 'makes api call to application_user create' do
-      Api::ApplicationUsersController.last_action = nil
-      Api::ApplicationUsersController.last_params = nil
-      Accounts.application_users_create(user)
-      expect(Api::ApplicationUsersController.last_action).to eq :create
-      expect(Api::ApplicationUsersController.last_params).not_to be_nil
-    end
-
     it 'makes api call to application_user index' do
       Api::ApplicationUsersController.last_action = nil
       Api::ApplicationUsersController.last_params = nil

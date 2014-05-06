@@ -138,18 +138,6 @@ module OpenStax
         api_call(:get, 'application_users', options)
       end
 
-      # Creates an ApplicationUser in Accounts for the configured app
-      # and the given OpenStax::Accounts::User.
-      # Also takes an optional API version parameter.
-      # API version currently defaults to :v1 (may change in the future).
-      # On failure, throws an Exception, just like api_call.
-      # On success, returns an OAuth2::Response object.
-      def application_users_create(user, version = DEFAULT_API_VERSION)
-        options = {:access_token => user.access_token,
-                   :api_version => version}
-        api_call(:post, 'application_users', options)
-      end
-
       # Retrieves information about ApplicationUsers that have been recently updated.
       # On failure, throws an Exception, just like api_call.
       # On success, returns an OAuth2::Response object.
