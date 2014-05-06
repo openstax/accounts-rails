@@ -5,7 +5,8 @@ module OpenStax
         class UserRepresenter < Roar::Decorator
           include Roar::Representer::JSON
 
-          property :id,
+          property :openstax_uid,
+                   as: :id,
                    type: Integer
 
           property :username,
@@ -22,11 +23,6 @@ module OpenStax
 
           property :title,
                    type: String
-
-# TODO: Not yet implemented in this gem
-#          collection :contact_infos,
-#                     class: OpenStax::Accounts::ContactInfo,
-#                     decorator: ContactInfoRepresenter
 
         end
       end

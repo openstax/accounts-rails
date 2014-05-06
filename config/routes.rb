@@ -1,5 +1,5 @@
 OpenStax::Accounts::Engine.routes.draw do
-  match '/auth/openstax/callback', to: 'sessions#omniauth_authenticated' #omniauth route
+  get '/auth/openstax/callback', to: 'sessions#omniauth_authenticated' #omniauth route
   get '/auth/openstax', :as => 'openstax_login'
 
   get 'sessions/new', :as => 'login'
@@ -9,12 +9,13 @@ OpenStax::Accounts::Engine.routes.draw do
 
   if OpenStax::Accounts.configuration.enable_stubbing?
     namespace :dev do
-      resources :users, :only => [] do
+      resources :users, :only => [:index] do
         collection do
           get 'login'
-          post 'search'
-          post 'become'
+          post 'index'
         end
+
+        post 'become', :on => :member
       end
     end
   end

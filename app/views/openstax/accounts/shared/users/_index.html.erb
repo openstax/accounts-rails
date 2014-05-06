@@ -1,0 +1,24 @@
+<%
+   # Clients of this partial can override the following variables:
+   search_action_path ||= nil
+   remote ||= false
+   form_html ||=  {id: 'search-form',
+                   class: 'form-inline'}
+   search_types ||= ['Any', 'Username', 'Email']
+%>
+
+<%= lev_form_for :search,
+                 url: search_action_path,
+                 remote: remote,
+                 html: form_html do |f| %>
+
+  Search for 
+  <%= f.search_field :terms, style: 'width:300px' %> 
+  in         
+  <%= f.select :type, search_types, {}, {style: 'width: 150px'} %>
+
+  <%= f.submit 'Search', class: 'btn btn-primary' %>
+
+<% end %>
+
+<div id="search-results-list"></div>
