@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    openstax_accounts (0.1.1.alpha)
+    openstax_accounts (0.3.1.alpha)
       keyword_search (>= 1.0.0)
       lev (>= 2.0)
       oauth2 (>= 0.5.0)
