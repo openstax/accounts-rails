@@ -1,6 +1,9 @@
 accounts-rails
 =============
 
+[![Gem Version](https://badge.fury.io/rb/openstax_accounts.svg)](http://badge.fury.io/rb/openstax_accounts)
+[![Build Status](https://travis-ci.org/openstax/accounts-rails.svg?branch=master)](https://travis-ci.org/openstax/accounts-rails)
+
 A rails engine for interfacing with OpenStax's accounts server.
 
 Usage
@@ -74,6 +77,23 @@ The default `user_provider` just uses OpenStax::Accounts::User as the app user.
 Make sure to install the engine's migrations:
 
     rake openstax_accounts:install:migrations
+
+Syncing with Accounts
+---------------------
+
+OpenStax::Accounts requires your app to periodically sync user information with the Accounts server. The easiest way to do this is to use the "whenever" gem.
+
+To create or append to the schedule.rb file, run the following command:
+
+```sh
+rails g openstax:accounts:schedule
+```
+
+Then, after installing the "whenever" gem, run the `whenever` command for instructions to set up your crontab:
+
+```sh
+whenever
+```
 
 Accounts API
 ------------

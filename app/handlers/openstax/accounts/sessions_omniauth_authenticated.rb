@@ -2,9 +2,10 @@ module OpenStax
   module Accounts
 
     class SessionsOmniauthAuthenticated
+
       lev_handler
 
-    protected
+      protected
 
       def setup
         @auth_data = request.env['omniauth.auth']

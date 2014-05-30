@@ -4,14 +4,14 @@ module OpenStax
       class CreateUser
         lev_routine
 
-      protected
+        protected
 
         def exec(inputs={})
 
           username = inputs[:username]
 
           if username.nil? || inputs[:ensure_no_errors]
-            loop do 
+            loop do
               break if !username.nil? && OpenStax::Accounts::User.where(username: username).none?
               username = "#{inputs[:username] || 'user'}#{rand(1000000)}"
             end
@@ -23,7 +23,7 @@ module OpenStax
             user.username = username
             user.openstax_uid = available_negative_openstax_uid
           end
-        
+
           transfer_errors_from(outputs[:user], {type: :verbatim})
         end
 

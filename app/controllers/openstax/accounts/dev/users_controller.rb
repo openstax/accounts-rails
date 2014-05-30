@@ -1,18 +1,19 @@
 module OpenStax
   module Accounts
     module Dev
-      class UsersController < OpenStax::Accounts::Dev::DevController
-        
-        def login; end
+      class UsersController < OpenStax::Accounts::Dev::BaseController
 
-        def search
-          handle_with(OpenStax::Accounts::Dev::UsersSearch,
-                      complete: lambda { render 'search' })
+        def index
+          handle_with(UsersIndex,
+                      complete: lambda { render 'index' })
         end
 
+        def login; end
+
         def become
-          sign_in(User.find(params[:user_id]))
-          redirect_to return_url(true)
+          @user = User.find(params[:id])
+          sign_in(@user)
+          redirect_to return_url
         end
 
       end

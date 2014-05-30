@@ -1,0 +1,8 @@
+Description:
+    Creates a "whenever" task that checks for updates from Accounts.
+
+Example:
+    rails generate openstax:accounts:schedule
+
+    This will create or append to:
+        config/schedule.rb
