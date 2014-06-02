@@ -2,7 +2,7 @@ module OpenStax
   module Accounts
     module Api
       module V1
-        class UserRepresenter < Roar::Decorator
+        class AccountRepresenter < Roar::Decorator
           include Roar::Representer::JSON
 
           property :openstax_uid,

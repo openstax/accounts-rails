@@ -1,7 +1,7 @@
 module OpenStax
   module Accounts
     module Dev
-      class UsersIndex
+      class AccountsIndex
 
         lev_handler transaction: :no_transaction
 
@@ -11,8 +11,8 @@ module OpenStax
           attribute :page, type: Integer
         end
 
-        uses_routine OpenStax::Accounts::Dev::SearchUsers,
-                     as: :search_users,
+        uses_routine OpenStax::Accounts::Dev::SearchAccounts,
+                     as: :search_accounts,
                      translations: { outputs: {type: :verbatim} }
 
         protected
@@ -30,7 +30,7 @@ module OpenStax
           else
             query = search_params.terms || ''
           end
-          run(:search_users, query, page: search_params.page || 0)
+          run(:search_accounts, query, page: search_params.page || 0)
         end
 
       end

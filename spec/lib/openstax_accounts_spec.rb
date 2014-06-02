@@ -1,8 +1,7 @@
 module OpenStax
   describe Accounts do
-    let!(:user) { OpenStax::Accounts::User.create(username: 'some_user',
-                                                  openstax_uid: 1,
-                                                  access_token: 'secret') }
+    let!(:account) { OpenStax::Accounts::Account.create(username: 'some_user',
+                       openstax_uid: 1, access_token: 'secret') }
 
     it 'makes api calls' do
       expect(Api::DummyController.last_action).to be_nil

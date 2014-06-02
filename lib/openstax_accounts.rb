@@ -87,7 +87,7 @@ module OpenStax
           @openstax_application_secret = 'SET ME!'
           @openstax_accounts_url = 'https://accounts.openstax.org/'
           @enable_stubbing = true
-          @logout_via = :get
+          @logout_via = :delete
           @default_errors_partial = 'openstax/accounts/shared/attention'
           @default_errors_html_id = 'openstax-accounts-attention'
           @default_errors_added_trigger = 'openstax-accounts-errors-added'

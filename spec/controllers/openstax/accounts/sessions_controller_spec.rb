@@ -2,10 +2,11 @@ require 'spec_helper'
 
 module OpenStax::Accounts
   describe SessionsController do
-    routes { OpenStax::Accounts::Engine.routes }
+    routes { Engine.routes }
 
-    let!(:user) { OpenStax::Accounts::User.create(username: 'some_user',
-                                                  openstax_uid: 1) }
+    let!(:account) { FactoryGirl.create :openstax_accounts_account,
+                                        username: 'some_user',
+                                        openstax_uid: 10 }
 
     it 'should redirect users to the login path' do
       get :new
@@ -18,12 +19,12 @@ module OpenStax::Accounts
     end
 
     it 'should let users logout' do
-      controller.sign_in user
-      expect(controller.current_user).to eq(user)
-      expect(controller.current_user.is_anonymous?).to eq(false)
+      controller.sign_in account
+      expect(controller.current_account).to eq(account)
+      expect(controller.current_account.is_anonymous?).to eq(false)
       delete :destroy
-      expect(controller.current_user).to eq(OpenStax::Accounts::User.anonymous)
-      expect(controller.current_user.is_anonymous?).to eq(true)
+      expect(controller.current_account).to eq(AnonymousAccount.instance)
+      expect(controller.current_account.is_anonymous?).to eq(true)
     end
   end
 end

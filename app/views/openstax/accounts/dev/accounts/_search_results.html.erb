@@ -41,8 +41,8 @@
           Proc.new { |user| user.first_name || '---' },
           Proc.new { |user| user.last_name || '---' },
           Proc.new { |user| 
-            link_to 'Sign in as', 
-                    become_dev_user_path(user), 
+            link_to 'Sign in as',
+                    with_interceptor { become_dev_user_path(user) }, 
                     method: :post 
           }
         ]

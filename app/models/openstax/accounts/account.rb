@@ -1,11 +1,11 @@
 module OpenStax
   module Accounts
-    class User < ActiveRecord::Base
+    class Account < ActiveRecord::Base
 
       USERNAME_DISCARDED_CHAR_REGEX = /[^A-Za-z\d_]/
       USERNAME_MAX_LENGTH = 50
 
-      attr_accessor :updating_from_accounts
+      attr_accessor :syncing_with_accounts
 
       validates :username, uniqueness: true, presence: true
       validates :openstax_uid, presence: true
@@ -23,30 +23,14 @@ module OpenStax
       end    
 
       def is_anonymous?
-        is_anonymous == true
-      end
-
-      attr_accessor :is_anonymous
-
-      def self.anonymous
-        @@anonymous ||= AnonymousUser.new
+        false
       end
 
       def update_openstax_accounts
-        return if updating_from_accounts || \
+        return if syncing_with_accounts || \
                   OpenStax::Accounts.configuration.enable_stubbing?
-        OpenStax::Accounts.user_update(self)
-      end
 
-      class AnonymousUser < User
-        before_save { false } 
-        def initialize(attributes=nil)
-          super
-          self.is_anonymous = true
-          self.first_name   = 'Guest'
-          self.last_name    = 'User'
-          self.openstax_uid = nil
-        end
+        OpenStax::Accounts.user_update(self)
       end
 
     end
