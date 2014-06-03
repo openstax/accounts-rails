@@ -2,7 +2,7 @@ module OpenStax
   module Accounts
     module Api
       module V1
-        class ApplicationUserRepresenter < Roar::Decorator
+        class ApplicationAccountRepresenter < Roar::Decorator
           include Roar::Representer::JSON
 
           property :id, 
@@ -12,8 +12,8 @@ module OpenStax
                    type: Integer
 
           property :user,
-                   class: OpenStax::Accounts::User,
-                   decorator: UserRepresenter
+                   class: OpenStax::Accounts::Account,
+                   decorator: AccountRepresenter
 
           property :unread_updates,
                    type: Integer

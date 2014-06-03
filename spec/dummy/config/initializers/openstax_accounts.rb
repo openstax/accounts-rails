@@ -8,5 +8,5 @@ OpenStax::Accounts.configure do |config|
   config.openstax_application_id = 'secret'
   config.openstax_application_secret = 'secret'
   config.logout_via = :delete
-  config.max_matching_users = 47
+  config.max_matching_accounts = 47
 end

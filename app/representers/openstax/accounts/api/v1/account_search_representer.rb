@@ -2,10 +2,10 @@ module OpenStax
   module Accounts
     module Api
       module V1
-        class UserSearchRepresenter < Roar::Decorator
+        class AccountSearchRepresenter < Roar::Decorator
           include Roar::Representer::JSON
 
-          property :num_matching_users,
+          property :num_matching_accounts,
                    type: Integer
 
           property :page,
@@ -17,10 +17,9 @@ module OpenStax
           property :order_by,
                    type: String
 
-
-          collection :users,
-                     class: OpenStax::Accounts::User,
-                     decorator: UserRepresenter
+          collection :accounts,
+                     class: Account,
+                     decorator: AccountRepresenter
 
         end
       end

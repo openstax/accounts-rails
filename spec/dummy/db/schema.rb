@@ -13,7 +13,7 @@
 
 ActiveRecord::Schema.define(:version => 0) do
 
-  create_table "openstax_accounts_users", :force => true do |t|
+  create_table "openstax_accounts_accounts", :force => true do |t|
     t.integer  "openstax_uid"
     t.string   "username"
     t.string   "first_name"
@@ -25,7 +25,10 @@ ActiveRecord::Schema.define(:version => 0) do
     t.datetime "updated_at",   :null => false
   end
 
-  add_index "openstax_accounts_users", ["openstax_uid"], :name => "index_openstax_accounts_users_on_openstax_uid", :unique => true
-  add_index "openstax_accounts_users", ["username"], :name => "index_openstax_accounts_users_on_username", :unique => true
+  add_index "openstax_accounts_accounts", ["first_name"], :name => "index_openstax_accounts_accounts_on_first_name"
+  add_index "openstax_accounts_accounts", ["full_name"], :name => "index_openstax_accounts_accounts_on_full_name"
+  add_index "openstax_accounts_accounts", ["last_name"], :name => "index_openstax_accounts_accounts_on_last_name"
+  add_index "openstax_accounts_accounts", ["openstax_uid"], :name => "index_openstax_accounts_accounts_on_openstax_uid", :unique => true
+  add_index "openstax_accounts_accounts", ["username"], :name => "index_openstax_accounts_accounts_on_username", :unique => true
 
 end

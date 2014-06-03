@@ -4,11 +4,11 @@ module OpenStax
   module Accounts
     module Api
       module V1
-        class ApplicationUsersRepresenter < Roar::Decorator
+        class ApplicationAccountsRepresenter < Roar::Decorator
           include Representable::JSON::Collection
 
-          items class: OpenStax::Accounts::ApplicationUser,
-                decorator: ApplicationUserRepresenter
+          items class: OpenStax::Accounts::ApplicationAccount,
+                decorator: ApplicationAccountRepresenter
         end
       end
     end

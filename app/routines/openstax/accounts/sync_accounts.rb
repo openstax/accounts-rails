@@ -1,11 +1,11 @@
-# Routine for getting user updates from Accounts
+# Routine for getting account updates from the Accounts server
 #
 # Should be scheduled to run regularly
 
 module OpenStax
   module Accounts
 
-    class SyncUsers
+    class SyncAccounts
 
       SYNC_ATTRIBUTES = ['username', 'first_name', 'last_name',
                          'full_name', 'title']
@@ -18,23 +18,26 @@ module OpenStax
 
         return if OpenStax::Accounts.configuration.enable_stubbing?
 
-        response = OpenStax::Accounts.application_users_updates
+        response = OpenStax::Accounts.application_accounts_updates
 
-        app_users = []
-        app_users_rep = OpenStax::Accounts::Api::V1::ApplicationUsersRepresenter.new(app_users)
-        app_users_rep.from_json(response.body)
+        app_accounts = []
+        app_accounts_rep = OpenStax::Accounts::Api::V1::ApplicationAccountsRepresenter
+                             .new(app_accounts)
+        app_accounts_rep.from_json(response.body)
 
-        return if app_users.empty?
+        return if app_accounts.empty?
 
-        app_users_hash = {}
-        app_users.each do |app_user|
-          user = OpenStax::Accounts::User.where(:openstax_uid => app_user.user.openstax_uid).first
-          user.updating_from_accounts = true
-          next unless user.update_attributes(app_user.user.attributes.slice(*SYNC_ATTRIBUTES))
-          app_users_hash[app_user.id] = app_user.unread_updates
+        app_accounts_hash = {}
+        app_accounts.each do |app_account|
+          account = OpenStax::Accounts::Account.where(
+            :openstax_uid => app_account.account.openstax_uid).first
+          account.syncing_with_accounts = true
+          next unless account.update_attributes(
+            app_account.account.attributes.slice(*SYNC_ATTRIBUTES))
+          app_accounts_hash[app_account.id] = app_account.unread_updates
         end
 
-        OpenStax::Accounts.application_users_updated(app_users_hash)
+        OpenStax::Accounts.application_accounts_updated(app_accounts_hash)
 
       end
 

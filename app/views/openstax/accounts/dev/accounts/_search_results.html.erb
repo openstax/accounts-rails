@@ -1,13 +1,13 @@
 <%
   page = @handler_result.outputs[:page]
-  num_users = @handler_result.outputs[:num_matching_users]
+  num_accounts = @handler_result.outputs[:num_matching_accounts]
   per_page = @handler_result.outputs[:per_page]
   pages = (num_users * 1.0 / per_page).ceil
-  users = @handler_result.outputs[:users]
+  accounts = @handler_result.outputs[:accounts]
 %>
 
 <div id='search-results-pagination'>
-  <%= pluralize(num_users, 'user') %> found. 
+  <%= pluralize(num_accounts, 'user') %> found. 
 
   <% if pages > 0 %>
     Page: 
@@ -31,19 +31,19 @@
 </div>
 
 <%= osu.action_list(
-    records: users,
+    records: accounts,
     list: {
       headings: ['Username', 'First Name', 'Last Name', ''],
       widths: ['25%', '25%', '25%', '25%'],
       data_procs:
         [
-          Proc.new { |user| user.username },
-          Proc.new { |user| user.first_name || '---' },
-          Proc.new { |user| user.last_name || '---' },
-          Proc.new { |user| 
+          Proc.new { |account| account.username },
+          Proc.new { |account| account.first_name || '---' },
+          Proc.new { |account| account.last_name || '---' },
+          Proc.new { |account| 
             link_to 'Sign in as',
-                    with_interceptor { become_dev_user_path(user) }, 
-                    method: :post 
+                    with_interceptor { become_dev_account_path(account) },
+                    method: :post
           }
         ]
     }

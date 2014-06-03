@@ -9,8 +9,10 @@ module OpenStax::Accounts
                                         openstax_uid: 10 }
 
     it 'should redirect users to the login path' do
+      c = controller
       get :new
-      expect(response).to redirect_to RouteHelper.get_path(:login)
+      expect(response).to redirect_to(
+        c.with_interceptor { c.dev_accounts_path })
       expect(response.code).to eq('302')
     end
 

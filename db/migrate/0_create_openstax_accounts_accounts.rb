@@ -12,10 +12,10 @@ class CreateOpenStaxAccountsAccounts < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_index :openstax_accounts_account, :openstax_uid, :unique => true
-    add_index :openstax_accounts_account, :username, :unique => true
-    add_index :openstax_accounts_account, :first_name
-    add_index :openstax_accounts_account, :last_name
-    add_index :openstax_accounts_account, :full_name
+    add_index :openstax_accounts_accounts, :openstax_uid, :unique => true
+    add_index :openstax_accounts_accounts, :username, :unique => true
+    add_index :openstax_accounts_accounts, :first_name
+    add_index :openstax_accounts_accounts, :last_name
+    add_index :openstax_accounts_accounts, :full_name
   end
 end

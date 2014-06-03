@@ -4,11 +4,7 @@ module OpenStax
       class AccountsController < OpenStax::Accounts::Dev::BaseController
 
         def index
-          handle_with(AccountsIndex,
-                      complete: lambda { {render 'index'} })
-        end
-
-        def login
+          handle_with(AccountsIndex)
         end
 
         def become

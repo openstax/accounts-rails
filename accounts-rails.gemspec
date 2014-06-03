@@ -25,8 +25,9 @@ Gem::Specification.new do |s|
   s.add_dependency "lev", ">= 2.0"
   s.add_dependency "sass-rails",   ">= 3.1"
   s.add_dependency "uglifier", ">= 1.0"
-  s.add_dependency "openstax_utilities", ">= 1.2"
   s.add_dependency "keyword_search", ">= 1.0.0"
+  s.add_dependency "openstax_utilities", ">= 2.2.2"
+  s.add_dependency "action_interceptor", ">= 0.1"
 
   s.add_development_dependency "sqlite3"
   s.add_development_dependency "rspec-rails"

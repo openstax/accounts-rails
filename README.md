@@ -51,18 +51,21 @@ config.openstax_accounts_url = 'http://localhost:2999/'
 ```
 
 To have users login, direct them to the login path using the
-`openstax_accounts.login` route helper, e.g:
+`openstax_accounts.login_path` route helper with Action Interceptor, e.g:
 
 ```erb
-<%= link_to 'Sign in!', openstax_accounts.login_path %>
+<%= link_to 'Sign in!', with_interceptor { openstax_accounts.login_path } %>
 ```
 
+The `with_interceptor` block is necessary if you don't want to
+depend on the user's browser setting referers properly.
+
 There is also a logout path helper, given by `logout_path`.
-By default this expects a `DELETE` request.
-If you'd prefer a `GET` request, add this configuration:
+By default this expects a `GET` request.
+If you'd prefer a `DELETE` request, add this configuration:
 
 ```rb
-config.logout_via = :get
+config.logout_via = :delete
 ```
 
 OpenStax Accounts provides you with an `OpenStax::Accounts::Account` object.

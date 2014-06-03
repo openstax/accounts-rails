@@ -1,11 +1,9 @@
 require 'openstax/accounts/version'
 require 'openstax/accounts/engine'
-require 'openstax/accounts/route_helper'
-require 'openstax/accounts/action_list'
-require 'openstax/accounts/user_provider'
+require 'openstax/accounts/default_user_provider'
 require 'openstax/accounts/current_user_manager'
-
 require 'openstax_utilities'
+
 require 'oauth2'
 require 'uri'
 
@@ -68,13 +66,17 @@ module OpenStax
         # Class to be used for security transgression exceptions
         attr_accessor :security_transgression_exception
 
+        # user_provider
+        # This class teaches the gem how to convert between accounts and users
         # See the "user_provider" discussion in the README
         attr_accessor :user_provider
 
-        # The maximum number of users that can be returned in a call to SearchUsers
+        # max_matching_accounts
+        # The maximum number of accounts that can be returned
+        # in a call to SearchAccounts
         # If more would be returned, the result will be empty instead
-        # Can also be passed directly to SearchUsers
-        attr_accessor :max_matching_users
+        # Can also be passed directly to SearchAccounts
+        attr_accessor :max_matching_accounts
 
         def openstax_accounts_url=(url)
           url.gsub!(/https|http/,'https') if !(url =~ /localhost/)
@@ -87,12 +89,12 @@ module OpenStax
           @openstax_application_secret = 'SET ME!'
           @openstax_accounts_url = 'https://accounts.openstax.org/'
           @enable_stubbing = true
-          @logout_via = :delete
+          @logout_via = :get
           @default_errors_partial = 'openstax/accounts/shared/attention'
           @default_errors_html_id = 'openstax-accounts-attention'
           @default_errors_added_trigger = 'openstax-accounts-errors-added'
           @security_transgression_exception = SecurityTransgression
-          @user_provider = OpenStax::Accounts::UserProvider
+          @user_provider = OpenStax::Accounts::DefaultUserProvider
           @max_matching_users = 10
           super
         end
@@ -127,45 +129,62 @@ module OpenStax
         token.request(http_method, api_url, options)
       end
 
-      # Performs an ApplicationUser search in Accounts for the configured app.
+      # Performs an account search in the Accounts server.
+      # Results are limited to 10 accounts maximum.
       # Takes a query parameter and an optional API version parameter.
       # API version currently defaults to :v1 (may change in the future).
       # On failure, throws an Exception, just like api_call.
       # On success, returns an OAuth2::Response object.
-      def application_users_index(query, version = DEFAULT_API_VERSION)
+      def search_accounts(query, version = DEFAULT_API_VERSION)
+        options = {:params => {:q => query},
+                   :api_version => version}
+        api_call(:get, 'users', options)
+      end
+
+      # Performs an account search in the Accounts server.
+      # Results are limited to accounts that have used the current app.
+      # Takes a query parameter and an optional API version parameter.
+      # API version currently defaults to :v1 (may change in the future).
+      # On failure, throws an Exception, just like api_call.
+      # On success, returns an OAuth2::Response object.
+      def search_application_accounts(query, version = DEFAULT_API_VERSION)
         options = {:params => {:q => query},
                    :api_version => version}
         api_call(:get, 'application_users', options)
       end
 
-      # Retrieves information about ApplicationUsers that have been recently updated.
+      # Retrieves information about accounts that have been
+      # recently updated.
+      # Results are limited to accounts that have used the current app.
       # On failure, throws an Exception, just like api_call.
       # On success, returns an OAuth2::Response object.
-      def application_users_updates(version = DEFAULT_API_VERSION)
+      def get_application_account_updates(version = DEFAULT_API_VERSION)
         options = {:api_version => version}
         api_call(:get, 'application_users/updates', options)
       end
 
-      # Marks ApplicationUser updates as "read".
-      # The app_users parameter is a hash that maps ApplicationUser
-      # openstax_uid's to the value of the last received unread_updates.
+      # Marks account updates as "read".
+      # The uid_map parameter is a hash that maps account openstax_uid's
+      # to the value of the last received unread_updates for that uid.
+      # Can only be called for accounts that have used the current app.
       # On failure, throws an Exception, just like api_call.
       # On success, returns an OAuth2::Response object.
-      def application_users_updated(app_users, version = DEFAULT_API_VERSION)
+      def mark_application_accounts_as_updated(uid_map, version = DEFAULT_API_VERSION)
         options = {:api_version => version,
-                   :body => {:application_users => app_users}}
+                   :body => {:application_users => uid_map}}
         api_call(:put, 'application_users/updated', options)
       end
 
-      # Updates an OpenStax::Accounts::User in Accounts for the configured app.
+      # Updates the current account in the Accounts server.
+      # The current account is determined by the OAuth access token.
       # Also takes an optional API version parameter.
       # API version currently defaults to :v1 (may change in the future).
       # On failure, throws an Exception, just like api_call.
       # On success, returns an OAuth2::Response object.
-      def user_update(user, version = DEFAULT_API_VERSION)
-        options = {:access_token => user.access_token,
+      def update_account(account, version = DEFAULT_API_VERSION)
+        options = {:access_token => account.access_token,
                    :api_version => version,
-                   :body => user.attributes.slice('username', 'first_name',
+                   :body => account.attributes.slice('username', 'first_name',
                               'last_name', 'full_name', 'title').to_json}
         api_call(:put, 'user', options)
       end

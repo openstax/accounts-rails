@@ -2,20 +2,18 @@ module OpenStax
   module Accounts
 
     class ApplicationController < ActionController::Base
+
       include Lev::HandleWith
 
-      # Override current_user to always return an OpenStax::Accounts::User
-      def current_user
-        current_user_manager.accounts_current_user
-      end
+      acts_as_interceptor :override_url_options => false
 
-    protected
+      skip_interceptor :authenticate_user!, :registration
 
-      def return_url(include_referrer=false)
-        referrer = include_referrer ? request.referrer : nil
-        # Always clear the session
-        session_return_to = session.delete(:return_to)
-        params[:return_to] || session_return_to || referrer || main_app.root_url
+      fine_print_skip_signatures :general_terms_of_use, :privacy_policy \
+        if respond_to?(:fine_print_skip_signatures)
+
+      def current_account
+        current_user_manager.current_account
       end
 
     end

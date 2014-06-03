@@ -1,4 +1,4 @@
-# Routine for searching for users
+# Routine for searching for accounts
 #
 # Caller provides a query and some options.  The query follows the rules of
 # https://github.com/bruce/keyword_search, e.g.:
@@ -16,9 +16,9 @@
 module OpenStax
   module Accounts
     module Dev
-      class SearchUsers < OpenStax::Accounts::SearchUsers
+      class SearchAccounts < OpenStax::Accounts::SearchAccounts
         def exec(query, options={})
-          options = options.merge!(:max_matching_users => Float::INFINITY)
+          options = options.merge!(:max_matching_accounts => Float::INFINITY)
           super
         end
       end

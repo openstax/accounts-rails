@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  root :to => 'application#index'
+
   mount OpenStax::Accounts::Engine => '/accounts'
 
   post 'oauth/token', :to => 'oauth#token'
@@ -6,13 +8,13 @@ Rails.application.routes.draw do
   namespace :api do
     post 'dummy', :to => 'dummy#dummy'
 
-    resources :application_users, :only => [:index, :create] do
+    resources :users, :only => [:index]
+
+    resources :application_users, :only => [:index] do
       collection do
         get 'updates'
         put 'updated'
       end
     end
   end
-
-  root :to => 'application#index'
 end

@@ -5,6 +5,7 @@ require 'roar/decorator'
 require 'roar/representer/json'
 require 'keyword_search'
 require 'squeel'
+require 'action_interceptor'
 
 ActiveSupport::Inflector.inflections do |inflect|
   inflect.acronym 'OpenStax'
