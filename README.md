@@ -60,6 +60,12 @@ To have users login, direct them to the login path using the
 The `with_interceptor` block is necessary if you don't want to
 depend on the user's browser setting referers properly.
 
+You can also add the `authenticate_user!` interceptor to your controllers:
+
+```rb
+interceptor :authenticate_user!
+```
+
 There is also a logout path helper, given by `logout_path`.
 By default this expects a `GET` request.
 If you'd prefer a `DELETE` request, add this configuration:

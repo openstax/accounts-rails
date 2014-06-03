@@ -5,6 +5,7 @@ module OpenStax
         class ApplicationAccountSearchRepresenter < AccountSearchRepresenter
 
           collection :application_users,
+                     as: :application_accounts,
                      class: OpenStax::Accounts::ApplicationAccount,
                      decorator: ApplicationAccountRepresenter,
                      schema_info: {

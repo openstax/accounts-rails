@@ -1,5 +1,5 @@
 Description:
-    Creates a "whenever" task that checks for updates from Accounts.
+    Creates a "whenever" task that checks for updates from the Accounts server.
 
 Example:
     rails generate openstax:accounts:schedule

@@ -8,7 +8,7 @@ module OpenStax
       attr_accessor :syncing_with_accounts
 
       validates :username, uniqueness: true, presence: true
-      validates :openstax_uid, presence: true
+      validates :openstax_uid, uniqueness: true, presence: true
 
       attr_accessible :username, :first_name, :last_name, :full_name, :title
 

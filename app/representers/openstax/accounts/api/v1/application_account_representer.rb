@@ -11,7 +11,8 @@ module OpenStax
           property :application_id,
                    type: Integer
 
-          property :user,
+          property :account,
+                   as: :user,
                    class: OpenStax::Accounts::Account,
                    decorator: AccountRepresenter
 

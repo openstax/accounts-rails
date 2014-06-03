@@ -95,7 +95,7 @@ module OpenStax
           @default_errors_added_trigger = 'openstax-accounts-errors-added'
           @security_transgression_exception = SecurityTransgression
           @user_provider = OpenStax::Accounts::DefaultUserProvider
-          @max_matching_users = 10
+          @max_matching_accounts = 10
           super
         end
 
@@ -117,7 +117,9 @@ module OpenStax
         version = options.delete(:api_version)
         unless version.blank?
           options[:headers] ||= {}
-          options[:headers].merge!({ 'Accept' => "application/vnd.accounts.openstax.#{version.to_s}" })
+          options[:headers].merge!({
+            'Accept' => "application/vnd.accounts.openstax.#{version.to_s}"
+          })
         end
 
         token_string = options.delete(:access_token)

@@ -5,7 +5,8 @@ module OpenStax
         class AccountSearchRepresenter < Roar::Decorator
           include Roar::Representer::JSON
 
-          property :num_matching_accounts,
+          property :num_matching_users,
+                   as: :num_matching_accounts,
                    type: Integer
 
           property :page,
@@ -17,7 +18,8 @@ module OpenStax
           property :order_by,
                    type: String
 
-          collection :accounts,
+          collection :users,
+                     as: :accounts,
                      class: Account,
                      decorator: AccountRepresenter
 

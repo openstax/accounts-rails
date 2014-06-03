@@ -12,10 +12,6 @@ module OpenStax
       fine_print_skip_signatures :general_terms_of_use, :privacy_policy \
         if respond_to?(:fine_print_skip_signatures)
 
-      def current_account
-        current_user_manager.current_account
-      end
-
     end
 
   end

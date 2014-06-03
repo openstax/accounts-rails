@@ -7,6 +7,11 @@ ActionController::Base.class_exec do
     current_user_manager.current_user
   end
 
+  # Returns the current account
+  def current_account
+    current_user_manager.current_account
+  end
+
   # Returns true iff there is a user signed in
   def signed_in?
     current_user_manager.signed_in?

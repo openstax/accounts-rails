@@ -3,8 +3,8 @@
 # Caller provides a query and some options.  The query follows the rules of
 # https://github.com/bruce/keyword_search, e.g.:
 #
-#   "username:jps,richb" --> returns the "jps" and "richb" users
-#   "name:John" --> returns Users with first, last, or full name starting with "John"
+#   "username:jps,richb" --> returns the "jps" and "richb" accounts
+#   "name:John" --> returns accounts with first, last, or full name starting with "John"
 #
 # Query terms can be combined, e.g. "username:jp first_name:john"
 #
