@@ -31,7 +31,7 @@ module OpenStax
         return if syncing_with_accounts || \
                   OpenStax::Accounts.configuration.enable_stubbing?
 
-        OpenStax::Accounts.user_update(self)
+        OpenStax::Accounts.update_account(self)
       end
 
     end

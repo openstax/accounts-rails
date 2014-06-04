@@ -171,7 +171,7 @@ module OpenStax
       # Can only be called for accounts that have used the current app.
       # On failure, throws an Exception, just like api_call.
       # On success, returns an OAuth2::Response object.
-      def mark_application_accounts_as_updated(uid_map, version = DEFAULT_API_VERSION)
+      def mark_updates_as_read(uid_map, version = DEFAULT_API_VERSION)
         options = {:api_version => version,
                    :body => {:application_users => uid_map}}
         api_call(:put, 'application_users/updated', options)

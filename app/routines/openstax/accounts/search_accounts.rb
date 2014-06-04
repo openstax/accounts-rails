@@ -45,7 +45,8 @@ module OpenStax
            KeywordSearch.search(query).values_at('email', :default).compact.any?
           # Delegate to Accounts
 
-          response = OpenStax::Accounts.application_accounts_index(query)
+          response = OpenStax::Accounts.search_application_accounts(query)
+
 
           search = OpenStruct.new
           search_rep = OpenStax::Accounts::Api::V1::AccountSearchRepresenter.new(search)
