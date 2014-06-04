@@ -1,6 +1,6 @@
 require 'openstax/accounts/version'
 require 'openstax/accounts/engine'
-require 'openstax/accounts/default_user_provider'
+require 'openstax/accounts/default_account_user_mapper'
 require 'openstax/accounts/current_user_manager'
 require 'openstax_utilities'
 
