@@ -9,10 +9,9 @@
     <p>You need to login, but we're not connected to the Accounts server.
     Search for a user below and click the sign in link next to him or her.</p>
 
-    <%= render 'openstax/accounts/shared/accounts/index',
-               :search_action_path => with_interceptor {
-                  openstax_accounts.dev_accounts_path }},
-               :remote => true %>
+    <%= with_interceptor { render 'openstax/accounts/shared/accounts/index',
+               :search_action_path => openstax_accounts.dev_accounts_path,
+               :remote => true } %>
 
   <% end %>
 

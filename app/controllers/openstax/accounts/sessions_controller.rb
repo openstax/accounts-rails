@@ -6,9 +6,7 @@ module OpenStax
         if OpenStax::Accounts.configuration.enable_stubbing?
           with_interceptor { redirect_to dev_accounts_path }
         else
-          redirect_to OpenStax::Utilities.generate_url(
-            OpenStax::Accounts.configuration.openstax_accounts_url, "login",
-              return_to: intercepted_url)
+          redirect_to openstax_login_path
         end
       end
 

@@ -9,6 +9,7 @@ module OpenStax
 
       validates :username, uniqueness: true, presence: true
       validates :openstax_uid, uniqueness: true, presence: true
+      validates :access_token, uniqueness: true, allow_nil: true
 
       attr_accessible :username, :first_name, :last_name, :full_name, :title
 

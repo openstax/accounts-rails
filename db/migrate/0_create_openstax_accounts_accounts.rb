@@ -3,11 +3,11 @@ class CreateOpenStaxAccountsAccounts < ActiveRecord::Migration
     create_table :openstax_accounts_accounts do |t|
       t.integer :openstax_uid, :null => false
       t.string  :username, :null => false
-      t.string  :first_name, :null => false, :default => ''
-      t.string  :last_name, :null => false, :default => ''
-      t.string  :full_name, :null => false, :default => ''
-      t.string  :title, :null => false, :default => ''
-      t.string  :access_token, :null => false, :default => ''
+      t.string  :first_name
+      t.string  :last_name
+      t.string  :full_name
+      t.string  :title
+      t.string  :access_token
 
       t.timestamps
     end
