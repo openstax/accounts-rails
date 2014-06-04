@@ -83,11 +83,11 @@ signed in user (`current_user` and `current_user=` methods).  If you choose to
 create your own custom user object, you can teach this gem how to translate
 between a user object and an account object.
 
-To do this, you need to set a `user_provider` in this configuration.  
+To do this, you need to set a `account_user_mapper` in this configuration.  
 
-    config.user_provider = MyUserProvider
+    config.account_user_mapper = MyAccountUserMapper
 
-The user_provider is a class that provides two class methods:
+The account_user_mapper is a class that provides two class methods:
 
     def self.account_to_user(account)
       # Converts the given account to a user.
@@ -107,8 +107,8 @@ pattern in your app or you can use nil for the current user. Just remember to
 check the anonymous status of accounts when doing your account <-> user
 translations.
 
-The default `user_provider` assumes the account object and the user object
-are the same in your application.
+The default `account_user_mapper` assumes the account object and
+the user object are the same in your application.
 
 Syncing with Accounts
 ---------------------

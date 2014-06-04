@@ -1,6 +1,6 @@
 module OpenStax
   module Accounts
-    class DefaultUserProvider
+    class DefaultAccountUserMapper
 
       def self.account_to_user(account)
         account

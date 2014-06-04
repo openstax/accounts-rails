@@ -86,25 +86,25 @@ module OpenStax
         end
 
         # Bring the user inline with the account
-        @current_user = user_provider.account_to_user(@current_account)
+        @current_user = account_user_mapper.account_to_user(@current_account)
       end
 
       # Sets the current account, updates the session and loads it
       def current_account=(account)
         set_session(account)
-        @current_user = user_provider.account_to_user(account)
+        @current_user = account_user_mapper.account_to_user(account)
         @current_account = account
       end
 
       # Sets (signs in) the provided user, as above
       def current_user=(user)
-        @current_account = user_provider.user_to_account(user)
+        @current_account = account_user_mapper.user_to_account(user)
         set_session(@current_account)
         @current_user = user
       end
 
-      def user_provider
-        OpenStax::Accounts.configuration.user_provider
+      def account_user_mapper
+        OpenStax::Accounts.configuration.account_user_mapper
       end
 
     end

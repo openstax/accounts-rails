@@ -30,9 +30,17 @@ module OpenStax
         if OpenStax::Accounts.configuration.enable_stubbing?
           redirect_back
         else
-          without_interceptor { redirect_to OpenStax::Utilities.generate_url(
-              OpenStax::Accounts.configuration.openstax_accounts_url, "logout",
-                return_to: intercepted_url) }
+          without_interceptor do
+
+            redirect_to(
+              OpenStax::Utilities.generate_url(
+                OpenStax::Accounts.configuration.openstax_accounts_url,
+                "logout",
+                return_to: intercepted_url
+              )
+            )
+
+          end
         end
       end
 

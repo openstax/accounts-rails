@@ -8,7 +8,9 @@ module OpenStax
 
       def initialize(attributes=nil)
         super
+        self.id           = nil
         self.openstax_uid = nil
+        self.username     = 'anonymous'
         self.first_name   = 'Guest'
         self.last_name    = 'User'
       end

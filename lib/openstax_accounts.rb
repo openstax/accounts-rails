@@ -66,10 +66,10 @@ module OpenStax
         # Class to be used for security transgression exceptions
         attr_accessor :security_transgression_exception
 
-        # user_provider
+        # account_user_mapper
         # This class teaches the gem how to convert between accounts and users
-        # See the "user_provider" discussion in the README
-        attr_accessor :user_provider
+        # See the "account_user_mapper" discussion in the README
+        attr_accessor :account_user_mapper
 
         # max_matching_accounts
         # The maximum number of accounts that can be returned
@@ -94,7 +94,7 @@ module OpenStax
           @default_errors_html_id = 'openstax-accounts-attention'
           @default_errors_added_trigger = 'openstax-accounts-errors-added'
           @security_transgression_exception = SecurityTransgression
-          @user_provider = OpenStax::Accounts::DefaultUserProvider
+          @account_user_mapper = OpenStax::Accounts::DefaultAccountUserMapper
           @max_matching_accounts = 10
           super
         end
