@@ -38,7 +38,7 @@ module OpenStax
     it 'makes api call to application_users_updated' do
       Api::ApplicationUsersController.last_action = nil
       Api::ApplicationUsersController.last_params = nil
-      Accounts.mark_application_accounts_as_updated({1 => 1})
+      Accounts.mark_updates_as_read({1 => 1})
       expect(Api::ApplicationUsersController.last_action).to eq :updated
       expect(Api::ApplicationUsersController.last_params[:application_users]).to include '1' => '1'
     end
