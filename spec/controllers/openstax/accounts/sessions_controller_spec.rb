@@ -12,7 +12,7 @@ module OpenStax::Accounts
       c = controller
       get :new
       expect(response).to redirect_to(
-        c.with_interceptor { c.dev_accounts_path })
+        c.send(:with_interceptor) { c.dev_accounts_path })
       expect(response.code).to eq('302')
     end
 
