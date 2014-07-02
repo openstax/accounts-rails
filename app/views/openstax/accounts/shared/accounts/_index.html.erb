@@ -1,6 +1,8 @@
 <%
    # Clients of this partial can override the following variables:
    search_action_path ||= nil
+   results_list_id ||= 'search-results-list'
+   method ||= :post
    remote ||= false
    form_html ||=  {id: 'search-form',
                    class: 'form-inline'}
@@ -10,6 +12,7 @@
 <%= lev_form_for :search,
                  url: search_action_path,
                  remote: remote,
+                 method: method,
                  html: form_html do |f| %>
 
   Search for 
@@ -21,4 +24,4 @@
 
 <% end %>
 
-<div id="search-results-list"></div>
+<div id=<%= results_list_id %>></div>
