@@ -4,10 +4,6 @@ module Api
       dummy(:index)
     end
 
-    def create
-      dummy(:create)
-    end
-
     def updates
       dummy(:updates)
     end
