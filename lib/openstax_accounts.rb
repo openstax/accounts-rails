@@ -166,19 +166,21 @@ module OpenStax
       end
 
       # Marks account updates as "read".
-      # The uid_map parameter is a hash that maps account openstax_uid's
-      # to the value of the last received unread_updates for that uid.
-      # Can only be called for accounts that have used the current app.
+      # The application_users parameter is an array of hashes.
+      # Each hash has 2 required fields: 'id', which should contain the
+      # application_user's id, and 'read_updates', which should contain
+      # the last received value of unread_updates for that application_user.
+      # Can only be called for application_users that belong to the current app.
       # On failure, throws an Exception, just like api_call.
       # On success, returns an OAuth2::Response object.
-      def mark_updates_as_read(uid_map, version = DEFAULT_API_VERSION)
+      def mark_account_updates_as_read(application_users, version = DEFAULT_API_VERSION)
         options = {:api_version => version,
-                   :body => {:application_users => uid_map}}
+                   :body => application_users}
         api_call(:put, 'application_users/updated', options)
       end
 
-      # Updates the current account in the Accounts server.
-      # The current account is determined by the OAuth access token.
+      # Updates a user account in the Accounts server.
+      # The account is determined by the OAuth access token.
       # Also takes an optional API version parameter.
       # API version currently defaults to :v1 (may change in the future).
       # On failure, throws an Exception, just like api_call.
@@ -189,6 +191,160 @@ module OpenStax
                    :body => account.attributes.slice('username', 'first_name',
                               'last_name', 'full_name', 'title').to_json}
         api_call(:put, 'user', options)
+      end
+
+      # Retrieves information about groups that have been
+      # recently updated.
+      # Results are limited to groups that users of the current app have access to.
+      # On failure, throws an Exception, just like api_call.
+      # On success, returns an OAuth2::Response object.
+      def get_application_group_updates(version = DEFAULT_API_VERSION)
+        options = {:api_version => version}
+        api_call(:get, 'application_groups/updates', options)
+      end
+
+      # Marks group updates as "read".
+      # The application_groups parameter is an array of hashes.
+      # Each hash has 2 required fields: 'id', which should contain the
+      # application_group's id, and 'read_updates', which should contain
+      # the last received value of unread_updates for that application_group.
+      # Can only be called for application_groups that belong to the current app.
+      # On failure, throws an Exception, just like api_call.
+      # On success, returns an OAuth2::Response object.
+      def mark_group_updates_as_read(application_groups, version = DEFAULT_API_VERSION)
+        options = {:api_version => version,
+                   :body => application_groups}
+        api_call(:put, 'application_groups/updated', options)
+      end
+
+      # Creates a group in the Accounts server.
+      # The given account will be the owner of the group.
+      # Also takes an optional API version parameter.
+      # API version currently defaults to :v1 (may change in the future).
+      # On failure, throws an Exception, just like api_call.
+      # On success, returns an OAuth2::Response object.
+      def create_group(account, group, version = DEFAULT_API_VERSION)
+        options = {:access_token => account.access_token,
+                   :api_version => version,
+                   :body => group.attributes.slice('name', 'is_public').to_json}
+        response = ActiveSupport::JSON.decode(
+                     api_call(:post, 'groups', options).body)
+        group.openstax_uid = response['id']
+      end
+
+      # Updates a group in the Accounts server.
+      # The given account must own the group.
+      # Also takes an optional API version parameter.
+      # API version currently defaults to :v1 (may change in the future).
+      # On failure, throws an Exception, just like api_call.
+      # On success, returns an OAuth2::Response object.
+      def update_group(account, group, version = DEFAULT_API_VERSION)
+        options = {:access_token => account.access_token,
+                   :api_version => version,
+                   :params => {:id => group.openstax_uid},
+                   :body => group.attributes.slice('name', 'is_public').to_json}
+        api_call(:put, 'group', options)
+      end
+
+      # Deletes a group from the Accounts server.
+      # The given account must own the group.
+      # Also takes an optional API version parameter.
+      # API version currently defaults to :v1 (may change in the future).
+      # On failure, throws an Exception, just like api_call.
+      # On success, returns an OAuth2::Response object.
+      def destroy_group(account, group, version = DEFAULT_API_VERSION)
+        options = {:access_token => account.access_token,
+                   :api_version => version,
+                   :params => {:id => group.openstax_uid}}
+        api_call(:delete, 'group', options)
+      end
+
+      # Creates a group_member in the Accounts server.
+      # The given account must own the group.
+      # Also takes an optional API version parameter.
+      # API version currently defaults to :v1 (may change in the future).
+      # On failure, throws an Exception, just like api_call.
+      # On success, returns an OAuth2::Response object.
+      def create_group_member(account, group_member, version = DEFAULT_API_VERSION)
+        options = {:access_token => account.access_token,
+                   :api_version => version,
+                   :params => {:group_id => group_member.group.openstax_uid}
+                   :body => {:user_id => group_member.user.openstax_uid}.to_json}
+        response = ActiveSupport::JSON.decode(
+                     api_call(:post, 'group_members', options).body)
+        group_member.openstax_uid = response['id']
+      end
+
+      # Deletes a group_member from the Accounts server.
+      # The given account must own the group.
+      # Also takes an optional API version parameter.
+      # API version currently defaults to :v1 (may change in the future).
+      # On failure, throws an Exception, just like api_call.
+      # On success, returns an OAuth2::Response object.
+      def destroy_group_member(account, group_member, version = DEFAULT_API_VERSION)
+        options = {:access_token => account.access_token,
+                   :api_version => version,
+                   :params => {:id => group_member.openstax_uid}}
+        api_call(:delete, 'group_member', options)
+      end
+
+      # Creates a group_owner in the Accounts server.
+      # The given account must own the group.
+      # Also takes an optional API version parameter.
+      # API version currently defaults to :v1 (may change in the future).
+      # On failure, throws an Exception, just like api_call.
+      # On success, returns an OAuth2::Response object.
+      def create_group_owner(account, group_owner, version = DEFAULT_API_VERSION)
+        options = {:access_token => account.access_token,
+                   :api_version => version,
+                   :params => {:group_id => group_owner.group.openstax_uid}
+                   :body => {:user_id => group_owner.user.openstax_uid}.to_json}
+        response = ActiveSupport::JSON.decode(
+                     api_call(:post, 'group_owners', options).body)
+        group_owner.openstax_uid = response['id']
+      end
+
+      # Deletes a group_owner from the Accounts server.
+      # The given account must own the group.
+      # Also takes an optional API version parameter.
+      # API version currently defaults to :v1 (may change in the future).
+      # On failure, throws an Exception, just like api_call.
+      # On success, returns an OAuth2::Response object.
+      def destroy_group_owner(account, group_owner, version = DEFAULT_API_VERSION)
+        options = {:access_token => account.access_token,
+                   :api_version => version,
+                   :params => {:id => group_owner.openstax_uid}}
+        api_call(:delete, 'group_owner', options)
+      end
+
+      # Creates a group_nesting in the Accounts server.
+      # The given account must own both groups.
+      # Also takes an optional API version parameter.
+      # API version currently defaults to :v1 (may change in the future).
+      # On failure, throws an Exception, just like api_call.
+      # On success, returns an OAuth2::Response object.
+      def create_group_nesting(account, group_nesting, version = DEFAULT_API_VERSION)
+        options = {:access_token => account.access_token,
+                   :api_version => version,
+                   :params => {:group_id => group_nesting.container_group.openstax_uid}
+                   :body => {:member_group_id => group_nesting.member_group
+                                                   .openstax_uid}.to_json}
+        response = ActiveSupport::JSON.decode(
+                     api_call(:post, 'group_nestings', options).body)
+        group_nesting.openstax_uid = response['id']
+      end
+
+      # Deletes a group_nesting from the Accounts server.
+      # The given account must own either group.
+      # Also takes an optional API version parameter.
+      # API version currently defaults to :v1 (may change in the future).
+      # On failure, throws an Exception, just like api_call.
+      # On success, returns an OAuth2::Response object.
+      def destroy_group_nesting(account, group_nesting, version = DEFAULT_API_VERSION)
+        options = {:access_token => account.access_token,
+                   :api_version => version,
+                   :params => {:id => group_nesting.openstax_uid}}
+        api_call(:delete, 'group_nesting', options)
       end
 
       protected
