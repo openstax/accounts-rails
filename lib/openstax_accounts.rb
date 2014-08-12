@@ -14,6 +14,8 @@ module OpenStax
 
     class << self
 
+      mattr_accessor :syncing
+
       ###########################################################################
       #
       # Configuration machinery.
@@ -175,7 +177,7 @@ module OpenStax
       # On success, returns an OAuth2::Response object.
       def mark_account_updates_as_read(application_users, version = DEFAULT_API_VERSION)
         options = {:api_version => version,
-                   :body => application_users}
+                   :body => application_users.to_json}
         api_call(:put, 'application_users/updated', options)
       end
 
@@ -213,7 +215,7 @@ module OpenStax
       # On success, returns an OAuth2::Response object.
       def mark_group_updates_as_read(application_groups, version = DEFAULT_API_VERSION)
         options = {:api_version => version,
-                   :body => application_groups}
+                   :body => application_groups.to_json}
         api_call(:put, 'application_groups/updated', options)
       end
 
@@ -268,7 +270,7 @@ module OpenStax
       def create_group_member(account, group_member, version = DEFAULT_API_VERSION)
         options = {:access_token => account.access_token,
                    :api_version => version,
-                   :params => {:group_id => group_member.group.openstax_uid}
+                   :params => {:group_id => group_member.group.openstax_uid},
                    :body => {:user_id => group_member.user.openstax_uid}.to_json}
         response = ActiveSupport::JSON.decode(
                      api_call(:post, 'group_members', options).body)
@@ -297,7 +299,7 @@ module OpenStax
       def create_group_owner(account, group_owner, version = DEFAULT_API_VERSION)
         options = {:access_token => account.access_token,
                    :api_version => version,
-                   :params => {:group_id => group_owner.group.openstax_uid}
+                   :params => {:group_id => group_owner.group.openstax_uid},
                    :body => {:user_id => group_owner.user.openstax_uid}.to_json}
         response = ActiveSupport::JSON.decode(
                      api_call(:post, 'group_owners', options).body)
@@ -326,7 +328,7 @@ module OpenStax
       def create_group_nesting(account, group_nesting, version = DEFAULT_API_VERSION)
         options = {:access_token => account.access_token,
                    :api_version => version,
-                   :params => {:group_id => group_nesting.container_group.openstax_uid}
+                   :params => {:group_id => group_nesting.container_group.openstax_uid},
                    :body => {:member_group_id => group_nesting.member_group
                                                    .openstax_uid}.to_json}
         response = ActiveSupport::JSON.decode(

@@ -16,28 +16,34 @@ module OpenStax
       
       def exec(options={})
 
-        return if OpenStax::Accounts.configuration.enable_stubbing?
+        begin
+          OpenStax::Accounts.syncing = true
 
-        response = OpenStax::Accounts.get_application_account_updates
+          return if OpenStax::Accounts.configuration.enable_stubbing?
 
-        app_accounts = []
-        app_accounts_rep = OpenStax::Accounts::Api::V1::ApplicationAccountsRepresenter
-                             .new(app_accounts)
-        app_accounts_rep.from_json(response.body)
+          response = OpenStax::Accounts.get_application_user_updates
 
-        return if app_accounts.empty?
+          app_users = []
+          app_users_rep = OpenStax::Accounts::Api::V1::ApplicationUsersRepresenter
+                             .new(app_users)
+          app_users_rep.from_json(response.body)
 
-        app_accounts_hash = {}
-        app_accounts.each do |app_account|
-          account = OpenStax::Accounts::Account.where(
-            :openstax_uid => app_account.account.openstax_uid).first
-          account.syncing_with_accounts = true
-          next unless account.update_attributes(
-            app_account.account.attributes.slice(*SYNC_ATTRIBUTES))
-          app_accounts_hash[app_account.id] = app_account.unread_updates
+          return if app_users.empty?
+
+          updated_app_users = []
+          app_users.each do |app_user|
+            account = OpenStax::Accounts::Account.where(
+              :openstax_uid => app_user.user.openstax_uid).first
+            next unless account.update_attributes(
+              app_user.user.attributes.slice(*SYNC_ATTRIBUTES))
+            updated_app_users << {:id => app_user.id,
+                                  :read_updates => app_user.unread_updates}
+          end
+
+          OpenStax::Accounts.mark_account_updates_as_read(updated_app_users)
+        ensure
+          OpenStax::Accounts.syncing = false
         end
-
-        OpenStax::Accounts.mark_updates_as_read(app_accounts_hash)
 
       end
 
