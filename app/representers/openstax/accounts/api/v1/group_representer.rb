@@ -14,23 +14,23 @@ module OpenStax
 
           property :is_public
 
-          collection :owners,
+          collection :group_owners,
+                     as: :owners,
                      class: GroupOwner,
                      decorator: GroupUserRepresenter,
-                     writeable: false,
-                     parse_strategy: :sync
+                     writeable: false
 
-          collection :members,
+          collection :group_members,
+                     as: :members,
                      class: GroupMember,
                      decorator: GroupUserRepresenter,
-                     writeable: false,
-                     parse_strategy: :sync
+                     writeable: false
 
-          collection :groups,
+          collection :group_nestings,
+                     as: :groups,
                      class: GroupNesting,
                      decorator: GroupNestingRepresenter,
-                     writeable: false,
-                     parse_strategy: :sync
+                     writeable: false
 
         end
       end

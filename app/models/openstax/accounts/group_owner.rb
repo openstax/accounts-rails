@@ -3,8 +3,10 @@ module OpenStax::Accounts
 
     attr_accessor :requestor
 
-    belongs_to :group, class_name: 'OpenStax::Accounts::Group', inverse_of: :group_owners
-    belongs_to :user, class_name: 'OpenStax::Accounts::Account', inverse_of: :group_owners
+    belongs_to :group, class_name: 'OpenStax::Accounts::Group',
+               primary_key: :openstax_uid, inverse_of: :group_owners
+    belongs_to :user, class_name: 'OpenStax::Accounts::Account',
+               primary_key: :openstax_uid, inverse_of: :group_owners
 
     validates :openstax_uid, uniqueness: true, presence: true
 

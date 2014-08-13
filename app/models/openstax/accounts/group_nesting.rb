@@ -4,9 +4,9 @@ module OpenStax::Accounts
     attr_accessor :requestor
 
     belongs_to :container_group, class_name: 'OpenStax::Accounts::Group',
-               inverse_of: :member_group_nestings
+               primary_key: :openstax_uid, inverse_of: :member_group_nestings
     belongs_to :member_group, class_name: 'OpenStax::Accounts::Group',
-               inverse_of: :container_group_nestings
+               primary_key: :openstax_uid, inverse_of: :container_group_nestings
 
     validates :openstax_uid, uniqueness: true, presence: true
 

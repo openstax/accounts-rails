@@ -16,11 +16,11 @@ ActiveRecord::Schema.define(:version => 20140811182553) do
   create_table "openstax_accounts_accounts", :force => true do |t|
     t.integer  "openstax_uid", :null => false
     t.string   "username",     :null => false
+    t.string   "access_token"
     t.string   "first_name"
     t.string   "last_name"
     t.string   "full_name"
     t.string   "title"
-    t.string   "access_token"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
   end
@@ -33,16 +33,19 @@ ActiveRecord::Schema.define(:version => 20140811182553) do
   add_index "openstax_accounts_accounts", ["username"], :name => "index_openstax_accounts_accounts_on_username", :unique => true
 
   create_table "openstax_accounts_group_members", :force => true do |t|
-    t.integer  "group_id",   :null => false
-    t.integer  "user_id",    :null => false
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.integer  "openstax_uid", :null => false
+    t.integer  "group_id",     :null => false
+    t.integer  "user_id",      :null => false
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
   end
 
   add_index "openstax_accounts_group_members", ["group_id", "user_id"], :name => "index_openstax_accounts_group_members_on_group_id_and_user_id", :unique => true
+  add_index "openstax_accounts_group_members", ["openstax_uid"], :name => "index_openstax_accounts_group_members_on_openstax_uid", :unique => true
   add_index "openstax_accounts_group_members", ["user_id"], :name => "index_openstax_accounts_group_members_on_user_id"
 
   create_table "openstax_accounts_group_nestings", :force => true do |t|
+    t.integer  "openstax_uid",       :null => false
     t.integer  "member_group_id",    :null => false
     t.integer  "container_group_id", :null => false
     t.datetime "created_at",         :null => false
@@ -51,20 +54,24 @@ ActiveRecord::Schema.define(:version => 20140811182553) do
 
   add_index "openstax_accounts_group_nestings", ["container_group_id"], :name => "index_openstax_accounts_group_nestings_on_container_group_id"
   add_index "openstax_accounts_group_nestings", ["member_group_id"], :name => "index_openstax_accounts_group_nestings_on_member_group_id", :unique => true
+  add_index "openstax_accounts_group_nestings", ["openstax_uid"], :name => "index_openstax_accounts_group_nestings_on_openstax_uid", :unique => true
 
   create_table "openstax_accounts_group_owners", :force => true do |t|
-    t.integer  "group_id",   :null => false
-    t.integer  "user_id",    :null => false
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.integer  "openstax_uid", :null => false
+    t.integer  "group_id",     :null => false
+    t.integer  "user_id",      :null => false
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
   end
 
   add_index "openstax_accounts_group_owners", ["group_id", "user_id"], :name => "index_openstax_accounts_group_owners_on_group_id_and_user_id", :unique => true
+  add_index "openstax_accounts_group_owners", ["openstax_uid"], :name => "index_openstax_accounts_group_owners_on_openstax_uid", :unique => true
   add_index "openstax_accounts_group_owners", ["user_id"], :name => "index_openstax_accounts_group_owners_on_user_id"
 
   create_table "openstax_accounts_groups", :force => true do |t|
-    t.string   "name"
+    t.integer  "openstax_uid",               :null => false
     t.boolean  "is_public",                  :null => false
+    t.string   "name"
     t.text     "cached_subtree_group_ids"
     t.text     "cached_supertree_group_ids"
     t.datetime "created_at",                 :null => false
@@ -72,6 +79,7 @@ ActiveRecord::Schema.define(:version => 20140811182553) do
   end
 
   add_index "openstax_accounts_groups", ["is_public"], :name => "index_openstax_accounts_groups_on_is_public"
+  add_index "openstax_accounts_groups", ["openstax_uid"], :name => "index_openstax_accounts_groups_on_openstax_uid", :unique => true
 
   create_table "users", :force => true do |t|
     t.integer  "openstax_accounts_account_id"

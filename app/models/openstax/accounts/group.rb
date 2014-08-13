@@ -4,20 +4,22 @@ module OpenStax::Accounts
     attr_accessor :requestor
 
     has_many :group_owners, dependent: :destroy,
-             class_name: 'OpenStax::Accounts::GroupOwner', inverse_of: :group
+             class_name: 'OpenStax::Accounts::GroupOwner',
+             primary_key: :openstax_uid, inverse_of: :group
     has_many :owners, through: :group_owners, source: :user
 
     has_many :group_members, dependent: :destroy,
-             class_name: 'OpenStax::Accounts::GroupMember', inverse_of: :group
+             class_name: 'OpenStax::Accounts::GroupMember',
+             primary_key: :openstax_uid, inverse_of: :group
     has_many :members, through: :group_members, source: :user
 
     has_one :container_group_nesting, dependent: :destroy,
-            class_name: 'OpenStax::Accounts::GroupNesting',
+            class_name: 'OpenStax::Accounts::GroupNesting', primary_key: :openstax_uid,
             foreign_key: :member_group_id, inverse_of: :member_group
     has_one :container_group, through: :container_group_nesting
 
     has_many :member_group_nestings, dependent: :destroy,
-             class_name: 'OpenStax::Accounts::GroupNesting',
+             class_name: 'OpenStax::Accounts::GroupNesting', primary_key: :openstax_uid,
              foreign_key: :container_group_id, inverse_of: :container_group
     has_many :member_groups, through: :member_group_nestings
 

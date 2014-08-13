@@ -6,18 +6,18 @@ module OpenStax
       USERNAME_MAX_LENGTH = 50
 
       has_many :group_owners, dependent: :destroy,
-               class_name: 'OpenStax::Accounts::GroupOwner', inverse_of: :user
+               class_name: 'OpenStax::Accounts::GroupOwner',
+               primary_key: :openstax_uid, foreign_key: :user_id, inverse_of: :user
       has_many :owned_groups, through: :group_owners, source: :group
 
       has_many :group_members, dependent: :destroy,
-               class_name: 'OpenStax::Accounts::GroupMember', inverse_of: :user
+               class_name: 'OpenStax::Accounts::GroupMember',
+               primary_key: :openstax_uid, foreign_key: :user_id, inverse_of: :user
       has_many :member_groups, through: :group_members, source: :group
 
       validates :username, uniqueness: true, presence: true
       validates :openstax_uid, uniqueness: true, presence: true
       validates :access_token, uniqueness: true, allow_nil: true
-
-      attr_accessible :username, :first_name, :last_name, :full_name, :title
 
       before_update :update_openstax_accounts
 

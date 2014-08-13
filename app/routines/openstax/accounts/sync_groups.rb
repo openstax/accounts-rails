@@ -7,7 +7,7 @@ module OpenStax
 
     class SyncGroups
 
-      SYNC_ATTRIBUTES = ['name', 'is_public', 'owners', 'members', 'groups']
+      SYNC_ATTRIBUTES = [:name, :is_public, :group_members, :group_owners, :group_nestings]
 
       lev_routine transaction: :no_transaction
       
@@ -29,20 +29,32 @@ module OpenStax
 
           return if app_groups.empty?
 
-          updated_app_groups = []
+          app_group_updates = {}
           app_groups.each do |app_group|
-            group = OpenStax::Accounts::Group.where(
-              :openstax_uid => app_group.group.openstax_uid).first
-            next unless group.update_attributes(
-              app_group.group.attributes.slice(*SYNC_ATTRIBUTES))
-            updated_app_groups << {:id => app_group.id,
-                                   :read_updates => app_group.unread_updates}
+            sync_app_group(app_group, app_group_updates)
           end
 
+          updated_app_groups = app_group_updates.collect{|k,v| {group_id: k, read_updates: v}}
           OpenStax::Accounts.mark_group_updates_as_read(updated_app_groups)
         ensure
           OpenStax::Accounts.syncing = false
         end
+
+      end
+
+      def sync_app_group(app_group, app_group_updates = {})
+        group = OpenStax::Accounts::Group.where(
+                  :openstax_uid => app_group.group.openstax_uid).first || app_group.group
+
+        if group != app_group.group
+          SYNC_ATTRIBUTES.each do |attribute|
+            group.send("#{attribute}=", app_group.group.send(attribute))
+          end
+        end
+
+        return unless group.save
+
+        app_group_updates[group.openstax_uid] = app_group.unread_updates
 
       end
 
