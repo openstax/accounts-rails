@@ -7,7 +7,8 @@ module OpenStax
 
     class SyncGroups
 
-      SYNC_ATTRIBUTES = [:name, :is_public, :group_members, :group_owners, :group_nestings]
+      SYNC_ATTRIBUTES = ['name', 'is_public', 'group_members',
+                         'group_owners', 'group_nestings']
 
       lev_routine transaction: :no_transaction
       

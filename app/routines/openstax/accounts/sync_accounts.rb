@@ -5,10 +5,10 @@
 module OpenStax
   module Accounts
 
-    SYNC_ATTRIBUTES = ['username', 'first_name', 'last_name',
-                       'full_name', 'title']
-
     class SyncAccounts
+
+      SYNC_ATTRIBUTES = ['username', 'first_name', 'last_name',
+                         'full_name', 'title']
 
       lev_routine transaction: :no_transaction
       
