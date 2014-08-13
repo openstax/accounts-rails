@@ -6,7 +6,7 @@ module OpenStax::Accounts
     belongs_to :container_group, class_name: 'OpenStax::Accounts::Group',
                primary_key: :openstax_uid, inverse_of: :member_group_nestings
     belongs_to :member_group, class_name: 'OpenStax::Accounts::Group',
-               primary_key: :openstax_uid, inverse_of: :container_group_nestings
+               primary_key: :openstax_uid, inverse_of: :container_group_nesting
 
     validates :openstax_uid, uniqueness: true, presence: true
 
