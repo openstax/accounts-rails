@@ -17,20 +17,17 @@ module OpenStax
           collection :group_owners,
                      as: :owners,
                      class: GroupOwner,
-                     decorator: GroupUserRepresenter,
-                     writeable: false
+                     decorator: GroupUserRepresenter
 
           collection :group_members,
                      as: :members,
                      class: GroupMember,
-                     decorator: GroupUserRepresenter,
-                     writeable: false
+                     decorator: GroupUserRepresenter
 
-          collection :group_nestings,
-                     as: :groups,
+          collection :member_group_nestings,
+                     as: :nestings,
                      class: GroupNesting,
-                     decorator: GroupNestingRepresenter,
-                     writeable: false
+                     decorator: GroupNestingRepresenter
 
         end
       end

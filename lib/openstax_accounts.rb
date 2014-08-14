@@ -229,9 +229,10 @@ module OpenStax
         options = {:access_token => account.access_token,
                    :api_version => version,
                    :body => group.attributes.slice('name', 'is_public').to_json}
-        response = ActiveSupport::JSON.decode(
-                     api_call(:post, 'groups', options).body)
+        response = ActiveSupport::JSON.decode(api_call(
+                     :post, 'groups', options).body)
         group.openstax_uid = response['id']
+        response
       end
 
       # Updates a group in the Accounts server.
@@ -268,10 +269,9 @@ module OpenStax
       def create_group_member(account, group_member, version = DEFAULT_API_VERSION)
         options = {:access_token => account.access_token,
                    :api_version => version}
-        response = ActiveSupport::JSON.decode(api_call(:post,
-                     "groups/#{group_member.group_id}/members/#{group_member.user_id}",
-                     options).body)
-        group_member.openstax_uid = response['id']
+        api_call(:post,
+                 "groups/#{group_member.group_id}/members/#{group_member.user_id}",
+                 options)
       end
 
       # Deletes a group_member from the Accounts server.
@@ -297,10 +297,9 @@ module OpenStax
       def create_group_owner(account, group_owner, version = DEFAULT_API_VERSION)
         options = {:access_token => account.access_token,
                    :api_version => version}
-        response = ActiveSupport::JSON.decode(api_call(:post,
-                     "groups/#{group_owner.group_id}/owners/#{group_owner.user_id}",
-                     options).body)
-        group_owner.openstax_uid = response['id']
+        api_call(:post,
+                 "groups/#{group_owner.group_id}/owners/#{group_owner.user_id}",
+                 options)
       end
 
       # Deletes a group_owner from the Accounts server.
@@ -326,8 +325,9 @@ module OpenStax
       def create_group_nesting(account, group_nesting, version = DEFAULT_API_VERSION)
         options = {:access_token => account.access_token,
                    :api_version => version}
-        response = ActiveSupport::JSON.decode(api_call(:post, "groups/#{group_nesting.container_group_id}/nestings/#{group_nesting.member_group_id}", options).body)
-        group_nesting.openstax_uid = response['id']
+        api_call(:post,
+                 "groups/#{group_nesting.container_group_id}/nestings/#{group_nesting.member_group_id}",
+                 options)
       end
 
       # Deletes a group_nesting from the Accounts server.
@@ -339,7 +339,9 @@ module OpenStax
       def destroy_group_nesting(account, group_nesting, version = DEFAULT_API_VERSION)
         options = {:access_token => account.access_token,
                    :api_version => version}
-        api_call(:delete, "groups/#{group_nesting.container_group_id}/nestings/#{group_nesting.member_group_id}", options)
+        api_call(:delete,
+                 "groups/#{group_nesting.container_group_id}/nestings/#{group_nesting.member_group_id}",
+                 options)
       end
 
       protected

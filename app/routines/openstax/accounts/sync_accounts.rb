@@ -21,40 +21,37 @@ module OpenStax
 
           return if OpenStax::Accounts.configuration.enable_stubbing?
 
-          response = OpenStax::Accounts.get_application_user_updates
+          response = OpenStax::Accounts.get_application_account_updates
 
-          app_users = []
-          app_users_rep = OpenStax::Accounts::Api::V1::ApplicationUsersRepresenter
-                             .new(app_users)
-          app_users_rep.from_json(response.body)
+          app_accounts = []
+          app_accounts_rep = OpenStax::Accounts::Api::V1::ApplicationAccountsRepresenter
+                             .new(app_accounts)
+          app_accounts_rep.from_json(response.body)
 
-          return if app_users.empty?
+          return if app_accounts.empty?
 
-          app_user_updates = {}
-          app_users.each do |app_user|
-            sync_app_user(app_user, app_user_updates)
+          updated_app_accounts = []
+          app_accounts.each do |app_account|
+            account = OpenStax::Accounts::Account.where(
+                        :openstax_uid => app_account.account.openstax_uid).first ||\
+                        app_account.account
+
+            if account != app_account.account
+              SYNC_ATTRIBUTES.each do |attribute|
+                account.send("#{attribute}=", app_account.account.send(attribute))
+              end
+            end
+
+            next unless account.save
+
+            updated_app_accounts << {user_id: account.openstax_uid,
+                                    read_updates: app_account.unread_updates}
           end
 
-          updated_app_users = app_user_updates.collect{|k,v| {user_id: k, read_updates: v}}
-          OpenStax::Accounts.mark_account_updates_as_read(updated_app_users)
+          OpenStax::Accounts.mark_account_updates_as_read(updated_app_accounts)
         ensure
           OpenStax::Accounts.syncing = false
         end
-
-      end
-
-      def sync_app_user(app_user, app_user_updates = {})
-
-        account = OpenStax::Accounts::Account.where(
-                    :openstax_uid => app_user.account.openstax_uid).first
-
-        SYNC_ATTRIBUTES.each do |attribute|
-          account.send("#{attribute}=", app_user.account.send(attribute))
-        end
-
-        return unless account.save
-
-        app_user_updates[user.openstax_uid] = app_user.unread_updates
 
       end
 

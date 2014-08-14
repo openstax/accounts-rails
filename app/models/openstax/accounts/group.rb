@@ -44,7 +44,7 @@ module OpenStax::Accounts
     end
 
     def destroy_openstax_accounts_group
-      return if OpenStax::Accounts.configuration.enable_stubbing?
+      return if OpenStax::Accounts.syncing || OpenStax::Accounts.configuration.enable_stubbing?
       return false unless requestor
 
       OpenStax::Accounts.destroy_group(requestor, self)
