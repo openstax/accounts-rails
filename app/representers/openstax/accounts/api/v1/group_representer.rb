@@ -29,6 +29,20 @@ module OpenStax
                      class: GroupNesting,
                      decorator: GroupNestingRepresenter
 
+          property :cached_supertree_group_ids,
+                   as: :supertree_group_ids,
+                   type: Array,
+                   schema_info: {
+                     items: "integer"
+                   }
+
+          property :cached_subtree_group_ids,
+                   as: :subtree_group_ids,
+                   type: Array,
+                   schema_info: {
+                     items: "integer"
+                   }
+
         end
       end
     end

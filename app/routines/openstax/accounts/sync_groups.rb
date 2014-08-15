@@ -8,7 +8,8 @@ module OpenStax
     class SyncGroups
 
       SYNC_ATTRIBUTES = ['name', 'is_public', 'group_members',
-                         'group_owners', 'member_group_nestings']
+                         'group_owners', 'member_group_nestings',
+                         'cached_supertree_group_ids', 'cached_subtree_group_ids']
 
       lev_routine transaction: :no_transaction
       

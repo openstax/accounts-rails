@@ -1,6 +1,9 @@
 module OpenStax::Accounts
   class Group < ActiveRecord::Base
 
+    serialize :cached_supertree_group_ids
+    serialize :cached_subtree_group_ids
+
     attr_accessor :requestor
 
     has_many :group_owners, dependent: :destroy,
