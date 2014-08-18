@@ -5,9 +5,14 @@ module OpenStax
         class GroupUserRepresenter < Roar::Decorator
           include Roar::Representer::JSON
 
-          property :user_id,
-                   as: :id,
+          property :group_id,
                    type: Integer
+
+          nested :user do
+            property :user_id,
+                     as: :id,
+                     type: Integer
+          end
 
         end
       end

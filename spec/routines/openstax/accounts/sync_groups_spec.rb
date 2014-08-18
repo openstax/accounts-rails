@@ -16,8 +16,10 @@ module OpenStax
                                          unread_updates: 1, default_contact_info_id: 1},
                                         {id: 3, application_id: 1,
                                          group: {id: 3, name: 'Fuego\'s Deputies',
-                                                 members: [{id: 2, username: 'User'}],
-                                                 owners: [{id: 3, username: 'Fuego'}],
+                                                 members: [{group_id: 3,
+                                                            user: {id: 2, username: 'User'}}],
+                                                 owners: [{group_id: 3,
+                                                           user: {id: 3, username: 'Fuego'}}],
                                                  nestings: []},
                                          unread_updates: 2, default_contact_info_id: 5}]
           end)
