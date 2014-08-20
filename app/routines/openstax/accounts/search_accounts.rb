@@ -65,7 +65,7 @@ module OpenStax
         else
 
           # Local search
-          accounts = OpenStax::Accounts::Account.scoped
+          accounts = OpenStax::Accounts::Account.all
 
           KeywordSearch.search(query) do |with|
 

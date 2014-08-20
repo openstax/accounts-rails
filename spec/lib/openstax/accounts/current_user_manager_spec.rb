@@ -17,7 +17,7 @@ module OpenStax
       let!(:session) { {} }
 
       let!(:cookies) { ActionDispatch::Cookies::CookieJar.new(
-                         SecureRandom.hex, 'localhost') }
+                         ActiveSupport::KeyGenerator.new(SecureRandom.hex), 'localhost') }
 
       let!(:current_user_manager) { CurrentUserManager.new(
                                       request, session, cookies) }

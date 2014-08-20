@@ -50,7 +50,7 @@ module OpenStax
           @cookies.delete(:secure_account_id)
         else
           @session[:account_id] = account.id
-          @cookies.signed[:secure_account_id] = { secure: true,
+          @cookies.encrypted[:secure_account_id] = { secure: true,
             httponly: true, value: "secure#{account.id}" }
         end
       end
@@ -64,7 +64,7 @@ module OpenStax
         # and the signed secure ID doesn't match the unsecure ID
         # http://railscasts.com/episodes/356-dangers-of-session-hijacking
         if @request.ssl? && \
-          @cookies.signed[:secure_account_id] != "secure#{@session[:account_id]}"
+          @cookies.encrypted[:secure_account_id] != "secure#{@session[:account_id]}"
           sign_out!
           return
         end
