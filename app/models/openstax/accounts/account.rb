@@ -7,16 +7,18 @@ module OpenStax::Accounts
     has_many :group_owners, dependent: :destroy,
              class_name: 'OpenStax::Accounts::GroupOwner',
              primary_key: :openstax_uid, foreign_key: :user_id, inverse_of: :user
-    has_many :owned_groups, through: :group_owners, source: :group
+    has_many :groups_as_owner, through: :group_owners, source: :group
 
     has_many :group_members, dependent: :destroy,
              class_name: 'OpenStax::Accounts::GroupMember',
              primary_key: :openstax_uid, foreign_key: :user_id, inverse_of: :user
-    has_many :member_groups, through: :group_members, source: :group
+    has_many :groups_as_member, through: :group_members, source: :group
 
-    validates :openstax_uid, :uniqueness => true, :presence => true
-    validates_presence_of :username, :access_token, :unless => :syncing_or_stubbing
-    validates_uniqueness_of :username, :access_token, :unless => :syncing_or_stubbing
+    validates :openstax_uid, :presence => true, :uniqueness => true
+    validates :username, :presence => true, :uniqueness => true,
+                         :unless => :syncing_or_stubbing
+    validates :access_token, :presence => true, :uniqueness => true,
+                             :unless => :syncing_or_stubbing
 
     before_update :update_openstax_accounts, :unless => :syncing_or_stubbing
 
