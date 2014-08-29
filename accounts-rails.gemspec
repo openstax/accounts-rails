@@ -16,8 +16,7 @@ Gem::Specification.new do |s|
   s.files = Dir["{app,config,db,lib}/**/*", "spec/factories/**/*"] + ["MIT-LICENSE", "Rakefile", "README.md"]
   s.test_files = Dir["spec/**/*"]
 
-  s.add_dependency "rails", ">= 3.1"
-  s.add_dependency "activesupport", ">= 3.1"
+  s.add_dependency "rails", "~> 3.2"
   s.add_dependency "omniauth", ">= 1.1"
   s.add_dependency "omniauth-oauth2", ">= 1.1"
   s.add_dependency "oauth2", ">= 0.5.0"
@@ -31,7 +30,7 @@ Gem::Specification.new do |s|
   s.add_dependency "action_interceptor", ">= 0.1"
 
   s.add_development_dependency "sqlite3"
-  s.add_development_dependency "rspec-rails", "< 3.0"
+  s.add_development_dependency "rspec-rails"
   s.add_development_dependency "capybara"
   s.add_development_dependency "factory_girl_rails"
   s.add_development_dependency "quiet_assets"
