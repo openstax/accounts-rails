@@ -14,16 +14,22 @@ module OpenStax::Accounts
                           :unless => :syncing_or_stubbing
     validate :no_loops, :unless => :syncing_or_stubbing
 
-    before_create :update_group_caches, :create_openstax_accounts_group_nesting,
+    before_create :update_group_caches, :unless => :syncing?
+    before_destroy :update_group_caches, :unless => :syncing?
+
+    before_create :create_openstax_accounts_group_nesting,
                   :unless => :syncing_or_stubbing
     before_destroy :update_group_caches, :destroy_openstax_accounts_group_nesting,
                    :unless => :syncing_or_stubbing
 
     protected
 
+    def syncing?
+      OpenStax::Accounts.syncing
+    end
+
     def syncing_or_stubbing
-      OpenStax::Accounts.syncing ||\
-      OpenStax::Accounts.configuration.enable_stubbing?
+      syncing? || OpenStax::Accounts.configuration.enable_stubbing?
     end
 
     def no_loops

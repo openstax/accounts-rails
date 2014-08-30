@@ -85,7 +85,7 @@ module OpenStax::Accounts
       reload
 
       gids = [id] + (Group.includes(:member_group_nestings)
-                          .where(member_group_nestings: {member_group_id: id})
+                          .where(member_group_nestings: {member_group_id: openstax_uid})
                           .first.try(:supertree_group_ids) || [])
       update_column(:cached_supertree_group_ids, gids.to_yaml)
       self.cached_supertree_group_ids = gids
@@ -97,7 +97,7 @@ module OpenStax::Accounts
       reload
 
       gids = [id] + Group.includes(:container_group_nesting)
-                         .where(container_group_nesting: {container_group_id: id})
+                         .where(container_group_nesting: {container_group_id: openstax_uid})
                          .collect{|g| g.subtree_group_ids}.flatten
       update_column(:cached_subtree_group_ids, gids.to_yaml)
       self.cached_subtree_group_ids = gids

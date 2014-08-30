@@ -4,7 +4,7 @@ module OpenStax
       let!(:account) { FactoryGirl.create(:openstax_accounts_account,
                          username: 'some_user',
                          openstax_uid: 1) }
-      let!(:user)    { User.create(:openstax_accounts_account => account) }
+      let!(:user)    { User.create(:account => account) }
 
       let!(:request) { double('request',
                               :host => 'localhost',

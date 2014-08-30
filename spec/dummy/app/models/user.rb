@@ -1,10 +1,13 @@
 class User < ActiveRecord::Base
-  belongs_to :openstax_accounts_account, 
-             class_name: "OpenStax::Accounts::Account",
-             dependent: :destroy
+
+  belongs_to :account, 
+             class_name: "OpenStax::Accounts::Account"
+  has_many :groups_as_member, through: :account
+  has_many_through_groups :groups_as_member, :ownerships,
+                          as: :owner, dependent: :destroy
 
   delegate :username, :first_name, :last_name, :full_name, :title,
-           :name, :casual_name, to: :openstax_accounts_account
+           :name, :casual_name, to: :account
 
   def is_anonymous?
     false
@@ -12,15 +15,15 @@ class User < ActiveRecord::Base
 
   # OpenStax Accounts "account_user_mapper" methods
 
-  def self.account_to_user(account)
-    account.is_anonymous? ? \
+  def self.account_to_user(acc)
+    acc.is_anonymous? ? \
       AnonymousUser.instance : \
-      User.where(:openstax_accounts_account_id => account.id).first
+      User.where(:account_id => acc.id).first
   end
 
   def self.user_to_account(user)
     user.is_anonymous? ? \
       AnonymousAccount.instance : \
-      user.openstax_accounts_account
+      user.account
   end
 end

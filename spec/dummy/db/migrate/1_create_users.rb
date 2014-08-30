@@ -1,11 +1,11 @@
 class CreateUsers < ActiveRecord::Migration
   def change
     create_table :users do |t|
-      t.integer :openstax_accounts_account_id
+      t.references :account, null: false
 
       t.timestamps
     end
 
-    add_index :users, :openstax_accounts_account_id, :unique => true
+    add_index :users, :account_id, :unique => true
   end
 end

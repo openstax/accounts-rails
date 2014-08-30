@@ -2,6 +2,7 @@ require 'openstax/accounts/version'
 require 'openstax/accounts/engine'
 require 'openstax/accounts/default_account_user_mapper'
 require 'openstax/accounts/current_user_manager'
+require 'openstax/accounts/has_many_through_groups'
 require 'openstax_utilities'
 
 require 'oauth2'
