@@ -22,7 +22,7 @@ Gem::Specification.new do |s|
   s.add_dependency "oauth2", ">= 0.5.0"
   s.add_dependency "squeel", ">= 0.5.0"
   s.add_dependency "roar", ">= 0.8"
-  s.add_dependency "lev", ">= 2.1.1"
+  s.add_dependency "lev", ">= 2.2.1"
   s.add_dependency "keyword_search", ">= 1.0.0"
   s.add_dependency "openstax_utilities", ">= 2.2.3"
   s.add_dependency "action_interceptor", ">= 0.3"
