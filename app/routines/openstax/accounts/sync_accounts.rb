@@ -16,28 +16,42 @@ module OpenStax
       
       def exec(options={})
 
-        return if OpenStax::Accounts.configuration.enable_stubbing?
+        begin
+          OpenStax::Accounts.syncing = true
 
-        response = OpenStax::Accounts.get_application_account_updates
+          return if OpenStax::Accounts.configuration.enable_stubbing?
 
-        app_accounts = []
-        app_accounts_rep = OpenStax::Accounts::Api::V1::ApplicationAccountsRepresenter
+          response = OpenStax::Accounts.get_application_account_updates
+
+          app_accounts = []
+          app_accounts_rep = OpenStax::Accounts::Api::V1::ApplicationAccountsRepresenter
                              .new(app_accounts)
-        app_accounts_rep.from_json(response.body)
+          app_accounts_rep.from_json(response.body)
 
-        return if app_accounts.empty?
+          return if app_accounts.empty?
 
-        app_accounts_hash = {}
-        app_accounts.each do |app_account|
-          account = OpenStax::Accounts::Account.where(
-            :openstax_uid => app_account.account.openstax_uid).first
-          account.syncing_with_accounts = true
-          next unless account.update_attributes(
-            app_account.account.attributes.slice(*SYNC_ATTRIBUTES))
-          app_accounts_hash[app_account.id] = app_account.unread_updates
+          updated_app_accounts = []
+          app_accounts.each do |app_account|
+            account = OpenStax::Accounts::Account.where(
+                        :openstax_uid => app_account.account.openstax_uid).first ||\
+                        app_account.account
+
+            if account != app_account.account
+              SYNC_ATTRIBUTES.each do |attribute|
+                account.send("#{attribute}=", app_account.account.send(attribute))
+              end
+            end
+
+            next unless account.save
+
+            updated_app_accounts << {user_id: account.openstax_uid,
+                                    read_updates: app_account.unread_updates}
+          end
+
+          OpenStax::Accounts.mark_account_updates_as_read(updated_app_accounts)
+        ensure
+          OpenStax::Accounts.syncing = false
         end
-
-        OpenStax::Accounts.mark_updates_as_read(app_accounts_hash)
 
       end
 

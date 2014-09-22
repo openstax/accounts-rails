@@ -4,7 +4,7 @@ module OpenStax
       let!(:account) { FactoryGirl.create(:openstax_accounts_account,
                          username: 'some_user',
                          openstax_uid: 1) }
-      let!(:user)    { User.create(:openstax_accounts_account => account) }
+      let!(:user)    { User.create(:account => account) }
 
       let!(:request) { double('request',
                               :host => 'localhost',
@@ -17,7 +17,10 @@ module OpenStax
       let!(:session) { {} }
 
       let!(:cookies) { ActionDispatch::Cookies::CookieJar.new(
-                         SecureRandom.hex, 'localhost') }
+                         ActiveSupport::KeyGenerator.new(SecureRandom.hex),
+                         'localhost', false,
+                         encrypted_cookie_salt: 'encrypted cookie salt',
+                         encrypted_signed_cookie_salt: 'encrypted signed cookie salt') }
 
       let!(:current_user_manager) { CurrentUserManager.new(
                                       request, session, cookies) }
@@ -67,7 +70,10 @@ module OpenStax
 
           # Secure cookies are not sent with non-SSL requests
           unsecure_cookies = ActionDispatch::Cookies::CookieJar.new(
-                               SecureRandom.hex, 'localhost')
+                               ActiveSupport::KeyGenerator.new(SecureRandom.hex),
+                               'localhost', false,
+                               encrypted_cookie_salt: 'encrypted cookie salt',
+                               encrypted_signed_cookie_salt: 'encrypted signed cookie salt')
           unsecure_cookies[:account_id] = cookies[:account_id]
 
           current_user_manager = CurrentUserManager.new(

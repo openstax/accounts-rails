@@ -6,7 +6,7 @@ ActionInterceptor.configure do
     return if account && !account.is_anonymous?
 
     respond_to do |format|
-      format.html { redirect_to registration_path }
+      format.html { redirect_to openstax_accounts.login_url }
       format.json { head(:forbidden) }
     end
   end

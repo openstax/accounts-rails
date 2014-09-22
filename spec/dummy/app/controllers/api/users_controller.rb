@@ -3,5 +3,9 @@ module Api
     def index
       dummy(:index)
     end
+
+    def update
+      dummy(:update)
+    end
   end
 end

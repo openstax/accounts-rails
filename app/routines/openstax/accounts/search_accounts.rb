@@ -65,7 +65,7 @@ module OpenStax
         else
 
           # Local search
-          accounts = OpenStax::Accounts::Account.scoped
+          accounts = OpenStax::Accounts::Account.all
 
           KeywordSearch.search(query) do |with|
 
@@ -73,7 +73,7 @@ module OpenStax
 
             with.keyword :username do |usernames|
               accounts = accounts.where{username
-                .like_any my{prep_usernames(usernames)}}
+                .like_any my{prep_names(usernames)}}
             end
 
             with.keyword :first_name do |first_names|
@@ -103,7 +103,7 @@ module OpenStax
             end
 
             with.keyword :email do |emails|
-              accounts = OpenStax::Accounts::Account.where('0=1')
+              accounts = OpenStax::Accounts::Account.none
             end
 
             # Rerun the queries above for 'any' terms (which are ones without a
@@ -113,7 +113,7 @@ module OpenStax
               names = prep_names(terms)
 
               accounts = accounts.where{
-                (  lower(username).like_any my{prep_usernames(terms)}) |
+                (lower(username).like_any   names) |
                 (lower(first_name).like_any names)                     |
                 (lower(last_name).like_any  names)                     |
                 (lower(full_name).like_any  names)                     |
@@ -175,21 +175,14 @@ module OpenStax
         # Return no results if query exceeds maximum allowed number of matches
         max_accounts = options[:max_matching_accounts] || \
                     OpenStax::Accounts.configuration.max_matching_accounts
-        outputs[:accounts] = OpenStax::Accounts::Account.where('0=1') \
+        outputs[:accounts] = OpenStax::Accounts::Account.none \
           if outputs[:num_matching_accounts] > max_accounts
 
       end
       
-      # Downcase, and put a wildcard at the end.
-      # For the moment don't exclude characters.
+      # Downcase, remove all wildcards and put a wildcard at the end.
       def prep_names(names)
-        names.collect{|name| name.downcase + '%'}
-      end
-      
-      def prep_usernames(usernames)
-        usernames.collect{|username| username.gsub(
-          OpenStax::Accounts::Account::USERNAME_DISCARDED_CHAR_REGEX, '')
-          .downcase + '%'}
+        names.collect{|name| "#{name.downcase.gsub('%', '')}%"}
       end
 
     end

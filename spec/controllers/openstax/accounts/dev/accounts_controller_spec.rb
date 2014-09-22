@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module OpenStax::Accounts
   module Dev
-    describe AccountsController do
+    describe AccountsController, type: :controller do
       routes { Engine.routes }
 
       let!(:account) { FactoryGirl.create :openstax_accounts_account,

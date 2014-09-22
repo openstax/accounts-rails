@@ -1,39 +1,49 @@
-module OpenStax
-  module Accounts
+module OpenStax::Accounts
     class Account < ActiveRecord::Base
 
-      USERNAME_DISCARDED_CHAR_REGEX = /[^A-Za-z\d_]/
-      USERNAME_MAX_LENGTH = 50
+    USERNAME_DISCARDED_CHAR_REGEX = /[^A-Za-z\d_]/
+    USERNAME_MAX_LENGTH = 50
 
-      attr_accessor :syncing_with_accounts
+    has_many :group_owners, dependent: :destroy,
+             class_name: 'OpenStax::Accounts::GroupOwner',
+             primary_key: :openstax_uid, foreign_key: :user_id, inverse_of: :user
+    has_many :groups_as_owner, through: :group_owners, source: :group
 
-      validates :username, uniqueness: true, presence: true
-      validates :openstax_uid, uniqueness: true, presence: true
-      validates :access_token, uniqueness: true, allow_nil: true
+    has_many :group_members, dependent: :destroy,
+             class_name: 'OpenStax::Accounts::GroupMember',
+             primary_key: :openstax_uid, foreign_key: :user_id, inverse_of: :user
+    has_many :groups_as_member, through: :group_members, source: :group
 
-      attr_accessible :username, :first_name, :last_name, :full_name, :title
+    validates :openstax_uid, :presence => true, :uniqueness => true
+    validates :username, :presence => true, :uniqueness => true,
+                         :unless => :syncing_or_stubbing
+    validates :access_token, :presence => true, :uniqueness => true,
+                             :unless => :syncing_or_stubbing
 
-      before_update :update_openstax_accounts
+    before_update :update_openstax_accounts, :unless => :syncing_or_stubbing
 
-      def name
-        (first_name || last_name) ? [first_name, last_name].compact.join(" ") : username
-      end
-
-      def casual_name
-        first_name || username
-      end    
-
-      def is_anonymous?
-        false
-      end
-
-      def update_openstax_accounts
-        return if syncing_with_accounts || \
-                  OpenStax::Accounts.configuration.enable_stubbing?
-
-        OpenStax::Accounts.update_account(self)
-      end
-
+    def name
+      (first_name || last_name) ? [first_name, last_name].compact.join(" ") : username
     end
+
+    def casual_name
+      first_name || username
+    end    
+
+    def is_anonymous?
+      false
+    end
+
+    protected
+
+    def syncing_or_stubbing
+      OpenStax::Accounts.syncing ||\
+      OpenStax::Accounts.configuration.enable_stubbing?
+    end
+
+    def update_openstax_accounts
+      OpenStax::Accounts.update_account(self)
+    end
+
   end
 end
