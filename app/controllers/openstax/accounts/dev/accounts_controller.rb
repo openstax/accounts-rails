@@ -4,7 +4,15 @@ module OpenStax
       class AccountsController < OpenStax::Accounts::Dev::BaseController
 
         def index
-          handle_with(AccountsIndex)
+        end
+
+        def search
+          handle_with(AccountsSearch)
+        end
+
+        def create
+          handle_with(AccountsCreate,
+                      complete: lambda { redirect_back })
         end
 
         def become

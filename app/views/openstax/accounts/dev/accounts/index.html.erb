@@ -4,15 +4,25 @@
     <%= error.translate %>
   <% end %>
 
-  <%= osu.section_block "Development Login" do %>
+  <h3>Create an Account</h3>
 
-    <p>You need to login, but we're not connected to the Accounts server.
-    Search for a user below and click the sign in link next to him or her.</p>
+  <%= lev_form_for :create,
+                   url: openstax_accounts.dev_accounts_path,
+                   method: :post do |f| %>
 
-    <%= with_interceptor { render 'openstax/accounts/shared/accounts/index',
-               :search_action_path => openstax_accounts.dev_accounts_path,
-               :remote => true } %>
+    Username
+    <%= f.text_field :username, style: 'width:300px' %> 
+    <%= f.submit 'Create', class: 'btn btn-primary' %>
 
   <% end %>
 
+  <h3>Development Login</h3>
+
+  <p>You need to login, but we're not connected to the Accounts server.
+  Search for a user below and click the sign in link next to him or her.</p>
+
+  <%= with_interceptor { render 'openstax/accounts/shared/accounts/search',
+                                :search_action_path => openstax_accounts.search_dev_accounts_path,
+                                :remote => true } %>
+  
 </div>
