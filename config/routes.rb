@@ -19,8 +19,9 @@ OpenStax::Accounts::Engine.routes.draw do
 
   if OpenStax::Accounts.configuration.enable_stubbing?
     namespace :dev do
-      resources :accounts, :only => [:index] do
+      resources :accounts, :only => [:index, :create] do
         post 'become', :on => :member
+        get 'search', :on => :collection
       end
     end
   end
