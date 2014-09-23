@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140811182553) do
+ActiveRecord::Schema.define(version: 6) do
 
   create_table "openstax_accounts_accounts", force: true do |t|
     t.integer  "openstax_uid", null: false
