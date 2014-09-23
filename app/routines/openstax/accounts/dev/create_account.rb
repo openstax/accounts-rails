@@ -1,17 +1,5 @@
-# Routine for searching for accounts
-#
-# Caller provides a query and some options.  The query follows the rules of
-# https://github.com/bruce/keyword_search, e.g.:
-#
-#   "username:jps,richb" --> returns the "jps" and "richb" accounts
-#   "name:John" --> returns accounts with first, last, or full name starting with "John"
-#
-# Query terms can be combined, e.g. "username:jp first_name:john"
-#
-# There are currently two options to control query pagination:
-#
-#   :per_page -- the max number of results to return (default: 20)
-#   :page     -- the zero-indexed page to return (default: 0)
+# Routine for creating an account, only for use when stubbing and
+# not on production.
 
 module OpenStax
   module Accounts
@@ -26,7 +14,7 @@ module OpenStax
           fatal_error(:code => :can_only_create_account_when_stubbing) if !OpenStax::Accounts.configuration.enable_stubbing?
 
           username = inputs[:username]
-          while username.nil? || Account.where(username: username).any? do 
+          while username.nil? || Account.where(username: username).exists? do 
             username = SecureRandom.hex(3).to_s
           end
 

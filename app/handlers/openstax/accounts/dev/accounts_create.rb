@@ -22,7 +22,7 @@ module OpenStax
           !Rails.env.production? && OpenStax::Accounts.configuration.enable_stubbing?
         end
 
-        def handle; debugger
+        def handle
           run(:create_account, create_params.as_hash(:username))
         end
 
