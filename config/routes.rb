@@ -8,7 +8,7 @@ OpenStax::Accounts::Engine.routes.draw do
   get '/auth/openstax', :as => 'openstax_login'
 
   # OmniAuth local routes (SessionsController)
-  resource :session, :only => [], :path => '', :as => '' do
+  scope module: 'sessions' do
     get 'callback', :path => 'auth/:provider/callback' # Authentication success
     get 'failure', :path => 'auth/failure' # Authentication failure
 
