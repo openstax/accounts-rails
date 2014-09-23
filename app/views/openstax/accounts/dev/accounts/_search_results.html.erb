@@ -34,19 +34,19 @@
   <%= osu.action_list(
       records: accounts,
       list: {
-        headings: ['Username', 'First Name', 'Last Name', ''],
-        widths: ['25%', '25%', '25%', '25%'],
-        data_procs:
-          [
-            Proc.new { |account| account.username },
-            Proc.new { |account| account.first_name || '---' },
-            Proc.new { |account| account.last_name || '---' },
-            Proc.new { |account| 
+       headings: ['Username', 'Title', 'Name', 'Actions'],
+      widths: ['30%', '10%', '40%', '20%'],
+      data_procs:
+        [
+          lambda { |account| account.username },
+          lambda { |account| account.title || '---' },
+          lambda { |account| account.name || '---' },
+          lambda { |account| 
               link_to 'Sign in as',
                       with_interceptor { become_dev_account_path(account) },
                       method: :post
             }
-          ]
+        ]
       }
     ) %>
 </div>
