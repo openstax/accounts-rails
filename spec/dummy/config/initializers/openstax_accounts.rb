@@ -9,5 +9,6 @@ OpenStax::Accounts.configure do |config|
   config.openstax_application_secret = 'secret'
   config.account_user_mapper = User
   config.logout_via = :delete
-  config.max_matching_accounts = 47
+  config.min_search_characters = 0
+  config.max_search_items = 47
 end
