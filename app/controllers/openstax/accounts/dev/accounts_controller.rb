@@ -16,7 +16,7 @@ module OpenStax
         end
 
         def become
-          @account = Account.find(params[:id])
+          @account = Account.find_by(openstax_uid: params[:id])
           sign_in(@account)
           redirect_back
         end

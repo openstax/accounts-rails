@@ -15,7 +15,7 @@
                  html: form_html do |f| %>
 
   Search for 
-  <%= f.search_field :terms, style: 'width:300px' %> 
+  <%= f.search_field :q, style: 'width:300px' %> 
   in         
   <%= f.select :type, search_types, {}, {style: 'width: 150px'} %>
 

@@ -15,13 +15,13 @@ module OpenStax
         if !OpenStax::Accounts.configuration.enable_stubbing? && query =~ /email:/
           # Delegate to Accounts
           response = OpenStax::Accounts.search_application_accounts(query)
-          search = Lev::Outputs.new
-          OpenStax::Accounts::Api::V1::AccountSearchRepresenter.new(search)
+          OpenStax::Accounts::Api::V1::AccountSearchRepresenter.new(outputs)
                                                                .from_json(response.body)
-          outputs[:items] = search.items
         else
           # Local search
           run(:search_local_account_cache, OpenStax::Accounts::Account.all, query, options)
+          outputs[:total_count] = outputs[:items].limit(nil).offset(nil).count
+          outputs[:items] = outputs[:items].to_a
         end
 
       end
