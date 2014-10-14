@@ -12,7 +12,7 @@ module OpenStax::Accounts
       it 'should allow users not in production to become other users' do
         expect(controller.current_account).to eq(AnonymousAccount.instance)
         expect(controller.current_account.is_anonymous?).to eq(true)
-        post :become, id: account.id
+        post :become, id: account.openstax_uid
         expect(controller.current_account).to eq(account)
         expect(controller.current_account.is_anonymous?).to eq(false)
       end

@@ -16,6 +16,10 @@ module OpenStax
 
       protected
 
+      def authorized?
+        OSU::AccessPolicy.action_allowed?(:search, caller, Account)
+      end
+
       def handle
         case search_params.type
         when 'Name'

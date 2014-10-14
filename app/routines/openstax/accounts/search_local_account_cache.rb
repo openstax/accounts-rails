@@ -75,7 +75,8 @@ module OpenStax
         'first_name' => :first_name,
         'last_name' => :last_name,
         'full_name' => :full_name,
-        'id' => :openstax_uid
+        'id' => :openstax_uid,
+        'created_at' => :created_at
       }
     end
   end

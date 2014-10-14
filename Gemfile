@@ -15,5 +15,3 @@ gem "jquery-rails"
 
 # To use debugger
 # gem 'debugger'
-gem 'openstax_api', path: '../openstax_api'
-gem 'openstax_utilities', path: '../openstax_utilities'
