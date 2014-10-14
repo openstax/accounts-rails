@@ -1,7 +1,7 @@
 OpenStax::Accounts::Engine.routes.draw do
 
   # Redirect here if we don't know what to do (theoretically should not happen)
-  root controller: 'sessions', action: 'new'
+  root :to => 'sessions#new'
 
   # Shortcut to OmniAuth route that redirects to the Accounts server
   # This is provided by OmniAuth and is not in the SessionsController
