@@ -8,8 +8,10 @@ module OpenStax
                      as: :application_users,
                      class: OpenStax::Accounts::ApplicationAccount,
                      decorator: ApplicationAccountRepresenter,
+                     writeable: true,
+                     readable: true,
                      schema_info: {
-                       description: "The matching accounts that have used this app",
+                       description: "The accounts of matching users that have used this app",
                        minItems: 0
                      }
 

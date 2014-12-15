@@ -2,26 +2,25 @@ module OpenStax
   module Accounts
     module Api
       module V1
-        class AccountSearchRepresenter < Roar::Decorator
-          include Roar::Representer::JSON
+        class AccountSearchRepresenter < OpenStax::Api::V1::AbstractSearchRepresenter
 
-          property :num_matching_accounts,
+          property :total_count,
                    as: :num_matching_users,
-                   type: Integer
+                   writeable: true,
+                   readable: true,
+                   schema_info: {
+                     description: "The number of accounts matching the query; can be more than the number returned"
+                   }
 
-          property :page,
-                   type: Integer
-
-          property :per_page,
-                   type: Integer
-
-          property :order_by,
-                   type: String
-
-          collection :accounts,
+          collection :items,
                      as: :users,
                      class: Account,
-                     decorator: AccountRepresenter
+                     decorator: Api::V1::AccountRepresenter,
+                     writeable: true,
+                     readable: true,
+                     schema_info: {
+                       description: "The accounts matching the query or a subset thereof when paginating"
+                     }
 
         end
       end

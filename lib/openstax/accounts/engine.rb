@@ -7,6 +7,7 @@ require 'keyword_search'
 require 'squeel'
 require 'action_interceptor'
 require 'openstax/accounts/extend_builtins'
+require 'doorkeeper'
 
 ActiveSupport::Inflector.inflections do |inflect|
   inflect.acronym 'OpenStax'

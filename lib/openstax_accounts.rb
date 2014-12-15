@@ -74,12 +74,17 @@ module OpenStax
         # See the "account_user_mapper" discussion in the README
         attr_accessor :account_user_mapper
 
-        # max_matching_accounts
+        # min_search_characters
+        # The minimum number of characters that can be used
+        # as a query in a call to the AccountsSearch handler
+        # If less are used, the handler will return an error instead
+        attr_accessor :min_search_characters
+
+        # max_search_items
         # The maximum number of accounts that can be returned
-        # in a call to SearchAccounts
+        # in a call to the AccountsSearch handler
         # If more would be returned, the result will be empty instead
-        # Can also be passed directly to SearchAccounts
-        attr_accessor :max_matching_accounts
+        attr_accessor :max_search_items
 
         def openstax_accounts_url=(url)
           url.gsub!(/https|http/,'https') if !(url =~ /localhost/)
@@ -98,7 +103,8 @@ module OpenStax
           @default_errors_added_trigger = 'openstax-accounts-errors-added'
           @security_transgression_exception = SecurityTransgression
           @account_user_mapper = OpenStax::Accounts::DefaultAccountUserMapper
-          @max_matching_accounts = 10
+          @min_search_characters = 3
+          @max_search_items = 10
           super
         end
 
