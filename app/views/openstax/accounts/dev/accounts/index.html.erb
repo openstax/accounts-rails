@@ -1,18 +1,19 @@
 <div class="openstax-accounts development-login">
 
-  <% handler_errors.each do |error| %>
-    <%= error.translate %>
-  <% end %>
+  <%= render partial: 'openstax/accounts/shared/attention' %>
 
   <h3>Create an Account</h3>
 
   <%= lev_form_for :create,
                    url: openstax_accounts.dev_accounts_path,
-                   method: :post do |f| %>
+                   method: :post,
+                   class: 'form-horizontal' do |f| %>
 
-    Username
-    <%= f.text_field :username, style: 'width:300px' %> 
-    <%= f.submit 'Create', class: 'btn btn-primary' %>
+    <div class="form-group">
+      Username
+      <%= f.text_field :username, class: 'col-sm-4' %> 
+      <%= f.submit 'Create', class: 'col-sm-2 btn btn-primary' %>
+    </div>
 
   <% end %>
 

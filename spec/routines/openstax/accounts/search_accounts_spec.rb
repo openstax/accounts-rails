@@ -36,7 +36,7 @@ module OpenStax
 
       it "should match based on one first name" do
         outcome = SearchAccounts.call('first_name:"John"').outputs.items
-        expect(outcome).to eq [account_1, account_3]
+        expect(outcome).to eq [account_3, account_1]
       end
 
       it "should match based on one full name" do
@@ -46,17 +46,17 @@ module OpenStax
 
       it "should return all results if the query is empty" do
         outcome = SearchAccounts.call("").outputs.items
-        expect(outcome).to eq [account_1, account_2, account_3, account_4]
+        expect(outcome).to eq [account_4, account_3, account_1, account_2]
       end
 
       it "should match any field when no prefix given" do
         outcome = SearchAccounts.call("jst").outputs.items
-        expect(outcome).to eq [account_1, account_3, account_4]
+        expect(outcome).to eq [account_4, account_3, account_1]
       end
 
       it "should match any field when no prefix given and intersect when prefix given" do
         outcome = SearchAccounts.call("jst username:jst").outputs.items
-        expect(outcome).to eq [account_1, account_3]
+        expect(outcome).to eq [account_3, account_1]
       end
 
       it "shouldn't allow users to add their own wildcards" do
@@ -66,7 +66,7 @@ module OpenStax
 
       it "should gather comma-separated unprefixed search terms" do
         outcome = SearchAccounts.call("john,mighty").outputs.items
-        expect(outcome).to eq [account_1, account_2, account_3]
+        expect(outcome).to eq [account_3, account_1, account_2]
       end
 
       it "should not gather space-separated unprefixed search terms" do
