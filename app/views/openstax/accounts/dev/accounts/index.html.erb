@@ -7,19 +7,19 @@
   <%= lev_form_for :create,
                    url: openstax_accounts.dev_accounts_path,
                    method: :post,
-                   class: 'form-horizontal' do |f| %>
+                   html: {class: 'form-inline'} do |f| %>
 
+    <%= f.label :username %>&nbsp;
     <div class="form-group">
-      Username
-      <%= f.text_field :username, class: 'col-sm-4' %> 
-      <%= f.submit 'Create', class: 'col-sm-2 btn btn-primary' %>
+      <%= f.text_field :username %>&nbsp;
+      <%= f.submit 'Create', class: 'btn btn-primary' %>
     </div>
 
   <% end %>
 
   <h3>Development Login</h3>
 
-  <p>You need to login, but we're not connected to the Accounts server.
+  <p>You need to login, but we're not connected to the Accounts server.<br>
   Search for a user below and click the sign in link next to him or her.</p>
 
   <%= with_interceptor {
@@ -28,5 +28,7 @@
                             :remote => true, :method => :get } } %>
   
   <br>
+
   <div id="search-results"></div>
+
 </div>

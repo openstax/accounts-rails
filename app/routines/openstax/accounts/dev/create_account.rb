@@ -20,7 +20,7 @@ module OpenStax
 
           account = OpenStax::Accounts::Account.new
 
-          account.openstax_uid = -SecureRandom.hex.to_i(16)
+          account.openstax_uid = -SecureRandom.hex(4).to_i(16)/2
           account.access_token = SecureRandom.hex.to_s
           account.username = username
 
