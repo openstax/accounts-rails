@@ -16,7 +16,7 @@ module OpenStax
 
               define_method(name) do
                 OpenStax::Accounts::Group.includes(association_name)
-                  .where(id: supertree_group_ids)
+                  .where(openstax_uid: supertree_group_ids)
                   .collect{|g| g.send(association_name).to_a}.flatten.uniq
               end
             end
@@ -29,7 +29,9 @@ module OpenStax
                                    send(association_name).to_a : []
                 indirect_records = OpenStax::Accounts::Group
                   .includes(association_name).where(
-                    id: send(groups_name).collect{|g| g.supertree_group_ids}.flatten.uniq
+                    openstax_uid: send(groups_name).collect{|g|
+                      g.supertree_group_ids
+                    }.flatten.uniq
                   )
                   .collect{|g| g.send(association_name).to_a}
                 (direct_records + indirect_records).flatten.uniq
