@@ -1,3 +1,5 @@
+require 'responders'
+
 class OauthController < ApplicationController
   respond_to :json
 

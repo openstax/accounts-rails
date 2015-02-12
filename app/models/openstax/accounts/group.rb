@@ -89,7 +89,7 @@ module OpenStax::Accounts
                                              member_group_id: openstax_uid
                                            })
                                     .first.try(:supertree_group_ids) || [])
-      update_column(:cached_supertree_group_ids, gids.to_yaml)
+      update_column(:cached_supertree_group_ids, gids)
       self.cached_supertree_group_ids = gids
     end
 
@@ -103,7 +103,7 @@ module OpenStax::Accounts
                                             container_group_id: openstax_uid
                                           })
                                    .collect{|g| g.subtree_group_ids}.flatten
-      update_column(:cached_subtree_group_ids, gids.to_yaml)
+      update_column(:cached_subtree_group_ids, gids)
       self.cached_subtree_group_ids = gids
     end
 
