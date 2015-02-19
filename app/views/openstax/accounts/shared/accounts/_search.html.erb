@@ -5,7 +5,8 @@
    remote ||= false
    form_html ||=  {id: 'search-form',
                    class: 'form-inline'}
-   search_types ||= ['Any', 'Username', 'Email']
+   search_types ||= ['Any', 'Username', 'Name',
+                     'First Name', 'Last Name', 'Email']
 %>
 
 <%= lev_form_for :search,
@@ -14,11 +15,13 @@
                  method: method,
                  html: form_html do |f| %>
 
-  Search for 
-  <%= f.search_field :q, style: 'width:300px' %> 
-  in         
-  <%= f.select :type, search_types, {}, {style: 'width: 150px'} %>
+  <div class="form-group">
+    <%= f.label :query, 'Search for' %>&nbsp;
+    <%= f.search_field :query, style: 'width:300px' %>&nbsp;
+    <%= f.label :type, 'in' %>&nbsp;
+    <%= f.select :type, search_types, {}, {style: 'width: 150px'} %>&nbsp;
 
-  <%= f.submit 'Search', class: 'btn btn-primary' %>
+    <%= f.submit 'Search', class: 'btn btn-primary' %>
+  </div>
 
 <% end %>

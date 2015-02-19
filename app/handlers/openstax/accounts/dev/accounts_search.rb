@@ -3,18 +3,20 @@ module OpenStax
     module Dev
       class AccountsSearch < OpenStax::Accounts::AccountsSearch
 
-        self.min_characters = nil
-        self.max_items = nil
-
         paramify :search do
           attribute :type, type: String
-          attribute :q, type: String
+          attribute :query, type: String
           attribute :order_by, type: String
           attribute :page, type: Integer
           attribute :per_page, type: Integer
         end
 
         protected
+
+        def initialize
+          @min_characters = nil
+          @max_items = nil
+        end
 
         def authorized?
           !Rails.env.production?

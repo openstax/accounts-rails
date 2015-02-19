@@ -9,15 +9,16 @@
   <%= osu.action_list(
         records: accounts,
         list: {
-          headings: ['Username (click to sign in as)', 'Title', 'Name'],
-          widths: ['40%', '20%', '40%'],
+          headings: ['UID', 'Username (click to sign in as)', 'Name'],
+          widths: ['20%', '40%', '40%'],
           data_procs: [
+            lambda { |account| account.openstax_uid },
             lambda { |account|
               link_to account.username,
-                      with_interceptor { become_dev_account_path(account.openstax_uid) },
+                      with_interceptor { become_dev_account_path(
+                                           account.openstax_uid) },
                       method: :post
             },
-            lambda { |account| account.title || '---' },
             lambda { |account| account.name || '---' }
           ]
         }

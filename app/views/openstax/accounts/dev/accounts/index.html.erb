@@ -1,24 +1,25 @@
 <div class="openstax-accounts development-login">
 
-  <% handler_errors.each do |error| %>
-    <%= error.translate %>
-  <% end %>
+  <%= render partial: 'openstax/accounts/shared/attention' %>
 
   <h3>Create an Account</h3>
 
   <%= lev_form_for :create,
                    url: openstax_accounts.dev_accounts_path,
-                   method: :post do |f| %>
+                   method: :post,
+                   html: {class: 'form-inline'} do |f| %>
 
-    Username
-    <%= f.text_field :username, style: 'width:300px' %> 
-    <%= f.submit 'Create', class: 'btn btn-primary' %>
+    <%= f.label :username %>&nbsp;
+    <div class="form-group">
+      <%= f.text_field :username %>&nbsp;
+      <%= f.submit 'Create', class: 'btn btn-primary' %>
+    </div>
 
   <% end %>
 
   <h3>Development Login</h3>
 
-  <p>You need to login, but we're not connected to the Accounts server.
+  <p>You need to login, but we're not connected to the Accounts server.<br>
   Search for a user below and click the sign in link next to him or her.</p>
 
   <%= with_interceptor {
@@ -27,5 +28,7 @@
                             :remote => true, :method => :get } } %>
   
   <br>
+
   <div id="search-results"></div>
+
 </div>

@@ -34,18 +34,18 @@ module OpenStax
       }
 
       it "should match based on username" do
-        outputs = Dev::AccountsSearch.call(params: {search: {q: "username:jstra"}}).outputs
+        outputs = Dev::AccountsSearch.call(params: {search: {query: "username:jstra"}}).outputs
         expect(outputs.total_count).to eq 1
         expect(outputs.items).to eq [account_1]
       end
 
       it "should have no limits" do
-        routine = Dev::AccountsSearch.call(params: {search: {q: ""}})
+        routine = Dev::AccountsSearch.call(params: {search: {query: ""}})
         outputs = routine.outputs
         errors = routine.errors
         expect(outputs.total_count).to eq 54
-        expect(outputs.items).to eq [account_1, account_2, account_3,
-                                     account_4, billy_accounts].flatten
+        expect(outputs.items).to eq [account_4, billy_accounts, account_3,
+                                     account_1, account_2].flatten
         expect(errors).to be_empty
       end
 

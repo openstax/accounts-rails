@@ -4,24 +4,29 @@ module OpenStax
       
       lev_routine transaction: :no_transaction
 
-      uses_routine SearchLocalAccountCache,
-                   as: :search_local_account_cache,
-                   translations: { outputs: {type: :verbatim} }
+      uses_routine SearchLocalAccounts,
+                   as: :local_search,
+                   translations: { outputs: { type: :verbatim } }
       
       protected
 
-      def exec(query, options={})
+      def exec(*args)
+        params = args.last.is_a?(Hash) ? args.pop : {}
+        params[:q] ||= args[0]
+        params[:ob] ||= args[1]
+        params[:pp] ||= args[2]
+        params[:p] ||= args[3]
 
-        if !OpenStax::Accounts.configuration.enable_stubbing? && query =~ /email:/
+        query = params[:query] || params[:q]
+        if !OpenStax::Accounts.configuration.enable_stubbing? && \
+           query =~ /email:/
           # Delegate to Accounts
           response = OpenStax::Accounts.search_application_accounts(query)
-          OpenStax::Accounts::Api::V1::AccountSearchRepresenter.new(outputs)
-                                                               .from_json(response.body)
+          OpenStax::Accounts::Api::V1::AccountSearchRepresenter \
+            .new(outputs).from_json(response.body)
         else
           # Local search
-          run(:search_local_account_cache, OpenStax::Accounts::Account.all, query, options)
-          outputs[:total_count] = outputs[:items].limit(nil).offset(nil).count
-          outputs[:items] = outputs[:items].to_a
+          run(:local_search, params)
         end
 
       end

@@ -34,13 +34,13 @@ module OpenStax
       }
 
       it "should match based on username" do
-        outputs = AccountsSearch.call(params: {search: {q: "username:jstra"}}).outputs
+        outputs = AccountsSearch.call(params: {search: {query: "username:jstra"}}).outputs
         expect(outputs.total_count).to eq 1
         expect(outputs.items).to eq [account_1]
       end
 
       it "should return no results if the query is too short" do
-        routine = AccountsSearch.call(params: {search: {q: ""}})
+        routine = AccountsSearch.call(params: {search: {query: ""}})
         outputs = routine.outputs
         errors = routine.errors
         expect(outputs.total_count).to be_nil
@@ -49,7 +49,7 @@ module OpenStax
       end
 
       it "should return no results if the limit is exceeded" do
-        routine = AccountsSearch.call(params: {search: {q: "billy"}})
+        routine = AccountsSearch.call(params: {search: {query: "billy"}})
         outputs = routine.outputs
         errors = routine.errors
         expect(outputs.total_count).to eq 50
