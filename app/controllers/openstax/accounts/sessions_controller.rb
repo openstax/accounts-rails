@@ -6,6 +6,7 @@ module OpenStax
         if OpenStax::Accounts.configuration.enable_stubbing?
           redirect_to dev_accounts_path
         else
+          store_fallback key: :accounts_return_to, strategies: [:session]
           redirect_to openstax_login_path
         end
       end
@@ -15,7 +16,7 @@ module OpenStax
           SessionsCallback,
             success: lambda {
               sign_in(@handler_result.outputs[:account])
-              redirect_back key: :accounts_return_to
+              redirect_back key: :accounts_return_to, strategies: [:session]
             },
             failure: lambda {
               failure

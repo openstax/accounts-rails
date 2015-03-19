@@ -39,7 +39,7 @@ ActionController::Base.class_exec do
 
     return if account && !account.is_anonymous?
 
-    store_url key: :accounts_return_to
+    store_url key: :accounts_return_to, strategies: [:session]
 
     respond_to do |format|
       format.html { redirect_to openstax_accounts.login_url }

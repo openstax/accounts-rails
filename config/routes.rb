@@ -7,6 +7,11 @@ OpenStax::Accounts::Engine.routes.draw do
   # This is provided by OmniAuth and is not in the SessionsController
   get '/auth/openstax', :as => 'openstax_login'
 
+  # User profile route
+  get '/profile' => redirect(URI::join(
+    OpenStax::Accounts.configuration.openstax_accounts_url, "/profile"
+  ).to_s)
+
   # OmniAuth local routes (SessionsController)
   scope module: 'sessions' do
     get 'callback', :path => 'auth/:provider/callback' # Authentication success
