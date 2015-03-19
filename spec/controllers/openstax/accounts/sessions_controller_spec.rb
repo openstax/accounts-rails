@@ -11,8 +11,7 @@ module OpenStax::Accounts
     it 'should redirect users to the login path' do
       c = controller
       get :new
-      expect(response).to redirect_to(
-        c.send(:with_interceptor) { url_for(c.dev_accounts_path) })
+      expect(response).to redirect_to(c.dev_accounts_path)
       expect(response.code).to eq('302')
     end
 

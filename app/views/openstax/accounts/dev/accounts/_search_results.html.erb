@@ -14,10 +14,9 @@
           data_procs: [
             lambda { |account| account.openstax_uid },
             lambda { |account|
-              link_to account.username,
-                      with_interceptor { become_dev_account_path(
-                                           account.openstax_uid) },
-                      method: :post
+              link_to account.username, become_dev_account_path(
+                                          account.openstax_uid
+                                        ), method: :post
             },
             lambda { |account| account.name || '---' }
           ]

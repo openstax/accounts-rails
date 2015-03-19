@@ -7,7 +7,7 @@ module OpenStax
       class CreateAccount
         lev_routine
               
-      protected
+        protected
 
         def exec(inputs={})
           fatal_error(:code => :cannot_create_account_in_production) if Rails.env.production?

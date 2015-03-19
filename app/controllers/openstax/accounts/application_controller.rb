@@ -5,9 +5,7 @@ module OpenStax
 
       include Lev::HandleWith
 
-      acts_as_interceptor :override_url_options => false
-
-      skip_interceptor :authenticate_user!
+      skip_before_filter :authenticate_user!
 
     end
 

@@ -4,7 +4,7 @@ module OpenStax
 
       def new
         if OpenStax::Accounts.configuration.enable_stubbing?
-          with_interceptor { redirect_to dev_accounts_path }
+          redirect_to dev_accounts_path
         else
           redirect_to openstax_login_path
         end
@@ -15,7 +15,7 @@ module OpenStax
           SessionsCallback,
             success: lambda {
               sign_in(@handler_result.outputs[:account])
-              redirect_back
+              redirect_back key: :accounts_return_to
             },
             failure: lambda {
               failure
@@ -28,24 +28,19 @@ module OpenStax
         # If we're using the Accounts server, need to sign out of it so can't 
         # log back in automagically
         if OpenStax::Accounts.configuration.enable_stubbing?
-          redirect_back
+          redirect_to(:back)
         else
-          without_interceptor do
-
-            redirect_to(
-              OpenStax::Utilities.generate_url(
-                OpenStax::Accounts.configuration.openstax_accounts_url,
-                "logout",
-                return_to: intercepted_url
-              )
+          redirect_to(
+            OpenStax::Utilities.generate_url(
+              OpenStax::Accounts.configuration.openstax_accounts_url, "logout"
             )
-
-          end
+          )
         end
       end
 
       def failure
-        redirect_back alert: "Authentication failed, please try again."
+        redirect_back key: :accounts_return_to,
+                      alert: "Authentication failed, please try again."
       end
 
     end

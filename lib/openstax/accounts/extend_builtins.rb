@@ -34,4 +34,17 @@ ActionController::Base.class_exec do
                                 request, session, cookies)
   end
 
+  def authenticate_user!
+    account = current_account
+
+    return if account && !account.is_anonymous?
+
+    store_url key: :accounts_return_to
+
+    respond_to do |format|
+      format.html { redirect_to openstax_accounts.login_url }
+      format.json { head(:forbidden) }
+    end
+  end
+
 end
