@@ -29,7 +29,7 @@ module OpenStax
         # If we're using the Accounts server, need to sign out of it so can't 
         # log back in automagically
         if OpenStax::Accounts.configuration.enable_stubbing?
-          redirect_to(:back)
+          redirect_to main_app.root_url
         else
           redirect_to(
             OpenStax::Utilities.generate_url(
