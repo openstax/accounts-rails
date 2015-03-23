@@ -10,8 +10,8 @@ Gem::Specification.new do |s|
   s.authors     = ["JP Slavinsky"]
   s.email       = ["jps@kindlinglabs.com"]
   s.homepage    = "http://github.com/openstax/accounts-rails"
-  s.summary     = "Rails common code and bindings and for the 'accounts' API"
-  s.description = "Rails common code and bindings and for the 'accounts' API"
+  s.summary     = "Rails common code and bindings for the 'accounts' API"
+  s.description = "This gem allows Rails apps to easily access the API's and login infrastructure of OpenStax Accounts."
 
   s.files = Dir["{app,config,db,lib}/**/*", "spec/factories/**/*"] + ["MIT-LICENSE", "Rakefile", "README.md"]
   s.test_files = Dir["spec/**/*"]

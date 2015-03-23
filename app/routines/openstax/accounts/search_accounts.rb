@@ -21,7 +21,7 @@ module OpenStax
         if !OpenStax::Accounts.configuration.enable_stubbing? && \
            query =~ /email:/
           # Delegate to Accounts
-          response = OpenStax::Accounts.search_application_accounts(query)
+          response = OpenStax::Accounts::Api.search_application_accounts(query)
           OpenStax::Accounts::Api::V1::AccountSearchRepresenter \
             .new(outputs).from_json(response.body)
         else

@@ -11,7 +11,9 @@ Rails.application.routes.draw do
     post 'dummy', :to => 'dummy#dummy'
 
     resources :users, :only => [:index]
-    resource :user, :only => [:update]
+    resource :user, :only => [:update] do
+      post 'find-or-create', to: 'users#create'
+    end
 
     resources :groups, :only => [:show, :create, :update, :destroy] do
       post '/members/:user_id', to: 'group_members#create'

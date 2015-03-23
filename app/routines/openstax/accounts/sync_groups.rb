@@ -22,7 +22,7 @@ module OpenStax
 
           return if OpenStax::Accounts.configuration.enable_stubbing?
 
-          response = OpenStax::Accounts.get_application_group_updates
+          response = OpenStax::Accounts::Api.get_application_group_updates
 
           app_groups = []
           app_groups_rep = OpenStax::Accounts::Api::V1::ApplicationGroupsRepresenter
@@ -48,7 +48,7 @@ module OpenStax
                                    read_updates: app_group.unread_updates}
           end
 
-          OpenStax::Accounts.mark_group_updates_as_read(updated_app_groups)
+          OpenStax::Accounts::Api.mark_group_updates_as_read(updated_app_groups)
         ensure
           OpenStax::Accounts.syncing = false
         end

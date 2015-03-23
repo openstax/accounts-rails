@@ -21,7 +21,7 @@ module OpenStax
 
           return if OpenStax::Accounts.configuration.enable_stubbing?
 
-          response = OpenStax::Accounts.get_application_account_updates
+          response = OpenStax::Accounts::Api.get_application_account_updates
 
           app_accounts = []
           app_accounts_rep = OpenStax::Accounts::Api::V1::ApplicationAccountsRepresenter
@@ -48,7 +48,9 @@ module OpenStax
                                     read_updates: app_account.unread_updates}
           end
 
-          OpenStax::Accounts.mark_account_updates_as_read(updated_app_accounts)
+          OpenStax::Accounts::Api.mark_account_updates_as_read(
+            updated_app_accounts
+          )
         ensure
           OpenStax::Accounts.syncing = false
         end

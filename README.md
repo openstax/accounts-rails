@@ -136,13 +136,16 @@ Accounts API
 OpenStax Accounts provides convenience methods for accessing
 the Accounts server API.
 
-`OpenStax::Accounts.api_call(http_method, url, options = {})` provides a
+`OpenStax::Accounts::Api.request(http_method, url, options = {})` provides a
 convenience method capable of making API calls to Accounts. `http_method` can
 be any valid HTTP method, and `url` is the desired API URL, without the 'api/'
 prefix. Options is a hash that can contain any option that
 OAuth2 requests accept, such as :headers, :params, :body, etc,
 plus the optional values :api_version (to specify an API version) and
 :access_token (to specify an OAuth access token).
+
+Individual methods to access each Accounts API, such as `search_accounts`,
+are also available. See lib/openstax/accounts/api.rb for more details.
 
 Example Application
 -------------------
