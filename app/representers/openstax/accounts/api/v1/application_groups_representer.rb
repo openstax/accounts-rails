@@ -2,7 +2,7 @@ require 'representable/json/collection'
 
 module OpenStax
   module Accounts
-    module Api
+    class Api
       module V1
         class ApplicationGroupsRepresenter < Roar::Decorator
           include Representable::JSON::Collection

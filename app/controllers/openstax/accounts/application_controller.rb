@@ -1,7 +1,7 @@
 module OpenStax
   module Accounts
 
-    class ApplicationController < ActionController::Base
+    class ApplicationController < ::ActionController::Base
 
       include Lev::HandleWith
 
