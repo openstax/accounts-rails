@@ -36,7 +36,7 @@ module OpenStax
       # Results are limited to 10 accounts maximum.
       # Takes a query parameter and an optional API version parameter.
       # API version currently defaults to :v1 (may change in the future).
-      # On failure, throws an Exception, just like api_call.
+      # On failure, throws an Exception, just like the request method.
       # On success, returns an OAuth2::Response object.
       def self.search_accounts(query, version = DEFAULT_API_VERSION)
         options = {:params => {:q => query},
@@ -48,7 +48,7 @@ module OpenStax
       # The account is determined by the OAuth access token.
       # Also takes an optional API version parameter.
       # API version currently defaults to :v1 (may change in the future).
-      # On failure, throws an Exception, just like api_call.
+      # On failure, throws an Exception, just like the request method.
       # On success, returns an OAuth2::Response object.
       def self.update_account(account, version = DEFAULT_API_VERSION)
         options = {:access_token => account.access_token,
@@ -62,7 +62,7 @@ module OpenStax
       # Results are limited to accounts that have used the current app.
       # Takes a query parameter and an optional API version parameter.
       # API version currently defaults to :v1 (may change in the future).
-      # On failure, throws an Exception, just like api_call.
+      # On failure, throws an Exception, just like the request method.
       # On success, returns an OAuth2::Response object.
       def self.search_application_accounts(query, version = DEFAULT_API_VERSION)
         options = {:params => {:q => query},
@@ -73,7 +73,7 @@ module OpenStax
       # Retrieves information about accounts that have been
       # recently updated.
       # Results are limited to accounts that have used the current app.
-      # On failure, throws an Exception, just like api_call.
+      # On failure, throws an Exception, just like the request method.
       # On success, returns an OAuth2::Response object.
       def self.get_application_account_updates(version = DEFAULT_API_VERSION)
         options = {:api_version => version}
@@ -86,7 +86,7 @@ module OpenStax
       # application_user's id, and 'read_updates', which should contain
       # the last received value of unread_updates for that application_user.
       # Can only be called for application_users that belong to the current app.
-      # On failure, throws an Exception, just like api_call.
+      # On failure, throws an Exception, just like the request method.
       # On success, returns an OAuth2::Response object.
       def self.mark_account_updates_as_read(application_users, version = DEFAULT_API_VERSION)
         options = {:api_version => version,
@@ -97,7 +97,7 @@ module OpenStax
       # Retrieves information about groups that have been
       # recently updated.
       # Results are limited to groups that users of the current app have access to.
-      # On failure, throws an Exception, just like api_call.
+      # On failure, throws an Exception, just like the request method.
       # On success, returns an OAuth2::Response object.
       def self.get_application_group_updates(version = DEFAULT_API_VERSION)
         options = {:api_version => version}
@@ -110,7 +110,7 @@ module OpenStax
       # application_group's id, and 'read_updates', which should contain
       # the last received value of unread_updates for that application_group.
       # Can only be called for application_groups that belong to the current app.
-      # On failure, throws an Exception, just like api_call.
+      # On failure, throws an Exception, just like the request method.
       # On success, returns an OAuth2::Response object.
       def self.mark_group_updates_as_read(application_groups, version = DEFAULT_API_VERSION)
         options = {:api_version => version,
@@ -122,7 +122,7 @@ module OpenStax
       # The given account will be the owner of the group.
       # Also takes an optional API version parameter.
       # API version currently defaults to :v1 (may change in the future).
-      # On failure, throws an Exception, just like api_call.
+      # On failure, throws an Exception, just like the request method.
       # On success, returns an OAuth2::Response object.
       def self.create_group(account, group, version = DEFAULT_API_VERSION)
         options = {:access_token => account.access_token,
@@ -139,7 +139,7 @@ module OpenStax
       # The given account must own the group.
       # Also takes an optional API version parameter.
       # API version currently defaults to :v1 (may change in the future).
-      # On failure, throws an Exception, just like api_call.
+      # On failure, throws an Exception, just like the request method.
       # On success, returns an OAuth2::Response object.
       def self.update_group(account, group, version = DEFAULT_API_VERSION)
         options = {:access_token => account.access_token,
@@ -152,7 +152,7 @@ module OpenStax
       # The given account must own the group.
       # Also takes an optional API version parameter.
       # API version currently defaults to :v1 (may change in the future).
-      # On failure, throws an Exception, just like api_call.
+      # On failure, throws an Exception, just like the request method.
       # On success, returns an OAuth2::Response object.
       def self.destroy_group(account, group, version = DEFAULT_API_VERSION)
         options = {:access_token => account.access_token,
@@ -164,7 +164,7 @@ module OpenStax
       # The given account must own the group.
       # Also takes an optional API version parameter.
       # API version currently defaults to :v1 (may change in the future).
-      # On failure, throws an Exception, just like api_call.
+      # On failure, throws an Exception, just like the request method.
       # On success, returns an OAuth2::Response object.
       def self.create_group_member(account, group_member, version = DEFAULT_API_VERSION)
         options = {:access_token => account.access_token,
@@ -180,7 +180,7 @@ module OpenStax
       # The given account must own the group.
       # Also takes an optional API version parameter.
       # API version currently defaults to :v1 (may change in the future).
-      # On failure, throws an Exception, just like api_call.
+      # On failure, throws an Exception, just like the request method.
       # On success, returns an OAuth2::Response object.
       def self.destroy_group_member(account, group_member, version = DEFAULT_API_VERSION)
         options = {:access_token => account.access_token,
@@ -196,7 +196,7 @@ module OpenStax
       # The given account must own the group.
       # Also takes an optional API version parameter.
       # API version currently defaults to :v1 (may change in the future).
-      # On failure, throws an Exception, just like api_call.
+      # On failure, throws an Exception, just like the request method.
       # On success, returns an OAuth2::Response object.
       def self.create_group_owner(account, group_owner,
                                   version = DEFAULT_API_VERSION)
@@ -213,7 +213,7 @@ module OpenStax
       # The given account must own the group.
       # Also takes an optional API version parameter.
       # API version currently defaults to :v1 (may change in the future).
-      # On failure, throws an Exception, just like api_call.
+      # On failure, throws an Exception, just like the request method.
       # On success, returns an OAuth2::Response object.
       def self.destroy_group_owner(account, group_owner,
                                    version = DEFAULT_API_VERSION)
@@ -230,7 +230,7 @@ module OpenStax
       # The given account must own both groups.
       # Also takes an optional API version parameter.
       # API version currently defaults to :v1 (may change in the future).
-      # On failure, throws an Exception, just like api_call.
+      # On failure, throws an Exception, just like the request method.
       # On success, returns an OAuth2::Response object.
       def self.create_group_nesting(account, group_nesting,
                                     version = DEFAULT_API_VERSION)
@@ -247,7 +247,7 @@ module OpenStax
       # The given account must own either group.
       # Also takes an optional API version parameter.
       # API version currently defaults to :v1 (may change in the future).
-      # On failure, throws an Exception, just like api_call.
+      # On failure, throws an Exception, just like the request method.
       # On success, returns an OAuth2::Response object.
       def self.destroy_group_nesting(account, group_nesting,
                                      version = DEFAULT_API_VERSION)
@@ -259,6 +259,18 @@ module OpenStax
                     group_nesting.member_group_id}",
           options
         )
+      end
+
+      # Creates a temporary user in Accounts.
+      # Also takes an optional API version parameter.
+      # API version currently defaults to :v1 (may change in the future).
+      # On failure, throws an Exception, just like the request method.
+      # On success, returns an OAuth2::Response object.
+      def self.create_temp_account(attributes, version = DEFAULT_API_VERSION)
+        options = { api_version: version,
+                    body: attributes.to_json }
+
+        request(:post, "user/find-or-create", options)
       end
 
       protected
