@@ -14,7 +14,7 @@ module OpenStax
       # such as 422 Unprocessable Entity.
       # On success, returns an OAuth2::Response object.
       def self.request(http_method, path, options = {})
-        version = options.delete(:api_version)
+        version = options.delete(:api_version) || DEFAULT_API_VERSION
         unless version.blank?
           options[:headers] ||= {}
           options[:headers].merge!({
@@ -32,51 +32,52 @@ module OpenStax
         token.request(http_method, url, options)
       end
 
+      # Performs an API request using the given account's access token
+      def self.request_for_account(account, http_method, path, options = {})
+        request(http_method, path,
+                options.merge(access_token: account.access_token))
+      end
+
       # Performs an account search in the Accounts server.
       # Results are limited to 10 accounts maximum.
-      # Takes a query parameter and an optional API version parameter.
-      # API version currently defaults to :v1 (may change in the future).
+      # Takes a query parameter and an options hash.
       # On failure, throws an Exception, just like the request method.
       # On success, returns an OAuth2::Response object.
-      def self.search_accounts(query, version = DEFAULT_API_VERSION)
-        options = {:params => {:q => query},
-                   :api_version => version}
-        request(:get, 'users', options)
+      def self.search_accounts(query, options = {})
+        request(:get, 'users', options.merge(params: {:q => query}))
       end
 
       # Updates a user account in the Accounts server.
       # The account is determined by the OAuth access token.
-      # Also takes an optional API version parameter.
-      # API version currently defaults to :v1 (may change in the future).
+      # Also takes an options hash.
       # On failure, throws an Exception, just like the request method.
       # On success, returns an OAuth2::Response object.
-      def self.update_account(account, version = DEFAULT_API_VERSION)
-        options = {:access_token => account.access_token,
-                   :api_version => version,
-                   :body => account.attributes.slice('username', 'first_name',
-                              'last_name', 'full_name', 'title').to_json}
-        request(:put, 'user', options)
+      def self.update_account(account, options = {})
+        request_for_account(
+          account, :put, 'user', options.merge(
+            body: account.attributes.slice('username', 'first_name',
+                                           'last_name', 'full_name',
+                                           'title').to_json
+          )
+        )
       end
 
       # Performs an account search in the Accounts server.
       # Results are limited to accounts that have used the current app.
-      # Takes a query parameter and an optional API version parameter.
-      # API version currently defaults to :v1 (may change in the future).
+      # Takes a query parameter and an options hash.
       # On failure, throws an Exception, just like the request method.
       # On success, returns an OAuth2::Response object.
-      def self.search_application_accounts(query, version = DEFAULT_API_VERSION)
-        options = {:params => {:q => query},
-                   :api_version => version}
-        request(:get, 'application_users', options)
+      def self.search_application_accounts(query, options = {})
+        request(:get, 'application_users', options.merge(params: {:q => query}))
       end
 
       # Retrieves information about accounts that have been
       # recently updated.
       # Results are limited to accounts that have used the current app.
+      # Takes an options hash.
       # On failure, throws an Exception, just like the request method.
       # On success, returns an OAuth2::Response object.
-      def self.get_application_account_updates(version = DEFAULT_API_VERSION)
-        options = {:api_version => version}
+      def self.get_application_account_updates(options = {})
         request(:get, 'application_users/updates', options)
       end
 
@@ -86,21 +87,23 @@ module OpenStax
       # application_user's id, and 'read_updates', which should contain
       # the last received value of unread_updates for that application_user.
       # Can only be called for application_users that belong to the current app.
+      # Also takes an options hash.
       # On failure, throws an Exception, just like the request method.
       # On success, returns an OAuth2::Response object.
-      def self.mark_account_updates_as_read(application_users, version = DEFAULT_API_VERSION)
-        options = {:api_version => version,
-                   :body => application_users.to_json}
-        request(:put, 'application_users/updated', options)
+      def self.mark_account_updates_as_read(application_users, options = {})
+        request(:put, 'application_users/updated', options.merge(
+          body: application_users.to_json
+        ))
       end
 
       # Retrieves information about groups that have been
       # recently updated.
-      # Results are limited to groups that users of the current app have access to.
+      # Results are limited to groups that users of the current app
+      # have access to.
+      # Takes an options hash.
       # On failure, throws an Exception, just like the request method.
       # On success, returns an OAuth2::Response object.
-      def self.get_application_group_updates(version = DEFAULT_API_VERSION)
-        options = {:api_version => version}
+      def self.get_application_group_updates(options = {})
         request(:get, 'application_groups/updates', options)
       end
 
@@ -110,26 +113,25 @@ module OpenStax
       # application_group's id, and 'read_updates', which should contain
       # the last received value of unread_updates for that application_group.
       # Can only be called for application_groups that belong to the current app.
+      # Also takes an options hash.
       # On failure, throws an Exception, just like the request method.
       # On success, returns an OAuth2::Response object.
-      def self.mark_group_updates_as_read(application_groups, version = DEFAULT_API_VERSION)
-        options = {:api_version => version,
-                   :body => application_groups.to_json}
-        request(:put, 'application_groups/updated', options)
+      def self.mark_group_updates_as_read(application_groups, options = {})
+        request(:put, 'application_groups/updated', options.merge(
+          body: application_groups.to_json
+        ))
       end
 
       # Creates a group in the Accounts server.
       # The given account will be the owner of the group.
-      # Also takes an optional API version parameter.
-      # API version currently defaults to :v1 (may change in the future).
+      # Also takes an options hash.
       # On failure, throws an Exception, just like the request method.
-      # On success, returns an OAuth2::Response object.
-      def self.create_group(account, group, version = DEFAULT_API_VERSION)
-        options = {:access_token => account.access_token,
-                   :api_version => version,
-                   :body => group.attributes.slice('name', 'is_public').to_json}
+      # On success, returns a hash containing the group attributes
+      def self.create_group(account, group, options = {})
         response = ActiveSupport::JSON.decode(
-          request(:post, 'groups', options).body
+          request_for_account(account, :post, 'groups', options.merge(
+            body: group.attributes.slice('name', 'is_public').to_json
+          )).body
         )
         group.openstax_uid = response['id']
         response
@@ -137,39 +139,35 @@ module OpenStax
 
       # Updates a group in the Accounts server.
       # The given account must own the group.
-      # Also takes an optional API version parameter.
-      # API version currently defaults to :v1 (may change in the future).
+      # Also takes an options hash.
       # On failure, throws an Exception, just like the request method.
       # On success, returns an OAuth2::Response object.
-      def self.update_group(account, group, version = DEFAULT_API_VERSION)
-        options = {:access_token => account.access_token,
-                   :api_version => version,
-                   :body => group.attributes.slice('name', 'is_public').to_json}
-        request(:put, "groups/#{group.openstax_uid}", options)
+      def self.update_group(account, group, options = {})
+        request_for_account(account, :put, "groups/#{group.openstax_uid}",
+          options.merge(
+            body: group.attributes.slice('name', 'is_public').to_json
+          )
+        )
       end
 
       # Deletes a group from the Accounts server.
       # The given account must own the group.
-      # Also takes an optional API version parameter.
-      # API version currently defaults to :v1 (may change in the future).
+      # Also takes an options hash.
       # On failure, throws an Exception, just like the request method.
       # On success, returns an OAuth2::Response object.
-      def self.destroy_group(account, group, version = DEFAULT_API_VERSION)
-        options = {:access_token => account.access_token,
-                   :api_version => version}
-        request(:delete, "groups/#{group.openstax_uid}", options)
+      def self.destroy_group(account, group, options = {})
+        request_for_account(account, :delete,
+                            "groups/#{group.openstax_uid}", options)
       end
 
       # Creates a group_member in the Accounts server.
       # The given account must own the group.
-      # Also takes an optional API version parameter.
-      # API version currently defaults to :v1 (may change in the future).
+      # Also takes an options hash.
       # On failure, throws an Exception, just like the request method.
       # On success, returns an OAuth2::Response object.
-      def self.create_group_member(account, group_member, version = DEFAULT_API_VERSION)
-        options = {:access_token => account.access_token,
-                   :api_version => version}
-        request(
+      def self.create_group_member(account, group_member, options = {})
+        request_for_account(
+          account,
           :post,
           "groups/#{group_member.group_id}/members/#{group_member.user_id}",
           options
@@ -178,14 +176,12 @@ module OpenStax
 
       # Deletes a group_member from the Accounts server.
       # The given account must own the group.
-      # Also takes an optional API version parameter.
-      # API version currently defaults to :v1 (may change in the future).
+      # Also takes an options hash.
       # On failure, throws an Exception, just like the request method.
       # On success, returns an OAuth2::Response object.
-      def self.destroy_group_member(account, group_member, version = DEFAULT_API_VERSION)
-        options = {:access_token => account.access_token,
-                   :api_version => version}
-        request(
+      def self.destroy_group_member(account, group_member, options = {})
+        request_for_account(
+          account,
           :delete,
           "groups/#{group_member.group_id}/members/#{group_member.user_id}",
           options
@@ -194,15 +190,12 @@ module OpenStax
 
       # Creates a group_owner in the Accounts server.
       # The given account must own the group.
-      # Also takes an optional API version parameter.
-      # API version currently defaults to :v1 (may change in the future).
+      # Also takes an options hash.
       # On failure, throws an Exception, just like the request method.
       # On success, returns an OAuth2::Response object.
-      def self.create_group_owner(account, group_owner,
-                                  version = DEFAULT_API_VERSION)
-        options = {:access_token => account.access_token,
-                   :api_version => version}
-        request(
+      def self.create_group_owner(account, group_owner, options = {})
+        request_for_account(
+          account,
           :post,
           "groups/#{group_owner.group_id}/owners/#{group_owner.user_id}",
           options
@@ -211,15 +204,12 @@ module OpenStax
 
       # Deletes a group_owner from the Accounts server.
       # The given account must own the group.
-      # Also takes an optional API version parameter.
-      # API version currently defaults to :v1 (may change in the future).
+      # Also takes an options hash.
       # On failure, throws an Exception, just like the request method.
       # On success, returns an OAuth2::Response object.
-      def self.destroy_group_owner(account, group_owner,
-                                   version = DEFAULT_API_VERSION)
-        options = {:access_token => account.access_token,
-                   :api_version => version}
-        request(
+      def self.destroy_group_owner(account, group_owner, options = {})
+        request_for_account(
+          account,
           :delete,
           "groups/#{group_owner.group_id}/owners/#{group_owner.user_id}",
           options
@@ -228,15 +218,12 @@ module OpenStax
 
       # Creates a group_nesting in the Accounts server.
       # The given account must own both groups.
-      # Also takes an optional API version parameter.
-      # API version currently defaults to :v1 (may change in the future).
+      # Also takes an an options hash.
       # On failure, throws an Exception, just like the request method.
       # On success, returns an OAuth2::Response object.
-      def self.create_group_nesting(account, group_nesting,
-                                    version = DEFAULT_API_VERSION)
-        options = {:access_token => account.access_token,
-                   :api_version => version}
-        request(
+      def self.create_group_nesting(account, group_nesting, options = {})
+        request_for_account(
+          account,
           :post,
           "groups/#{group_nesting.container_group_id}/nestings/#{
                     group_nesting.member_group_id}",
@@ -245,15 +232,12 @@ module OpenStax
 
       # Deletes a group_nesting from the Accounts server.
       # The given account must own either group.
-      # Also takes an optional API version parameter.
-      # API version currently defaults to :v1 (may change in the future).
+      # Also takes an options hash.
       # On failure, throws an Exception, just like the request method.
       # On success, returns an OAuth2::Response object.
-      def self.destroy_group_nesting(account, group_nesting,
-                                     version = DEFAULT_API_VERSION)
-        options = {:access_token => account.access_token,
-                   :api_version => version}
-        request(
+      def self.destroy_group_nesting(account, group_nesting, options = {})
+        request_for_account(
+          account,
           :delete,
           "groups/#{group_nesting.container_group_id}/nestings/#{
                     group_nesting.member_group_id}",
@@ -262,15 +246,13 @@ module OpenStax
       end
 
       # Creates a temporary user in Accounts.
-      # Also takes an optional API version parameter.
-      # API version currently defaults to :v1 (may change in the future).
+      # Also takes an options hash.
       # On failure, throws an Exception, just like the request method.
       # On success, returns an OAuth2::Response object.
-      def self.create_temp_account(attributes, version = DEFAULT_API_VERSION)
-        options = { api_version: version,
-                    body: attributes.to_json }
-
-        request(:post, "user/find-or-create", options)
+      def self.create_temp_account(attributes, options = {})
+        request(:post, "user/find-or-create", options.merge(
+          body: attributes.to_json
+        ))
       end
 
       protected
