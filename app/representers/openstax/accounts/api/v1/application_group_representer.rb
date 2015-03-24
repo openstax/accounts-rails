@@ -13,7 +13,12 @@ module OpenStax
 
           property :group,
                    class: OpenStax::Accounts::Group,
-                   decorator: GroupRepresenter
+                   decorator: GroupRepresenter,
+                   instance: ->(*) {
+                     g = OpenStax::Accounts::Group.new
+                     g.syncing = true
+                     g
+                   }
 
           property :unread_updates,
                    type: Integer

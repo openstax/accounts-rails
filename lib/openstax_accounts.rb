@@ -14,8 +14,6 @@ module OpenStax
 
     class << self
 
-      mattr_accessor :syncing
-
       ###########################################################################
       #
       # Configuration machinery.
