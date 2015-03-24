@@ -3,7 +3,7 @@ module OpenStax
     class Api
       module V1
         class ApplicationGroupRepresenter < Roar::Decorator
-          include Roar::Representer::JSON
+          include Roar::JSON
 
           property :id, 
                    type: Integer

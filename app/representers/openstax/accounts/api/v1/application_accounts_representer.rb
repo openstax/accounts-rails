@@ -1,5 +1,3 @@
-require 'representable/json/collection'
-
 module OpenStax
   module Accounts
     class Api
