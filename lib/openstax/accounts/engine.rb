@@ -1,17 +1,19 @@
-require 'omniauth'
-require 'omniauth/strategies/openstax'
-require 'lev'
-require 'roar/decorator'
-require 'roar/representer/json'
-require 'keyword_search'
-require 'squeel'
-require 'action_interceptor'
-require 'openstax/accounts/extend_builtins'
-require 'doorkeeper'
-
 ActiveSupport::Inflector.inflections do |inflect|
   inflect.acronym 'OpenStax'
 end
+
+require 'action_interceptor'
+require 'doorkeeper'
+require 'keyword_search'
+require 'lev'
+require 'representable'
+require 'representable/json/collection'
+require 'roar'
+require 'roar/decorator'
+require 'roar/json'
+require 'squeel'
+require 'openstax/accounts/action_controller/base'
+require 'openstax/accounts/has_many_through_groups/active_record/base'
 
 module OpenStax
   module Accounts

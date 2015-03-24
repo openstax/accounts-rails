@@ -1,7 +1,7 @@
 module OpenStax::Accounts
   class GroupNesting < ActiveRecord::Base
 
-    attr_accessor :requestor
+    delegate :requestor, :syncing, to: :container_group
 
     belongs_to :container_group, class_name: 'OpenStax::Accounts::Group',
                primary_key: :openstax_uid, inverse_of: :member_group_nestings
@@ -14,22 +14,18 @@ module OpenStax::Accounts
                           :unless => :syncing_or_stubbing
     validate :no_loops, :unless => :syncing_or_stubbing
 
-    before_create :update_group_caches, :unless => :syncing?
-    before_destroy :update_group_caches, :unless => :syncing?
+    before_create :update_group_caches, :unless => :syncing
+    before_destroy :update_group_caches, :unless => :syncing
 
     before_create :create_openstax_accounts_group_nesting,
                   :unless => :syncing_or_stubbing
-    before_destroy :update_group_caches, :destroy_openstax_accounts_group_nesting,
+    before_destroy :destroy_openstax_accounts_group_nesting,
                    :unless => :syncing_or_stubbing
 
     protected
 
-    def syncing?
-      OpenStax::Accounts.syncing
-    end
-
     def syncing_or_stubbing
-      syncing? || OpenStax::Accounts.configuration.enable_stubbing?
+      syncing || OpenStax::Accounts.configuration.enable_stubbing?
     end
 
     def no_loops
@@ -45,17 +41,15 @@ module OpenStax::Accounts
     end
 
     def create_openstax_accounts_group_nesting
-      return if OpenStax::Accounts.syncing || OpenStax::Accounts.configuration.enable_stubbing?
       return false unless requestor
 
-      OpenStax::Accounts.create_group_nesting(requestor, self)
+      OpenStax::Accounts::Api.create_group_nesting(requestor, self)
     end
 
     def destroy_openstax_accounts_group_nesting
-      return if OpenStax::Accounts.syncing || OpenStax::Accounts.configuration.enable_stubbing?
       return false unless requestor
 
-      OpenStax::Accounts.destroy_group_nesting(requestor, self)
+      OpenStax::Accounts::Api.destroy_group_nesting(requestor, self)
     end
 
   end

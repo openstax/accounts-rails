@@ -4,14 +4,20 @@ module OpenStax::Accounts
     USERNAME_DISCARDED_CHAR_REGEX = /[^A-Za-z\d_]/
     USERNAME_MAX_LENGTH = 50
 
+    attr_accessor :syncing
+
     has_many :group_owners, dependent: :destroy,
              class_name: 'OpenStax::Accounts::GroupOwner',
-             primary_key: :openstax_uid, foreign_key: :user_id, inverse_of: :user
+             primary_key: :openstax_uid,
+             foreign_key: :user_id,
+             inverse_of: :user
     has_many :groups_as_owner, through: :group_owners, source: :group
 
     has_many :group_members, dependent: :destroy,
              class_name: 'OpenStax::Accounts::GroupMember',
-             primary_key: :openstax_uid, foreign_key: :user_id, inverse_of: :user
+             primary_key: :openstax_uid,
+             foreign_key: :user_id,
+             inverse_of: :user
     has_many :groups_as_member, through: :group_members, source: :group
 
     validates :openstax_uid, :presence => true, :uniqueness => true
@@ -37,12 +43,11 @@ module OpenStax::Accounts
     protected
 
     def syncing_or_stubbing
-      OpenStax::Accounts.syncing ||\
-      OpenStax::Accounts.configuration.enable_stubbing?
+      syncing || OpenStax::Accounts.configuration.enable_stubbing?
     end
 
     def update_openstax_accounts
-      OpenStax::Accounts.update_account(self)
+      OpenStax::Accounts::Api.update_account(self)
     end
 
   end

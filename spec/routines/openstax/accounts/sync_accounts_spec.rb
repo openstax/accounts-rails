@@ -17,15 +17,11 @@ module OpenStax
                                         unread_updates: 2, default_contact_info_id: 5}]
           end)
 
-        begin
-          OpenStax::Accounts.syncing = true
-          account = OpenStax::Accounts::Account.new
-          account.username = 'u'
-          account.openstax_uid = 2
-          account.save!
-        ensure
-          OpenStax::Accounts.syncing = false
-        end
+        account = OpenStax::Accounts::Account.new
+        account.username = 'u'
+        account.openstax_uid = 2
+        account.syncing = true
+        account.save!
 
         begin
           OpenStax::Accounts.configuration.enable_stubbing = false

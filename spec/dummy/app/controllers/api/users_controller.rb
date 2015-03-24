@@ -7,5 +7,9 @@ module Api
     def update
       dummy(:update)
     end
+
+    def create
+      dummy(:create)
+    end
   end
 end

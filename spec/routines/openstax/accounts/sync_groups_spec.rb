@@ -24,45 +24,44 @@ module OpenStax
                                          unread_updates: 2, default_contact_info_id: 5}]
           end)
 
-        begin
-          OpenStax::Accounts.syncing = true
-          u = OpenStax::Accounts::Account.new
-          u.openstax_uid = 2
-          u.username = 'User'
-          u.save!
+        u = OpenStax::Accounts::Account.new
+        u.openstax_uid = 2
+        u.username = 'User'
+        u.syncing = true
+        u.save!
 
-          u2 = OpenStax::Accounts::Account.new
-          u2.openstax_uid = 3
-          u2.username = 'Fuego'
-          u2.save!
+        u2 = OpenStax::Accounts::Account.new
+        u2.openstax_uid = 3
+        u2.username = 'Fuego'
+        u2.syncing = true
+        u2.save!
 
-          g = OpenStax::Accounts::Group.new
-          g.name = 'Member Group'
-          g.openstax_uid = 2
-          g.save!
+        g = OpenStax::Accounts::Group.new
+        g.name = 'Member Group'
+        g.openstax_uid = 2
+        g.syncing = true
+        g.save!
 
-          gm = GroupMember.new
-          gm.group = g
-          gm.user = u
-          gm.save!
+        gm = GroupMember.new
+        gm.group = g
+        gm.user = u
+        gm.save!
 
-          g2 = OpenStax::Accounts::Group.new
-          g2.name = 'Container Group'
-          g2.openstax_uid = 4
-          g2.save!
+        g2 = OpenStax::Accounts::Group.new
+        g2.name = 'Container Group'
+        g2.openstax_uid = 4
+        g2.syncing = true
+        g2.save!
 
-          go = GroupOwner.new
-          go.group = g2
-          go.user = u
-          go.save!
+        go = GroupOwner.new
+        go.group = g2
+        go.user = u
+        go.save!
 
-          gn = GroupNesting.new
-          gn.container_group = g2
-          gn.member_group = g
-          gn.save!
-        ensure
-          OpenStax::Accounts.syncing = false
-        end
+        gn = GroupNesting.new
+        gn.container_group = g2
+        gn.member_group = g
+        gn.save!
 
         begin
           OpenStax::Accounts.configuration.enable_stubbing = false

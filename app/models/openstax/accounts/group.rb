@@ -4,7 +4,7 @@ module OpenStax::Accounts
     serialize :cached_supertree_group_ids
     serialize :cached_subtree_group_ids
 
-    attr_accessor :requestor
+    attr_accessor :requestor, :syncing
 
     has_many :group_owners, dependent: :destroy,
              class_name: 'OpenStax::Accounts::GroupOwner',
@@ -28,12 +28,15 @@ module OpenStax::Accounts
 
     validates :openstax_uid, :uniqueness => true, :presence => true
     validates_presence_of :requestor, :unless => :syncing_or_stubbing
-    validates_uniqueness_of :name, :allow_nil => true, :unless => :syncing_or_stubbing
+    validates_uniqueness_of :name, :allow_nil => true,
+                                   :unless => :syncing_or_stubbing
 
     before_validation :create_openstax_accounts_group,
                       :on => :create, :unless => :syncing_or_stubbing
-    before_update :update_openstax_accounts_group, :unless => :syncing_or_stubbing
-    before_destroy :destroy_openstax_accounts_group, :unless => :syncing_or_stubbing
+    before_update :update_openstax_accounts_group,
+                  :unless => :syncing_or_stubbing
+    before_destroy :destroy_openstax_accounts_group,
+                   :unless => :syncing_or_stubbing
 
     scope :visible_for, lambda { |account|
       next where(is_public: true) unless account.is_a? OpenStax::Accounts::Account
@@ -110,26 +113,25 @@ module OpenStax::Accounts
     protected
 
     def syncing_or_stubbing
-      OpenStax::Accounts.syncing ||\
-      OpenStax::Accounts.configuration.enable_stubbing?
+      syncing || OpenStax::Accounts.configuration.enable_stubbing?
     end
 
     def create_openstax_accounts_group
-      return if OpenStax::Accounts.syncing || OpenStax::Accounts.configuration.enable_stubbing?
+      return false unless requestor
 
-      OpenStax::Accounts.create_group(requestor, self)
+      OpenStax::Accounts::Api.create_group(requestor, self)
     end
 
     def update_openstax_accounts_group
-      return if OpenStax::Accounts.syncing || OpenStax::Accounts.configuration.enable_stubbing?
+      return false unless requestor
 
-      OpenStax::Accounts.update_group(requestor, self)
+      OpenStax::Accounts::Api.update_group(requestor, self)
     end
 
     def destroy_openstax_accounts_group
-      return if OpenStax::Accounts.syncing || OpenStax::Accounts.configuration.enable_stubbing?
+      return false unless requestor
 
-      OpenStax::Accounts.destroy_group(requestor, self)
+      OpenStax::Accounts::Api.destroy_group(requestor, self)
     end
 
   end

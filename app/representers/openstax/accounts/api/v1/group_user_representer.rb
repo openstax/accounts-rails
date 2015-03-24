@@ -3,7 +3,7 @@ module OpenStax
     module Api
       module V1
         class GroupUserRepresenter < Roar::Decorator
-          include Roar::Representer::JSON
+          include Roar::JSON
 
           property :group_id,
                    type: Integer

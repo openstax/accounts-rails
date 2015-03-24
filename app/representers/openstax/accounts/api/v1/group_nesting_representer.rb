@@ -3,7 +3,7 @@ module OpenStax
     module Api
       module V1
         class GroupNestingRepresenter < Roar::Decorator
-          include Roar::Representer::JSON
+          include Roar::JSON
 
           property :container_group_id,
                    type: Integer
