@@ -6,7 +6,7 @@
 
 module OpenStax
   module Accounts
-    class Api
+    module Api
       module V1
         class AccountRepresenter < Roar::Decorator
           include Roar::JSON

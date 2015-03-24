@@ -1,6 +1,6 @@
 module OpenStax
   module Accounts
-    class Api
+    module Api
 
       DEFAULT_API_VERSION = :v1
 
