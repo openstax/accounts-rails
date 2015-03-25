@@ -44,6 +44,13 @@ module OpenStax
                       alert: "Authentication failed, please try again."
       end
 
+      def profile
+        # TODO: stub profile if stubbing is enabled
+        redirect_to(URI.join(
+          OpenStax::Accounts.configuration.openstax_accounts_url, "/profile"
+        ).to_s)
+      end
+
     end
   end
 end
