@@ -15,11 +15,6 @@ OpenStax::Accounts::Engine.routes.draw do
         get 'search', :on => :collection
       end
     end
-  else
-    get '/profile' => lambda { |env|
-      redirect(URI::join(OpenStax::Accounts.configuration.openstax_accounts_url,
-                         "/profile").to_s)
-    }
   end
 
   # OmniAuth local routes (SessionsController)
@@ -30,6 +25,7 @@ OpenStax::Accounts::Engine.routes.draw do
     get 'login', :action => :new # Redirects to /auth/openstax or stub
     match 'logout', :action => :destroy, # Redirects to logout path or stub
                     :via => OpenStax::Accounts.configuration.logout_via
+    get 'profile', :action => :profile # Redirects to profile path or stub
   end
 
 end
