@@ -9,11 +9,11 @@ module OpenStax
       protected
 
       def exec(inputs={})
-        result = Api.create_temp_account(inputs)
-        fatal_error(code: :invalid_inputs) unless result.success?
+        response = Api.create_temp_account(inputs)
+        fatal_error(code: :invalid_inputs) unless response.status == 200
 
         struct = OpenStruct.new
-        Api::V1::UnclaimedAccountRepresenter.new(struct).from_json(result)
+        Api::V1::UnclaimedAccountRepresenter.new(struct).from_json(response.body)
         id = struct.id
 
         account = Account.find_or_initialize_by(openstax_uid: id)
