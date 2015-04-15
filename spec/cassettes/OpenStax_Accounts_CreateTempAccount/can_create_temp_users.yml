@@ -1,0 +1,261 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: http://secret:secret@localhost:2999/oauth/token
+    body:
+      encoding: UTF-8
+      string: grant_type=client_credentials
+    headers:
+      User-Agent:
+      - Faraday v0.9.1
+      Content-Type:
+      - application/x-www-form-urlencoded
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - no-store
+      Pragma:
+      - no-cache
+      Content-Type:
+      - application/json; charset=utf-8
+      X-Ua-Compatible:
+      - IE=Edge
+      Etag:
+      - '"a5858bbdfc70a576990fb6a4199bd3ec"'
+      X-Request-Id:
+      - 086fd9cd39adbef2aaefd93c36541e05
+      X-Runtime:
+      - '0.097231'
+      Connection:
+      - close
+      Server:
+      - thin 1.5.1 codename Straight Razor
+    body:
+      encoding: UTF-8
+      string: '{"access_token":"7bac608db1ed74cda2d1f1cc343b1b42ab98e2ade5a81354ee42b97254d80f27","token_type":"bearer"}'
+    http_version: 
+  recorded_at: Wed, 15 Apr 2015 15:44:43 GMT
+- request:
+    method: post
+    uri: http://localhost:2999/api/user/find-or-create
+    body:
+      encoding: UTF-8
+      string: '{"email":"alice@example.com"}'
+    headers:
+      User-Agent:
+      - Faraday v0.9.1
+      Accept:
+      - application/vnd.accounts.openstax.v1
+      Authorization:
+      - Bearer 7bac608db1ed74cda2d1f1cc343b1b42ab98e2ade5a81354ee42b97254d80f27
+      Content-Type:
+      - application/x-www-form-urlencoded
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      X-Ua-Compatible:
+      - IE=Edge
+      Etag:
+      - '"4f56edcb1558d4df2f77295f86059006"'
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - 76cbbdb3664feb1e450343d9d42ec550
+      X-Runtime:
+      - '0.282521'
+      Connection:
+      - close
+      Server:
+      - thin 1.5.1 codename Straight Razor
+    body:
+      encoding: UTF-8
+      string: '{"id":2}'
+    http_version: 
+  recorded_at: Wed, 15 Apr 2015 15:44:44 GMT
+- request:
+    method: post
+    uri: http://secret:secret@localhost:2999/oauth/token
+    body:
+      encoding: UTF-8
+      string: grant_type=client_credentials
+    headers:
+      User-Agent:
+      - Faraday v0.9.1
+      Content-Type:
+      - application/x-www-form-urlencoded
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - no-store
+      Pragma:
+      - no-cache
+      Content-Type:
+      - application/json; charset=utf-8
+      X-Ua-Compatible:
+      - IE=Edge
+      Etag:
+      - '"4023cea7ef0c3779a4f6e5174ab9c869"'
+      X-Request-Id:
+      - e4d1e50de1a79fa82d72658652e4aa16
+      X-Runtime:
+      - '0.008763'
+      Connection:
+      - close
+      Server:
+      - thin 1.5.1 codename Straight Razor
+    body:
+      encoding: UTF-8
+      string: '{"access_token":"ba3d809ab8a1a98f87ee3f61f36a20ac4ca5fce8227631e34ad54471473d2d06","token_type":"bearer"}'
+    http_version: 
+  recorded_at: Wed, 15 Apr 2015 15:44:44 GMT
+- request:
+    method: post
+    uri: http://localhost:2999/api/user/find-or-create
+    body:
+      encoding: UTF-8
+      string: '{"username":"alice"}'
+    headers:
+      User-Agent:
+      - Faraday v0.9.1
+      Accept:
+      - application/vnd.accounts.openstax.v1
+      Authorization:
+      - Bearer ba3d809ab8a1a98f87ee3f61f36a20ac4ca5fce8227631e34ad54471473d2d06
+      Content-Type:
+      - application/x-www-form-urlencoded
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      X-Ua-Compatible:
+      - IE=Edge
+      Etag:
+      - '"a7f153d21e6c7effbc234f3242315d32"'
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - eb6294b4773cc983df1965624bac57ad
+      X-Runtime:
+      - '0.054532'
+      Connection:
+      - close
+      Server:
+      - thin 1.5.1 codename Straight Razor
+    body:
+      encoding: UTF-8
+      string: '{"id":3}'
+    http_version: 
+  recorded_at: Wed, 15 Apr 2015 15:44:44 GMT
+- request:
+    method: post
+    uri: http://secret:secret@localhost:2999/oauth/token
+    body:
+      encoding: UTF-8
+      string: grant_type=client_credentials
+    headers:
+      User-Agent:
+      - Faraday v0.9.1
+      Content-Type:
+      - application/x-www-form-urlencoded
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - no-store
+      Pragma:
+      - no-cache
+      Content-Type:
+      - application/json; charset=utf-8
+      X-Ua-Compatible:
+      - IE=Edge
+      Etag:
+      - '"e9cab2e070f5610a194021934aef2879"'
+      X-Request-Id:
+      - c815b72269759776229c3f1fb0b48c1f
+      X-Runtime:
+      - '0.009257'
+      Connection:
+      - close
+      Server:
+      - thin 1.5.1 codename Straight Razor
+    body:
+      encoding: UTF-8
+      string: '{"access_token":"3d2a2c3934d78bd21d85a441e2a2043923f66f63be84b3d3b5f25388af40d8d8","token_type":"bearer"}'
+    http_version: 
+  recorded_at: Wed, 15 Apr 2015 15:44:44 GMT
+- request:
+    method: post
+    uri: http://localhost:2999/api/user/find-or-create
+    body:
+      encoding: UTF-8
+      string: '{"username":"alice2","password":"abcdefghijklmnop"}'
+    headers:
+      User-Agent:
+      - Faraday v0.9.1
+      Accept:
+      - application/vnd.accounts.openstax.v1
+      Authorization:
+      - Bearer 3d2a2c3934d78bd21d85a441e2a2043923f66f63be84b3d3b5f25388af40d8d8
+      Content-Type:
+      - application/x-www-form-urlencoded
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      X-Ua-Compatible:
+      - IE=Edge
+      Etag:
+      - '"cd51039fde58b80cf261c3f1a99da3ef"'
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - cabaea92fc03f74001752c9ee48838a2
+      X-Runtime:
+      - '0.011566'
+      Connection:
+      - close
+      Server:
+      - thin 1.5.1 codename Straight Razor
+    body:
+      encoding: UTF-8
+      string: '{"id":4}'
+    http_version: 
+  recorded_at: Wed, 15 Apr 2015 15:44:44 GMT
+recorded_with: VCR 2.9.3
