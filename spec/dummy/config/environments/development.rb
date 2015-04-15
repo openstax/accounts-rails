@@ -34,4 +34,7 @@ Dummy::Application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
+
+  # Don't error out when trying to connect to external sites
+  WebMock.allow_net_connect!
 end
