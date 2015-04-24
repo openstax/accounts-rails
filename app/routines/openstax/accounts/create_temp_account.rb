@@ -9,12 +9,16 @@ module OpenStax
       protected
 
       def exec(inputs={})
-        response = Api.create_temp_account(inputs)
-        fatal_error(code: :invalid_inputs) unless response.status == 200
+        if OpenStax::Accounts.configuration.enable_stubbing
+          id = -SecureRandom.hex(4).to_i(16)/2
+        else
+          response = Api.create_temp_account(inputs)
+          fatal_error(code: :invalid_inputs) unless response.status == 200
 
-        struct = OpenStruct.new
-        Api::V1::UnclaimedAccountRepresenter.new(struct).from_json(response.body)
-        id = struct.id
+          struct = OpenStruct.new
+          Api::V1::UnclaimedAccountRepresenter.new(struct).from_json(response.body)
+          id = struct.id
+        end
 
         account = Account.find_or_initialize_by(openstax_uid: id)
 
