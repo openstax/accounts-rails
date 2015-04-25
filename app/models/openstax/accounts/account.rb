@@ -23,8 +23,6 @@ module OpenStax::Accounts
     validates :openstax_uid, :presence => true, :uniqueness => true
     validates :username, :presence => true, :uniqueness => true,
                          :unless => :syncing_or_stubbing
-    validates :access_token, :presence => true, :uniqueness => true,
-                             :unless => :syncing_or_stubbing
 
     before_update :update_openstax_accounts, :unless => :syncing_or_stubbing
 

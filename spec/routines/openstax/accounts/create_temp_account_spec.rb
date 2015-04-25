@@ -7,7 +7,10 @@ module OpenStax
     describe CreateTempAccount, vcr: VCR_OPTS do
 
       before(:all) do
+        @previous_url = OpenStax::Accounts.configuration.openstax_accounts_url
+        @previous_enable_stubbing = OpenStax::Accounts.configuration.enable_stubbing
         OpenStax::Accounts.configuration.openstax_accounts_url = "http://localhost:2999/"
+        OpenStax::Accounts.configuration.enable_stubbing = false
         OpenStax::Accounts::Api.client.site = "http://localhost:2999/"
       end
 
@@ -27,8 +30,9 @@ module OpenStax
       end
 
       after(:all) do
-        OpenStax::Accounts.configuration.openstax_accounts_url = "http://localhost:#{CAPYBARA_SERVER.port}/"
-        OpenStax::Accounts::Api.client.site = "http://localhost:#{CAPYBARA_SERVER.port}/"
+        OpenStax::Accounts.configuration.openstax_accounts_url = @previous_url
+        OpenStax::Accounts.configuration.enable_stubbing = @previous_enable_stubbing
+        OpenStax::Accounts::Api.client.site = @previous_url
       end
 
     end
