@@ -57,5 +57,4 @@ module OpenStax
   end
 end
 
-::ActionController::Base.send :include,
-                              OpenStax::Accounts::ActionController::Base
+::ActionController::Base.send :include, OpenStax::Accounts::ActionController::Base

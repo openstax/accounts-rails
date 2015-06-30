@@ -8,7 +8,8 @@ module OpenStax
             
       protected
 
-      def exec(email: nil, username: nil, password: nil)
+      def exec(email: nil, username: nil, password: nil,
+               first_name: nil, last_name: nil, full_name: nil, title: nil)
         raise ArgumentError,
               'You must specify either an email address or a username (and an optional password)' \
                 if email.nil? && username.nil?
@@ -31,6 +32,10 @@ module OpenStax
             username = SecureRandom.hex(3).to_s
           end
           account.username = username
+          account.first_name = first_name
+          account.last_name = last_name
+          account.full_name = full_name
+          account.title = title
           account.save!
         end
 
