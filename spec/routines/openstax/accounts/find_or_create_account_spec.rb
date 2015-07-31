@@ -4,7 +4,7 @@ require 'vcr_helper'
 module OpenStax
   module Accounts
 
-    describe CreateTempAccount, vcr: VCR_OPTS do
+    describe FindOrCreateAccount, vcr: VCR_OPTS do
 
       before(:all) do
         @previous_url = OpenStax::Accounts.configuration.openstax_accounts_url
@@ -15,15 +15,15 @@ module OpenStax
       end
 
       it 'can create temp users' do
-        account_1 = CreateTempAccount.call(email: 'alice@example.com').outputs.account
+        account_1 = FindOrCreateAccount.call(email: 'alice@example.com').outputs.account
         expect(account_1).to be_persisted
 
-        account_2 = CreateTempAccount.call(username: 'alice').outputs.account
+        account_2 = FindOrCreateAccount.call(username: 'alice').outputs.account
         expect(account_2).to be_persisted
         expect(account_1).not_to eq(account_2)
 
-        account_3 = CreateTempAccount.call(username: 'alice2',
-                                           password: 'abcdefghijklmnop').outputs.account
+        account_3 = FindOrCreateAccount.call(username: 'alice2',
+                                             password: 'abcdefghijklmnop').outputs.account
         expect(account_3).to be_persisted
         expect(account_1).not_to eq(account_3)
         expect(account_2).not_to eq(account_3)

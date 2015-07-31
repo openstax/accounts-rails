@@ -245,11 +245,11 @@ module OpenStax
         )
       end
 
-      # Creates a temporary user in Accounts.
-      # Also takes an options hash.
+      # Finds an account matching the provided attributes or creates a new
+      # account.  Also takes an options hash.
       # On failure, throws an Exception, just like the request method.
       # On success, returns an OAuth2::Response object.
-      def self.create_temp_account(attributes, options = {})
+      def self.find_or_create_account(attributes, options = {})
         request(:post, "user/find-or-create", options.merge(
           body: attributes.to_json
         ))

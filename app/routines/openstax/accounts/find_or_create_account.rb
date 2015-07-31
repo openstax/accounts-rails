@@ -1,11 +1,9 @@
-# Routine for creating a temporary account by email or username
-
 module OpenStax
   module Accounts
-    class CreateTempAccount
+    class FindOrCreateAccount
 
       lev_routine
-            
+
       protected
 
       def exec(email: nil, username: nil, password: nil,
@@ -15,9 +13,10 @@ module OpenStax
                 if email.nil? && username.nil?
 
         if OpenStax::Accounts.configuration.enable_stubbing
-          id = -SecureRandom.hex(4).to_i(16)/2
+          # We can only stub finding by username b/c accounts-rails doesn't persist emails
+          id = Account.find_by(username: username).try(:openstax_uid) || -SecureRandom.hex(4).to_i(16)/2
         else
-          response = Api.create_temp_account(email: email, username: username, password: password)
+          response = Api.find_or_create_account(email: email, username: username, password: password)
           fatal_error(code: :invalid_inputs) unless response.status == 200
 
           struct = OpenStruct.new
@@ -28,7 +27,7 @@ module OpenStax
         account = Account.find_or_initialize_by(openstax_uid: id)
 
         unless account.persisted?
-          while username.nil? || Account.where(username: username).exists? do 
+          while username.nil? || Account.where(username: username).exists? do
             username = SecureRandom.hex(3).to_s
           end
           account.username = username
@@ -46,3 +45,6 @@ module OpenStax
     end
   end
 end
+
+# To support the old name of this routine for a bit longer
+OpenStax::Accounts::CreateTempAccount = OpenStax::Accounts::FindOrCreateAccount
