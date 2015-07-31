@@ -17,7 +17,9 @@ module OpenStax
         if OpenStax::Accounts.configuration.enable_stubbing
           id = -SecureRandom.hex(4).to_i(16)/2
         else
-          response = Api.create_temp_account(email: email, username: username, password: password)
+          response = Api.create_temp_account(
+            email: email, username: username, password: password,
+            first_name: first_name, last_name: last_name, full_name: full_name)
           fatal_error(code: :invalid_inputs) unless response.status == 200
 
           struct = OpenStruct.new
