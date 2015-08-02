@@ -16,7 +16,9 @@ module OpenStax
           # We can only stub finding by username b/c accounts-rails doesn't persist emails
           id = Account.find_by(username: username).try(:openstax_uid) || -SecureRandom.hex(4).to_i(16)/2
         else
-          response = Api.find_or_create_account(email: email, username: username, password: password)
+          response = Api.find_or_create_account(
+            email: email, username: username, password: password,
+            first_name: first_name, last_name: last_name, full_name: full_name)
           fatal_error(code: :invalid_inputs) unless response.status == 200
 
           struct = OpenStruct.new
