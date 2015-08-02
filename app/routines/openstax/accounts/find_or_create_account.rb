@@ -45,6 +45,3 @@ module OpenStax
     end
   end
 end
-
-# To support the old name of this routine for a bit longer
-OpenStax::Accounts::CreateTempAccount = OpenStax::Accounts::FindOrCreateAccount
