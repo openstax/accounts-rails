@@ -39,7 +39,7 @@ module OpenStax
         it 'makes api call to (temp) user create by email' do
           ::Api::UsersController.last_action = nil
           ::Api::UsersController.last_json = nil
-          Api.create_temp_account(email: 'dummy@dum.my')
+          Api.find_or_create_account(email: 'dummy@dum.my')
           expect(::Api::UsersController.last_action).to eq :create
           expect(::Api::UsersController.last_json).to(
             include('email' => 'dummy@dum.my')
@@ -49,7 +49,7 @@ module OpenStax
         it 'makes api call to (temp) user create by username' do
           ::Api::UsersController.last_action = nil
           ::Api::UsersController.last_json = nil
-          Api.create_temp_account(username: 'dummy')
+          Api.find_or_create_account(username: 'dummy')
           expect(::Api::UsersController.last_action).to eq :create
           expect(::Api::UsersController.last_json).to(
             include('username' => 'dummy')
