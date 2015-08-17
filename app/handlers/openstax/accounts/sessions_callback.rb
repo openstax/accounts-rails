@@ -19,22 +19,21 @@ module OpenStax
         # Don't worry if the account is logged in or not beforehand.
         # Just assume that they aren't.
 
-        existing_account = Account.where(openstax_uid: @auth_data.uid).first
-        return outputs[:account] = existing_account if !existing_account.nil?
-
-        new_account = Account.create do |account|
-          account.openstax_uid = @auth_data.uid
-          account.username     = @auth_data.info.nickname
-          account.first_name   = @auth_data.info.first_name
-          account.last_name    = @auth_data.info.last_name
-          account.full_name    = @auth_data.info.name
-          account.title        = @auth_data.info.title
-          account.access_token = @auth_data.credentials.token
+        # http://apidock.com/rails/v4.0.2/ActiveRecord/Relation/find_or_create_by
+        begin
+          outputs[:account] = Account.find_or_create_by(openstax_uid: @auth_data.uid) do |account|
+            account.username     = @auth_data.info.nickname
+            account.first_name   = @auth_data.info.first_name
+            account.last_name    = @auth_data.info.last_name
+            account.full_name    = @auth_data.info.name
+            account.title        = @auth_data.info.title
+            account.access_token = @auth_data.credentials.token
+          end
+        rescue ActiveRecord::RecordNotUnique
+          retry
         end
 
-        transfer_errors_from(new_account, {type: :verbatim})
-
-        outputs[:account] = new_account
+        transfer_errors_from(outputs[:account], {type: :verbatim})
       end
 
     end
