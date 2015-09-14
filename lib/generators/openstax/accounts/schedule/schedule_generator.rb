@@ -5,13 +5,7 @@ module Openstax
       source_root File.expand_path('../templates', __FILE__)
 
       def generate_schedule
-        if File.exists?(File.expand_path('config/schedule.rb'))
-          File.open(File.expand_path('../templates/schedule.rb', __FILE__)) do |file|
-            append_file 'config/schedule.rb', file.read
-          end
-        else
-          copy_file 'schedule.rb', 'config/schedule.rb'
-        end
+        template 'schedule.rb.erb', 'config/schedule.rb'
       end
     end
   end
