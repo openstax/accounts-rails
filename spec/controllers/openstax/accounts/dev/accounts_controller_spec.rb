@@ -16,6 +16,12 @@ module OpenStax::Accounts
         expect(controller.current_account).to eq(account)
         expect(controller.current_account.is_anonymous?).to eq(false)
       end
+
+      it 'should not set X-Frame-Options header' do
+        get :index
+        expect(response.header['X-Frame-Options']).to be_nil
+      end
+
     end
   end
 end
