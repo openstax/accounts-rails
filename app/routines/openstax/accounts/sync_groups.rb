@@ -12,9 +12,9 @@ module OpenStax
                          'cached_supertree_group_ids', 'cached_subtree_group_ids']
 
       lev_routine transaction: :no_transaction
-      
+
       protected
-      
+
       def exec(options={})
 
         return if OpenStax::Accounts.configuration.enable_stubbing?
@@ -22,18 +22,29 @@ module OpenStax
         response = OpenStax::Accounts::Api.get_application_group_updates
 
         app_groups = []
-        app_groups_rep = OpenStax::Accounts::Api::V1::ApplicationGroupsRepresenter
-                           .new(app_groups)
+        app_groups_rep = OpenStax::Accounts::Api::V1::ApplicationGroupsRepresenter.new(app_groups)
         app_groups_rep.from_json(response.body)
 
         return if app_groups.empty?
 
         updated_app_groups = []
-        app_groups.each do |app_group|
+        updated_groups = app_groups.each_with_object({}) do |app_group, hash|
+          openstax_uid = app_group.group.openstax_uid
           group = OpenStax::Accounts::Group.where(
-            :openstax_uid => app_group.group.openstax_uid
+            openstax_uid: openstax_uid
           ).first || app_group.group
           group.syncing = true
+
+          next unless group.persisted? || group.save
+
+          hash[openstax_uid] = group
+        end
+
+        app_groups.each do |app_group|
+          openstax_uid = app_group.group.openstax_uid
+          group = updated_groups[openstax_uid]
+
+          next if group.nil?
 
           if group != app_group.group
             SYNC_ATTRIBUTES.each do |attribute|
@@ -43,8 +54,7 @@ module OpenStax
 
           next unless group.save
 
-          updated_app_groups << {group_id: group.openstax_uid,
-                                 read_updates: app_group.unread_updates}
+          updated_app_groups << { group_id: openstax_uid, read_updates: app_group.unread_updates }
         end
 
         OpenStax::Accounts::Api.mark_group_updates_as_read(updated_app_groups)

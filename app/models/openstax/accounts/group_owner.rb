@@ -8,15 +8,12 @@ module OpenStax::Accounts
     belongs_to :user, class_name: 'OpenStax::Accounts::Account',
                primary_key: :openstax_uid, inverse_of: :group_owners
 
-    validates_presence_of :user_id, :group_id
-    validates_uniqueness_of :user_id, scope: :group_id
-    validates_presence_of :group, :user, :requestor,
-                          :unless => :syncing_or_stubbing
+    validates :group, presence: true
+    validates :user, presence: true, uniqueness: { scope: :group }
+    validates :requestor, presence: true, unless: :syncing_or_stubbing
 
-    before_create :create_openstax_accounts_group_owner,
-                  :unless => :syncing_or_stubbing
-    before_destroy :destroy_openstax_accounts_group_owner,
-                   :unless => :syncing_or_stubbing
+    before_create :create_openstax_accounts_group_owner, unless: :syncing_or_stubbing
+    before_destroy :destroy_openstax_accounts_group_owner, unless: :syncing_or_stubbing
 
     protected
 
