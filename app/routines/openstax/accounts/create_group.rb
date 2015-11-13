@@ -7,7 +7,7 @@ module OpenStax
       protected
 
       def exec(owner:, name: nil, is_public: false)
-        group = OpenStax::Accounts::Group.new
+        group = OpenStax::Accounts::Group.new(name: name, is_public: is_public)
         group.requestor = owner
         member = group.add_member(owner)
         owner = group.add_owner(owner)
