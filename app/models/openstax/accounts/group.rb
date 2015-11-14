@@ -26,17 +26,13 @@ module OpenStax::Accounts
              foreign_key: :container_group_id, inverse_of: :container_group
     has_many :member_groups, through: :member_group_nestings
 
-    validates :openstax_uid, :uniqueness => true, :presence => true
-    validates_presence_of :requestor, :unless => :syncing_or_stubbing
-    validates_uniqueness_of :name, :allow_nil => true,
-                                   :unless => :syncing_or_stubbing
+    validates :openstax_uid, uniqueness: true, presence: true
+    validates_presence_of :requestor, unless: :syncing_or_stubbing
+    validates_uniqueness_of :name, allow_nil: true, unless: :syncing_or_stubbing
 
-    before_validation :create_openstax_accounts_group,
-                      :on => :create, :unless => :syncing_or_stubbing
-    before_update :update_openstax_accounts_group,
-                  :unless => :syncing_or_stubbing
-    before_destroy :destroy_openstax_accounts_group,
-                   :unless => :syncing_or_stubbing
+    before_validation :create_openstax_accounts_group, on: :create, unless: :syncing_or_stubbing
+    before_update :update_openstax_accounts_group, unless: :syncing_or_stubbing
+    before_destroy :destroy_openstax_accounts_group, unless: :syncing_or_stubbing
 
     scope :visible_for, lambda { |account|
       next where(is_public: true) unless account.is_a? OpenStax::Accounts::Account
@@ -63,23 +59,25 @@ module OpenStax::Accounts
     end
 
     def add_owner(account)
-      return false unless account.is_a? OpenStax::Accounts::Account
+      return unless account.is_a? OpenStax::Accounts::Account
       go = GroupOwner.new
       go.group = self
       go.user = account
-      return false unless go.valid?
+      return unless go.valid?
       go.save if persisted?
       group_owners << go
+      go
     end
 
     def add_member(account)
-      return false unless account.is_a? OpenStax::Accounts::Account
+      return unless account.is_a? OpenStax::Accounts::Account
       gm = GroupMember.new
       gm.group = self
       gm.user = account
-      return false unless gm.valid?
+      return unless gm.valid?
       gm.save if persisted?
       group_members << gm
+      gm
     end
 
     def supertree_group_ids
