@@ -115,19 +115,22 @@ module OpenStax::Accounts
     end
 
     def create_openstax_accounts_group
-      return false unless requestor
+      return false unless requestor         # Fail if requestor not set
+      return if requestor.access_token.nil? # Ignore call to Accounts if requestor is temp
 
       OpenStax::Accounts::Api.create_group(requestor, self)
     end
 
     def update_openstax_accounts_group
-      return false unless requestor
+      return false unless requestor         # Fail if requestor not set
+      return if requestor.access_token.nil? # Ignore call to Accounts if requestor is temp
 
       OpenStax::Accounts::Api.update_group(requestor, self)
     end
 
     def destroy_openstax_accounts_group
-      return false unless requestor
+      return false unless requestor         # Fail if requestor not set
+      return if requestor.access_token.nil? # Ignore call to Accounts if requestor is temp
 
       OpenStax::Accounts::Api.destroy_group(requestor, self)
     end
