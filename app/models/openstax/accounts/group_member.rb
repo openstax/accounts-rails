@@ -23,16 +23,14 @@ module OpenStax::Accounts
 
     def create_openstax_accounts_group_member
       return false if requestor.nil? || requestor.is_anonymous?
-      return unless requestor.has_authenticated?
 
-      OpenStax::Accounts::Api.create_group_member(requestor, self)
+      OpenStax::Accounts::Api.create_group_member(requestor, self) if requestor.has_authenticated?
     end
 
     def destroy_openstax_accounts_group_member
       return false if requestor.nil? || requestor.is_anonymous?
-      return unless requestor.has_authenticated?
 
-      OpenStax::Accounts::Api.destroy_group_member(requestor, self)
+      OpenStax::Accounts::Api.destroy_group_member(requestor, self) if requestor.has_authenticated?
     end
 
   end
