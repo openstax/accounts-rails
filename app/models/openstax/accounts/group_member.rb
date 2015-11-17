@@ -22,15 +22,15 @@ module OpenStax::Accounts
     end
 
     def create_openstax_accounts_group_member
-      return false unless requestor         # Fail if requestor not set
-      return if requestor.access_token.nil? # Ignore call to Accounts if requestor is temp
+      return false if requestor.nil? || requestor.is_anonymous?
+      return unless requestor.has_authenticated?
 
       OpenStax::Accounts::Api.create_group_member(requestor, self)
     end
 
     def destroy_openstax_accounts_group_member
-      return false unless requestor         # Fail if requestor not set
-      return if requestor.access_token.nil? # Ignore call to Accounts if requestor is temp
+      return false if requestor.nil? || requestor.is_anonymous?
+      return unless requestor.has_authenticated?
 
       OpenStax::Accounts::Api.destroy_group_member(requestor, self)
     end

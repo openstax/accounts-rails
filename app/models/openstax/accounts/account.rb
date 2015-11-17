@@ -32,10 +32,14 @@ module OpenStax::Accounts
 
     def casual_name
       first_name || username
-    end    
+    end
 
     def is_anonymous?
       false
+    end
+
+    def has_authenticated?
+      !access_token.nil?
     end
 
     protected
