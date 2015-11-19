@@ -5,6 +5,12 @@ module OpenStax
       # Base URL for OpenStax Accounts
       attr_reader :openstax_accounts_url
 
+      def openstax_accounts_url=(url)
+        url.gsub!(/https|http/,'https') if !(url =~ /localhost/)
+        url = url + "/" if url[url.size-1] != '/'
+        @openstax_accounts_url = url
+      end
+
       # openstax_application_id
       # OAuth client_id received from OpenStax Accounts
       attr_accessor :openstax_application_id
@@ -47,10 +53,18 @@ module OpenStax
       # If more would be returned, the result will be empty instead
       attr_accessor :max_search_items
 
-      def openstax_accounts_url=(url)
-        url.gsub!(/https|http/,'https') if !(url =~ /localhost/)
-        url = url + "/" if url[url.size-1] != '/'
-        @openstax_accounts_url = url
+      # logout_redirect_url
+      # A URL to redirect to after the app logs out, can be a string or a Proc.
+      # If a Proc (or lambda), it will be called with the logout request.
+      # If this field is nil or if the Proc returns nil, the logout will redirect
+      # to the default Accounts logout URL.
+      attr_writer :logout_redirect_url
+
+      def logout_redirect_url(request)
+        (@logout_redirect_url.is_a?(Proc) ?
+           @logout_redirect_url.call(request) :
+           @logout_redirect_url) ||
+        URI.join(openstax_accounts_url, "logout").to_s
       end
 
       def initialize
@@ -66,6 +80,7 @@ module OpenStax
         @account_user_mapper = OpenStax::Accounts::DefaultAccountUserMapper
         @min_search_characters = 3
         @max_search_items = 10
+        @logout_redirect_url = nil
         super
       end
 
