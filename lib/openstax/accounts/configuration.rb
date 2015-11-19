@@ -64,6 +64,10 @@ module OpenStax
         (@logout_redirect_url.is_a?(Proc) ?
            @logout_redirect_url.call(request) :
            @logout_redirect_url) ||
+        default_logout_redirect_url
+      end
+
+      def default_logout_redirect_url
         URI.join(openstax_accounts_url, "logout").to_s
       end
 
