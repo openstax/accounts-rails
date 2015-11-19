@@ -1,5 +1,5 @@
 module OpenStax
   module Accounts
-    VERSION = "6.1.7"
+    VERSION = "6.2.0"
   end
 end

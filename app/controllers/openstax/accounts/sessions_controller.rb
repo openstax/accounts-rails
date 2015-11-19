@@ -3,7 +3,7 @@ module OpenStax
     class SessionsController < OpenStax::Accounts::ApplicationController
 
       def new
-        if OpenStax::Accounts.configuration.enable_stubbing?
+        if configuration.enable_stubbing?
           redirect_to dev_accounts_path
         else
           store_fallback key: :accounts_return_to, strategies: [:session]
@@ -26,17 +26,12 @@ module OpenStax
       def destroy
         sign_out!
 
-        # If we're using the Accounts server, need to sign out of it so can't 
-        # log back in automagically
-        if OpenStax::Accounts.configuration.enable_stubbing?
-          redirect_to main_app.root_url
-        else
-          redirect_to(
-            OpenStax::Utilities.generate_url(
-              OpenStax::Accounts.configuration.openstax_accounts_url, "logout"
-            )
-          )
-        end
+        # Unless we are stubbing, we redirect to a configurable URL, which is normally
+        # (or at least eventually) the Accounts logout URL so that users can't sign back
+        # in automagically.
+        redirect_to configuration.enable_stubbing? ?
+                    main_app.root_url :
+                    configuration.logout_redirect_url(request)
       end
 
       def failure
@@ -46,9 +41,7 @@ module OpenStax
 
       def profile
         # TODO: stub profile if stubbing is enabled
-        redirect_to(URI.join(
-          OpenStax::Accounts.configuration.openstax_accounts_url, "/profile"
-        ).to_s)
+        redirect_to URI.join(configuration.openstax_accounts_url, "/profile").to_s
       end
 
     end

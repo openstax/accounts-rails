@@ -7,6 +7,10 @@ module OpenStax
 
       skip_before_filter :authenticate_user!
 
+      def configuration
+        OpenStax::Accounts.configuration
+      end
+
     end
 
   end
