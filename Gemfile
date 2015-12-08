@@ -15,3 +15,6 @@ gem "jquery-rails"
 
 # To use debugger
 gem 'byebug'
+
+gem "lev", github: 'lml/lev', branch: 'ground-up-exercise' #">= 2.2.1"
+gem "openstax_utilities", github: 'openstax/openstax_utilities', branch: 'new-lev'

@@ -1,13 +1,10 @@
-<% total_count = @handler_result.outputs[:total_count]
-   accounts = @handler_result.outputs[:items] %>
-
 <div id='search-results-count'>
-  <%= pluralize(total_count, 'user') %> found.
+  <%= pluralize(@handler_result.total_count, 'user') %> found.
 </div>
 
 <div id='search-results-list'>
   <%= osu.action_list(
-        records: accounts,
+        records: @handler_result.items,
         list: {
           headings: ['UID', 'Username (click to sign in as)', 'Name'],
           widths: ['20%', '40%', '40%'],

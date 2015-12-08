@@ -11,10 +11,8 @@ module OpenStax
         'created_at' => :created_at
       }
 
-      lev_routine
-
-      uses_routine OSU::SearchAndOrganizeRelation, as: :search,
-                   translations: { outputs: { type: :verbatim } }
+      lev_routine outputs: { _verbatim: { name: OSU::SearchAndOrganizeRelation,
+                                          as: :search } }
 
       def exec(*args)
         params = args.last.is_a?(Hash) ? args.pop : {}

@@ -2,7 +2,7 @@ module OpenStax
   module Accounts
     class FindOrCreateAccount
 
-      lev_routine
+      lev_routine outputs: { account: :_self }
 
       protected
 
@@ -41,7 +41,7 @@ module OpenStax
         end
 
         transfer_errors_from(account, {type: :verbatim}, true)
-        outputs[:account] = account
+        set(account: account)
       end
 
     end

@@ -2,7 +2,7 @@ module OpenStax
   module Accounts
     class CreateGroup
 
-      lev_routine express_output: :group
+      lev_routine outputs: { group: :_self }
 
       protected
 
@@ -18,7 +18,7 @@ module OpenStax
         group.save
 
         transfer_errors_from(group, {type: :verbatim}, true)
-        outputs.group = group
+        set(group: group)
       end
 
     end

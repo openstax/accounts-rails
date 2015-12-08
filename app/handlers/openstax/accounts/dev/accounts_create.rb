@@ -4,17 +4,13 @@ module OpenStax
     module Dev
       class AccountsCreate
 
-        lev_handler
+        lev_handler outputs: { _verbatim: { name: OpenStax::Accounts::Dev::CreateAccount,
+                                            as: :create_account } }
 
         paramify :create do
           attribute :username, type: String
           validates :username, presence: true
         end
-
-        uses_routine OpenStax::Accounts::Dev::CreateAccount,
-                     as: :create_account,
-                     translations: { inputs: { scope: :create },
-                                     outputs: { type: :verbatim } }
 
         protected
 

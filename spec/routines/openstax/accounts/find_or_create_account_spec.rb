@@ -15,15 +15,15 @@ module OpenStax
       end
 
       it 'can create users' do
-        account_1 = FindOrCreateAccount.call(email: 'alice@example.com').outputs.account
+        account_1 = FindOrCreateAccount.call(email: 'alice@example.com').account
         expect(account_1).to be_persisted
 
-        account_2 = FindOrCreateAccount.call(username: 'alice').outputs.account
+        account_2 = FindOrCreateAccount.call(username: 'alice').account
         expect(account_2).to be_persisted
         expect(account_1).not_to eq(account_2)
 
         account_3 = FindOrCreateAccount.call(username: 'alice2',
-                                             password: 'abcdefghijklmnop').outputs.account
+                                             password: 'abcdefghijklmnop').account
         expect(account_3).to be_persisted
         expect(account_1).not_to eq(account_3)
         expect(account_2).not_to eq(account_3)

@@ -5,8 +5,8 @@ module OpenStax
   module Accounts
     module Dev
       class CreateAccount
-        lev_routine
-              
+        lev_routine outputs: { account: :_self }
+
         protected
 
         def exec(inputs={})
@@ -28,7 +28,7 @@ module OpenStax
 
           transfer_errors_from(account, {type: :verbatim}, true)
 
-          outputs[:account] = account
+          set(account: account)
         end
 
       end
