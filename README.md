@@ -84,7 +84,7 @@ signed in user (`current_user` and `current_user=` methods).  If you choose to
 create your own custom user object, you can teach this gem how to translate
 between a user object and an account object.
 
-To do this, you need to set a `account_user_mapper` in this configuration.  
+To do this, you need to set a `account_user_mapper` in this configuration.
 
     config.account_user_mapper = MyAccountUserMapper
 
@@ -97,10 +97,10 @@ The account_user_mapper is a class that provides two class methods:
       # If no user exists for this account, one should
       # be created.
     end
-  
+
     def self.user_to_account(user)
       # Converts the given user to an account.
-    end 
+    end
 
 Accounts are never nil. When a user is signed out, the current account is the
 AnonymousAccount (responding true to `is_anonymous?`). You can follow the same
@@ -110,6 +110,20 @@ translations.
 
 The default `account_user_mapper` assumes the account object and
 the user object are the same in your application.
+
+Applications can accept a custom redirect URL on their login route provided by this
+gem.  This is useful when external apps need to authenticate against the application
+but return the user to a URL outside of the application.  To achieve this, the
+external app would redirect their users to the login route with a `return_to` parameter
+appended, e.g. `.../accounts/login?return_to=http://othersite.com`.  The application
+hosting accounts-rails must provide a proc to approve these `return_to` URLs:
+
+    config.return_to_url_approver = ->(url) {
+      url == "http://othersite.com"
+    }
+
+This approver proc should returns true iff the incoming URL is approved.
+
 
 Syncing with Accounts
 ---------------------
@@ -153,8 +167,8 @@ Example Application
 There is an example application included in the gem in the `example` folder.
 Here are the steps to follow:
 
-1. Download (clone) the OpenStax Accounts site from github.com/openstax/accounts.  
-1. In the site's `config` folder put a `secret_settings.yml` file that has values for the 
+1. Download (clone) the OpenStax Accounts site from github.com/openstax/accounts.
+1. In the site's `config` folder put a `secret_settings.yml` file that has values for the
 following keys: `facebook_app_id`, `facebook_app_secret`, `twitter_consumer_key`, `twitter_consumer_secret`.  If you don't have access to these values, you can always make dummy apps on facebook and twitter.
 2. Do the normal steps to get this site online:
     1. Run `bundle install --without production`
@@ -163,14 +177,14 @@ following keys: `facebook_app_id`, `facebook_app_secret`, `twitter_consumer_key`
 2. Open this accounts site in a web browser (defaults to http://localhost:2999)
 3. Navigate to http://localhost:2999/oauth/applications
 4. Click `New application`
-    5. Set the callback URL to `http://localhost:4000/accounts/auth/openstax/callback`.  
+    5. Set the callback URL to `http://localhost:4000/accounts/auth/openstax/callback`.
 Port 4000 is where you'll be running the example application.
     1. The name can be whatever.
     2. Click the `Trusted?` checkbox.
     3. Click `Submit`.
     4. Keep this window open so you can copy the application ID and secret into the example app
 5. Leave the accounts app running
-6. Download (clone) the OpenStax Accounts gem from github.com/openstax/accounts-rails. 
+6. Download (clone) the OpenStax Accounts gem from github.com/openstax/accounts-rails.
 The example application is in the `example` folder.
 In that folder's config folder, create a `secret_settings.yml` file according to the
 instructions in `secret_settings.yml.example`. Run the example server in the normal way (bundle install..., migrate db, rails server).
