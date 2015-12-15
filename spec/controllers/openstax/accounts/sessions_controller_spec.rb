@@ -10,6 +10,7 @@ module OpenStax::Accounts
 
     after(:all) {
       OpenStax::Accounts.configuration.logout_redirect_url = nil
+      OpenStax::Accounts.configuration.return_to_url_approver = nil
     }
 
     it 'should redirect users to the login path' do
@@ -41,6 +42,30 @@ module OpenStax::Accounts
 
       controller.sign_in account
       delete :destroy
+    end
+
+    it 'should store specified url for redirection after to login if approved' do
+      OpenStax::Accounts.configuration.return_to_url_approver = ->(url) { true }
+      allow(OpenStax::Accounts.configuration).to receive(:enable_stubbing?) {false}
+      get :new, return_to: "https://woohoo"
+      expect(session["accounts_return_to"]).to eq "https://woohoo"
+    end
+
+    it 'should not store specified url for redirection after login if not approved' do
+      OpenStax::Accounts.configuration.return_to_url_approver = ->(url) { false }
+      allow(OpenStax::Accounts.configuration).to receive(:enable_stubbing?) {false}
+      get :new, return_to: "https://woohoo"
+      expect(session["accounts_return_to"]).to eq nil
+    end
+
+    it 'should give the return_to url to the config approver' do
+      my_lambda = ->(url) { true }
+      OpenStax::Accounts.configuration.return_to_url_approver = my_lambda
+
+      allow(OpenStax::Accounts.configuration).to receive(:enable_stubbing?) {false}
+      expect(my_lambda).to receive(:call).with("http://jimmy")
+
+      get :new, return_to: 'http://jimmy'
     end
   end
 end

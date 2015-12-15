@@ -24,6 +24,16 @@ module OpenStax
         expect(config.logout_redirect_url(a_fake_request)).to eq "howdy"
       end
 
+      it "says return_to urls not approved when nil" do
+        config.return_to_url_approver = ->(url) { true }
+        expect(config.is_return_to_url_approved?(nil)).to be_falsy
+      end
+
+      it "says return_to urls not approved when approver nil" do
+        config.return_to_url_approver = nil
+        expect(config.is_return_to_url_approved?("http://www.google.com")).to be_falsy
+      end
+
     end
   end
 end

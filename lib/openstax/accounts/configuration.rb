@@ -71,6 +71,14 @@ module OpenStax
         URI.join(openstax_accounts_url, "logout").to_s
       end
 
+      attr_writer :return_to_url_approver
+
+      def is_return_to_url_approved?(return_to_url)
+        return_to_url &&
+        @return_to_url_approver.is_a?(Proc) &&
+        @return_to_url_approver.call(return_to_url)
+      end
+
       def initialize
         @openstax_application_id = 'SET ME!'
         @openstax_application_secret = 'SET ME!'
@@ -85,6 +93,7 @@ module OpenStax
         @min_search_characters = 3
         @max_search_items = 10
         @logout_redirect_url = nil
+        @return_to_url_approver = nil
         super
       end
 
