@@ -6,6 +6,9 @@ module OpenStax
         if configuration.enable_stubbing?
           redirect_to dev_accounts_path
         else
+          if configuration.is_return_to_url_approved?(params[:return_to])
+            store_url url: params[:return_to], key: :accounts_return_to, strategies: [:session]
+          end
           store_fallback key: :accounts_return_to, strategies: [:session]
           redirect_to openstax_login_path
         end
