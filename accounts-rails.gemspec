@@ -23,9 +23,7 @@ Gem::Specification.new do |s|
   s.add_dependency "squeel", ">= 0.5.0"
   s.add_dependency "representable", ">= 2.0"
   s.add_dependency "roar", ">= 1.0"
-  s.add_dependency "lev", ">= 2.2.1"
   s.add_dependency "keyword_search", ">= 1.0.0"
-  s.add_dependency "openstax_utilities", ">= 4.1.0"
   s.add_dependency "openstax_api", ">= 3.1.0"
   s.add_dependency "action_interceptor", ">= 1.0"
 

@@ -4,7 +4,6 @@ module OpenStax
   module Accounts
 
     describe AccountsSearch do
-      
       let!(:account_1)          { FactoryGirl.create :openstax_accounts_account,
                                                   first_name: 'John',
                                                   last_name: 'Stravinsky',
@@ -34,26 +33,24 @@ module OpenStax
       }
 
       it "should match based on username" do
-        outputs = AccountsSearch.call(params: {search: {query: "username:jstra"}}).outputs
-        expect(outputs.total_count).to eq 1
-        expect(outputs.items).to eq [account_1]
+        result = AccountsSearch.call(params: {search: {query: "username:jstra"}})
+        expect(result.total_count).to eq 1
+        expect(result.items).to eq [account_1]
       end
 
       it "should return no results if the query is too short" do
         routine = AccountsSearch.call(params: {search: {query: ""}})
-        outputs = routine.outputs
         errors = routine.errors
-        expect(outputs.total_count).to be_nil
-        expect(outputs.items).to be_nil
+        expect(routine.total_count).to be_nil
+        expect(routine.items).to be_nil
         expect(errors.last.code).to eq :query_too_short
       end
 
       it "should return no results if the limit is exceeded" do
         routine = AccountsSearch.call(params: {search: {query: "billy"}})
-        outputs = routine.outputs
         errors = routine.errors
-        expect(outputs.total_count).to eq 50
-        expect(outputs.items).to be_nil
+        expect(routine.total_count).to eq 50
+        expect(routine.items).to be_nil
         expect(errors.last.code).to eq :too_many_items
       end
 

@@ -2,6 +2,8 @@ module OpenStax
   module Accounts
     module Dev
       class AccountsSearch < OpenStax::Accounts::AccountsSearch
+        lev_handler outputs: { _verbatim: { name: OpenStax::Accounts::SearchAccounts,
+                                            as: :search } }
 
         paramify :search do
           attribute :type, type: String

@@ -13,7 +13,7 @@ module OpenStax
       let!(:owner) { FactoryGirl.create :openstax_accounts_account }
 
       it 'can create groups' do
-        group = CreateGroup[owner: owner, name: 'Test', is_public: true]
+        group = CreateGroup.call(owner: owner, name: 'Test', is_public: true).group
         expect(group).to be_persisted
 
         expect(group.name).to eq 'Test'

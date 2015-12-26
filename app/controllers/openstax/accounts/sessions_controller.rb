@@ -18,7 +18,7 @@ module OpenStax
         handle_with(
           SessionsCallback,
             success: lambda {
-              sign_in(@handler_result.outputs[:account])
+              sign_in(@handler_result.account)
               redirect_back key: :accounts_return_to, strategies: [:session]
             },
             failure: lambda {

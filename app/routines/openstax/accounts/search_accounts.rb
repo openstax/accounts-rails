@@ -1,13 +1,10 @@
 module OpenStax
   module Accounts
     class SearchAccounts
-      
-      lev_routine transaction: :no_transaction
 
-      uses_routine SearchLocalAccounts,
-                   as: :local_search,
-                   translations: { outputs: { type: :verbatim } }
-      
+      lev_routine outputs: { _verbatim: { name: SearchLocalAccounts, as: :local_search } },
+                  transaction: :no_transaction
+
       protected
 
       def exec(*args)
@@ -23,7 +20,7 @@ module OpenStax
           # Delegate to Accounts
           response = OpenStax::Accounts::Api.search_application_accounts(query)
           OpenStax::Accounts::Api::V1::AccountSearchRepresenter \
-            .new(outputs).from_json(response.body)
+            .new(result).from_json(response.body)
         else
           # Local search
           run(:local_search, params)
