@@ -14,7 +14,7 @@ module OpenStax
 
       protected
 
-      def initialize
+      def setup
         @min_characters = \
           OpenStax::Accounts.configuration.min_search_characters
         @max_items = OpenStax::Accounts.configuration.max_search_items
