@@ -13,7 +13,7 @@ module OpenStax
 
         protected
 
-        def initialize
+        def setup
           @min_characters = nil
           @max_items = nil
         end
