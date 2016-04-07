@@ -47,8 +47,8 @@ module OpenStax
           store_url key: :accounts_return_to, strategies: [:session]
 
           respond_to do |format|
-            format.html { redirect_to openstax_accounts.login_url }
             format.json { head(:forbidden) }
+            format.any  { redirect_to openstax_accounts.login_url }
           end
         end
 
