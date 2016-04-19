@@ -13,5 +13,7 @@ gem "jquery-rails"
 # Git. Remember to move these dependencies to your gemspec before releasing
 # your gem to rubygems.org.
 
-# To use debugger
-gem 'byebug'
+group :development, :test do
+  # To use debugger
+  gem 'byebug'
+end
