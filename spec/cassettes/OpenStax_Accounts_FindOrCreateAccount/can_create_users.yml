@@ -2,15 +2,17 @@
 http_interactions:
 - request:
     method: post
-    uri: http://secret:secret@localhost:2999/oauth/token
+    uri: http://localhost:2999/oauth/token
     body:
       encoding: UTF-8
       string: grant_type=client_credentials
     headers:
       User-Agent:
-      - Faraday v0.9.1
+      - Faraday v0.9.2
       Content-Type:
       - application/x-www-form-urlencoded
+      Authorization:
+      - Basic c2VjcmV0OnNlY3JldA==
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
       Accept:
@@ -26,77 +28,83 @@ http_interactions:
       - no-cache
       Content-Type:
       - application/json; charset=utf-8
+      P3p:
+      - CP="NOI ADM DEV PSAi COM NAV OUR OTRo STP IND DEM"
       X-Ua-Compatible:
       - IE=Edge
       Etag:
-      - '"a5858bbdfc70a576990fb6a4199bd3ec"'
+      - '"4d3718fd0478ef136de460e558d5c8d7"'
       X-Request-Id:
-      - 086fd9cd39adbef2aaefd93c36541e05
+      - 249cad60b7aebb41386944e6b96e58b9
       X-Runtime:
-      - '0.097231'
+      - '0.016859'
       Connection:
       - close
       Server:
-      - thin 1.5.1 codename Straight Razor
+      - thin
     body:
       encoding: UTF-8
-      string: '{"access_token":"7bac608db1ed74cda2d1f1cc343b1b42ab98e2ade5a81354ee42b97254d80f27","token_type":"bearer"}'
+      string: '{"access_token":"62eff19592e9e0cfdf08b43d4829d47ad0d321f78ad6e81b37199db94c3d5531","token_type":"bearer","created_at":1462315169}'
     http_version: 
-  recorded_at: Wed, 15 Apr 2015 15:44:43 GMT
+  recorded_at: Tue, 03 May 2016 22:39:29 GMT
 - request:
     method: post
     uri: http://localhost:2999/api/user/find-or-create
     body:
       encoding: UTF-8
-      string: '{"email":"alice@example.com"}'
+      string: '{"email":"alice@example.com","username":null,"password":null,"first_name":null,"last_name":null,"full_name":null}'
     headers:
       User-Agent:
-      - Faraday v0.9.1
+      - Faraday v0.9.2
       Accept:
       - application/vnd.accounts.openstax.v1
       Authorization:
-      - Bearer 7bac608db1ed74cda2d1f1cc343b1b42ab98e2ade5a81354ee42b97254d80f27
+      - Bearer 62eff19592e9e0cfdf08b43d4829d47ad0d321f78ad6e81b37199db94c3d5531
       Content-Type:
       - application/x-www-form-urlencoded
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
   response:
     status:
-      code: 200
-      message: OK
+      code: 201
+      message: Created
     headers:
       Content-Type:
       - application/json; charset=utf-8
+      P3p:
+      - CP="NOI ADM DEV PSAi COM NAV OUR OTRo STP IND DEM"
       X-Ua-Compatible:
       - IE=Edge
       Etag:
-      - '"4f56edcb1558d4df2f77295f86059006"'
+      - '"32010082256a713244a9f66180c4631e"'
       Cache-Control:
       - max-age=0, private, must-revalidate
       X-Request-Id:
-      - 76cbbdb3664feb1e450343d9d42ec550
+      - 7791a847ebc816bb146145e5f92fe7af
       X-Runtime:
-      - '0.282521'
+      - '0.030350'
       Connection:
       - close
       Server:
-      - thin 1.5.1 codename Straight Razor
+      - thin
     body:
       encoding: UTF-8
-      string: '{"id":2}'
+      string: '{"id":52}'
     http_version: 
-  recorded_at: Wed, 15 Apr 2015 15:44:44 GMT
+  recorded_at: Tue, 03 May 2016 22:39:29 GMT
 - request:
     method: post
-    uri: http://secret:secret@localhost:2999/oauth/token
+    uri: http://localhost:2999/oauth/token
     body:
       encoding: UTF-8
       string: grant_type=client_credentials
     headers:
       User-Agent:
-      - Faraday v0.9.1
+      - Faraday v0.9.2
       Content-Type:
       - application/x-www-form-urlencoded
+      Authorization:
+      - Basic c2VjcmV0OnNlY3JldA==
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
       Accept:
@@ -112,77 +120,83 @@ http_interactions:
       - no-cache
       Content-Type:
       - application/json; charset=utf-8
+      P3p:
+      - CP="NOI ADM DEV PSAi COM NAV OUR OTRo STP IND DEM"
       X-Ua-Compatible:
       - IE=Edge
       Etag:
-      - '"4023cea7ef0c3779a4f6e5174ab9c869"'
+      - '"db04ae46157ec6201ca409769f9016d8"'
       X-Request-Id:
-      - e4d1e50de1a79fa82d72658652e4aa16
+      - b1535a57c791c79854f6c336af0bc4fd
       X-Runtime:
-      - '0.008763'
+      - '0.010447'
       Connection:
       - close
       Server:
-      - thin 1.5.1 codename Straight Razor
+      - thin
     body:
       encoding: UTF-8
-      string: '{"access_token":"ba3d809ab8a1a98f87ee3f61f36a20ac4ca5fce8227631e34ad54471473d2d06","token_type":"bearer"}'
+      string: '{"access_token":"8775df1803c483f2c200833d73be5a6a47ee5734c13954b608a61c6a32b77a87","token_type":"bearer","created_at":1462315169}'
     http_version: 
-  recorded_at: Wed, 15 Apr 2015 15:44:44 GMT
+  recorded_at: Tue, 03 May 2016 22:39:29 GMT
 - request:
     method: post
     uri: http://localhost:2999/api/user/find-or-create
     body:
       encoding: UTF-8
-      string: '{"username":"alice"}'
+      string: '{"email":null,"username":"alice","password":null,"first_name":null,"last_name":null,"full_name":null}'
     headers:
       User-Agent:
-      - Faraday v0.9.1
+      - Faraday v0.9.2
       Accept:
       - application/vnd.accounts.openstax.v1
       Authorization:
-      - Bearer ba3d809ab8a1a98f87ee3f61f36a20ac4ca5fce8227631e34ad54471473d2d06
+      - Bearer 8775df1803c483f2c200833d73be5a6a47ee5734c13954b608a61c6a32b77a87
       Content-Type:
       - application/x-www-form-urlencoded
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
   response:
     status:
-      code: 200
-      message: OK
+      code: 201
+      message: Created
     headers:
       Content-Type:
       - application/json; charset=utf-8
+      P3p:
+      - CP="NOI ADM DEV PSAi COM NAV OUR OTRo STP IND DEM"
       X-Ua-Compatible:
       - IE=Edge
       Etag:
-      - '"a7f153d21e6c7effbc234f3242315d32"'
+      - '"e773f5532f2567755653d537dac4a60b"'
       Cache-Control:
       - max-age=0, private, must-revalidate
       X-Request-Id:
-      - eb6294b4773cc983df1965624bac57ad
+      - e5706745ca116b03fa6c1b69557a40f9
       X-Runtime:
-      - '0.054532'
+      - '0.027753'
       Connection:
       - close
       Server:
-      - thin 1.5.1 codename Straight Razor
+      - thin
     body:
       encoding: UTF-8
-      string: '{"id":3}'
+      string: '{"id":53}'
     http_version: 
-  recorded_at: Wed, 15 Apr 2015 15:44:44 GMT
+  recorded_at: Tue, 03 May 2016 22:39:29 GMT
 - request:
     method: post
-    uri: http://secret:secret@localhost:2999/oauth/token
+    uri: http://localhost:2999/oauth/token
     body:
       encoding: UTF-8
       string: grant_type=client_credentials
     headers:
       User-Agent:
-      - Faraday v0.9.1
+      - Faraday v0.9.2
       Content-Type:
       - application/x-www-form-urlencoded
+      Authorization:
+      - Basic c2VjcmV0OnNlY3JldA==
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
       Accept:
@@ -198,64 +212,68 @@ http_interactions:
       - no-cache
       Content-Type:
       - application/json; charset=utf-8
+      P3p:
+      - CP="NOI ADM DEV PSAi COM NAV OUR OTRo STP IND DEM"
       X-Ua-Compatible:
       - IE=Edge
       Etag:
-      - '"e9cab2e070f5610a194021934aef2879"'
+      - '"ce964e7db2a0f7f30e6ba0a48b4e2288"'
       X-Request-Id:
-      - c815b72269759776229c3f1fb0b48c1f
+      - d5da0cb12baeca40f42dcaf8278cf410
       X-Runtime:
-      - '0.009257'
+      - '0.014209'
       Connection:
       - close
       Server:
-      - thin 1.5.1 codename Straight Razor
+      - thin
     body:
       encoding: UTF-8
-      string: '{"access_token":"3d2a2c3934d78bd21d85a441e2a2043923f66f63be84b3d3b5f25388af40d8d8","token_type":"bearer"}'
+      string: '{"access_token":"b7c5ce6a934afb2274976c59a0be9f7302b65a013b213ca43068f257fb6e025b","token_type":"bearer","created_at":1462315169}'
     http_version: 
-  recorded_at: Wed, 15 Apr 2015 15:44:44 GMT
+  recorded_at: Tue, 03 May 2016 22:39:29 GMT
 - request:
     method: post
     uri: http://localhost:2999/api/user/find-or-create
     body:
       encoding: UTF-8
-      string: '{"username":"alice2","password":"abcdefghijklmnop"}'
+      string: '{"email":null,"username":"alice2","password":"abcdefghijklmnop","first_name":null,"last_name":null,"full_name":null}'
     headers:
       User-Agent:
-      - Faraday v0.9.1
+      - Faraday v0.9.2
       Accept:
       - application/vnd.accounts.openstax.v1
       Authorization:
-      - Bearer 3d2a2c3934d78bd21d85a441e2a2043923f66f63be84b3d3b5f25388af40d8d8
+      - Bearer b7c5ce6a934afb2274976c59a0be9f7302b65a013b213ca43068f257fb6e025b
       Content-Type:
       - application/x-www-form-urlencoded
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
   response:
     status:
-      code: 200
-      message: OK
+      code: 201
+      message: Created
     headers:
       Content-Type:
       - application/json; charset=utf-8
+      P3p:
+      - CP="NOI ADM DEV PSAi COM NAV OUR OTRo STP IND DEM"
       X-Ua-Compatible:
       - IE=Edge
       Etag:
-      - '"cd51039fde58b80cf261c3f1a99da3ef"'
+      - '"113a43af89a575a4de9d701e79ea00b2"'
       Cache-Control:
       - max-age=0, private, must-revalidate
       X-Request-Id:
-      - cabaea92fc03f74001752c9ee48838a2
+      - 203238eaa5500b54f6122aa9138b62f2
       X-Runtime:
-      - '0.011566'
+      - '0.034642'
       Connection:
       - close
       Server:
-      - thin 1.5.1 codename Straight Razor
+      - thin
     body:
       encoding: UTF-8
-      string: '{"id":4}'
+      string: '{"id":54}'
     http_version: 
-  recorded_at: Wed, 15 Apr 2015 15:44:44 GMT
-recorded_with: VCR 2.9.3
+  recorded_at: Tue, 03 May 2016 22:39:29 GMT
+recorded_with: VCR 3.0.1
