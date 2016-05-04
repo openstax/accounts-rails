@@ -36,7 +36,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "quiet_assets"
   s.add_development_dependency "thin"
   s.add_development_dependency "responders"
-  s.add_development_dependency "webmock"
+  s.add_development_dependency "webmock", ">=2.0.1"
   s.add_development_dependency "vcr"
   s.add_development_dependency "byebug"
 end

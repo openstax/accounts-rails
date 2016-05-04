@@ -19,7 +19,7 @@ module OpenStax
           response = Api.find_or_create_account(
             email: email, username: username, password: password,
             first_name: first_name, last_name: last_name, full_name: full_name)
-          fatal_error(code: :invalid_inputs) unless response.status == 200
+          fatal_error(code: :invalid_inputs) unless (200..202).include?(response.status)
 
           struct = OpenStruct.new
           Api::V1::UnclaimedAccountRepresenter.new(struct).from_json(response.body)
