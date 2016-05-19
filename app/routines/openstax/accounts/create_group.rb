@@ -9,11 +9,11 @@ module OpenStax
       def exec(owner:, name: nil, is_public: false)
         group = OpenStax::Accounts::Group.new(name: name, is_public: is_public)
         group.requestor = owner
-        group.add_member(owner)
-        group.add_owner(owner)
 
-        group.openstax_uid = -SecureRandom.hex(4).to_i(16)/2 \
-          if OpenStax::Accounts.configuration.enable_stubbing? || !owner.has_authenticated?
+        if OpenStax::Accounts.configuration.enable_stubbing? || !owner.has_authenticated?
+          group.openstax_uid = -SecureRandom.hex(4).to_i(16)/2
+          group.add_owner(owner)
+        end
 
         group.save
 

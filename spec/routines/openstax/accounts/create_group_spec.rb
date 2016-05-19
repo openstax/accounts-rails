@@ -19,7 +19,7 @@ module OpenStax
         expect(group.name).to eq 'Test'
         expect(group.is_public).to eq true
         expect(group.owners.first).to eq owner
-        expect(group.members.first).to eq owner
+        expect(group.members).to be_empty
       end
 
       after(:all) do
