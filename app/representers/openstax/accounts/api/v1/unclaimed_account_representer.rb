@@ -3,12 +3,19 @@ module OpenStax
     module Api
       module V1
         class UnclaimedAccountRepresenter < Roar::Decorator
+
+          # This representer is used to communicate with Accounts
+          # and so must allow read/write on all properties
+
           include Roar::JSON
 
           property :id,
                    type: Integer,
-                   readable: true,
-                   writeable: true
+                   schema_info: {
+                     description: "The unclaimed account's unique ID number",
+                     required: true
+                   }
+
         end
       end
     end

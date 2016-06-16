@@ -4,14 +4,16 @@ module OpenStax
       module V1
         class ApplicationAccountSearchRepresenter < AccountSearchRepresenter
 
+          # This representer is used to communicate with Accounts
+          # and so must allow read/write on all properties
+
           collection :application_accounts,
                      as: :application_users,
                      class: OpenStax::Accounts::ApplicationAccount,
                      decorator: ApplicationAccountRepresenter,
-                     writeable: true,
-                     readable: true,
                      schema_info: {
                        description: "The accounts of matching users that have used this app",
+                       required: true,
                        minItems: 0
                      }
 
