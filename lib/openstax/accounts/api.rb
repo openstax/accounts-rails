@@ -261,7 +261,7 @@ module OpenStax
         @client ||= OAuth2::Client.new(
           OpenStax::Accounts.configuration.openstax_application_id,
           OpenStax::Accounts.configuration.openstax_application_secret,
-          :site => OpenStax::Accounts.configuration.openstax_accounts_url
+          site: OpenStax::Accounts.configuration.openstax_accounts_url
         )
       end
 
