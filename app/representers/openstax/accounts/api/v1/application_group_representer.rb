@@ -24,11 +24,10 @@ module OpenStax
                    }
 
           property :group,
-                   class: OpenStax::Accounts::Group,
-                   decorator: GroupRepresenter,
                    instance: ->(*) do
                      OpenStax::Accounts::Group.new.tap{ |group| group.syncing = true }
                    end,
+                   decorator: GroupRepresenter,
                    schema_info: {
                      description: "The associated group",
                      required: true

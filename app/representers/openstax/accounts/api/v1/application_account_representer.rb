@@ -25,10 +25,10 @@ module OpenStax
 
           property :account,
                    as: :user,
-                   decorator: AccountRepresenter,
                    instance: ->(*) do
                      OpenStax::Accounts::Account.new.tap{ |account| account.syncing = true }
                    end,
+                   decorator: AccountRepresenter,
                    schema_info: {
                      description: "The associated account",
                      required: true
