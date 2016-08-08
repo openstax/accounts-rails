@@ -3,8 +3,8 @@ require 'spec_helper'
 module OpenStax
   module Accounts
 
-    describe SearchAccounts do
-      
+    describe SearchAccounts, type: :routine do
+
       let!(:account_1)          { FactoryGirl.create :openstax_accounts_account,
                                                   first_name: 'John',
                                                   last_name: 'Stravinsky',

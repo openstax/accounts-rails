@@ -3,7 +3,7 @@ require 'spec_helper'
 module OpenStax
   module Accounts
 
-    describe SyncGroups do
+    describe SyncGroups, type: :routine do
 
       it 'can sync groups' do
         controller_class = ::Api::ApplicationGroupsController

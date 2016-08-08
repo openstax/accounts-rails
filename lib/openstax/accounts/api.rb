@@ -18,7 +18,8 @@ module OpenStax
         unless version.blank?
           options[:headers] ||= {}
           options[:headers].merge!({
-            'Accept' => "application/vnd.accounts.openstax.#{version.to_s}"
+            'Accept' => "application/vnd.accounts.openstax.#{version.to_s}",
+            'Content-Type' => 'application/json'
           })
         end
 
@@ -44,7 +45,7 @@ module OpenStax
       # On failure, throws an Exception, just like the request method.
       # On success, returns an OAuth2::Response object.
       def self.search_accounts(query, options = {})
-        request(:get, 'users', options.merge(params: {:q => query}))
+        request(:get, 'users', options.merge(params: {q: query}))
       end
 
       # Updates a user account in the Accounts server.
@@ -68,7 +69,7 @@ module OpenStax
       # On failure, throws an Exception, just like the request method.
       # On success, returns an OAuth2::Response object.
       def self.search_application_accounts(query, options = {})
-        request(:get, 'application_users', options.merge(params: {:q => query}))
+        request(:get, 'application_users', options.merge(params: {q: query}))
       end
 
       # Retrieves information about accounts that have been

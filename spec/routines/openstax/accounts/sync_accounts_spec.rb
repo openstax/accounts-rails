@@ -3,7 +3,7 @@ require 'spec_helper'
 module OpenStax
   module Accounts
 
-    describe SyncAccounts do
+    describe SyncAccounts, type: :routine do
 
       it 'can sync accounts' do
         controller_class = ::Api::ApplicationUsersController
@@ -15,7 +15,8 @@ module OpenStax
                                         {id: 3, application_id: 1,
                                         user: {id: 4, username: 'fuego'},
                                         unread_updates: 2, default_contact_info_id: 5}]
-          end)
+          end
+        )
 
         account = OpenStax::Accounts::Account.new
         account.username = 'u'
