@@ -6,8 +6,8 @@
     color:     black;
     font-size: $heading_font_size;
 
-    a { 
-      font-size: $heading_font_size; 
+    a {
+      font-size: $heading_font_size;
     }
   }
 
@@ -29,7 +29,38 @@
     font-style: italic;
   }
 }
+@keyframes move {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 28px 0;
+  }
+}
 
 #search-results-list {
   text-align: center;
+  &:before {
+    visibility: hidden;
+    content: " ";
+    display: block;
+    width: 100%;
+    margin: 0 40px;
+    height: 10px;
+    border: 1px solid #2980b9;
+    border-radius: 3px;
+    background-image:
+    repeating-linear-gradient(
+        -45deg,
+        #2980b9,
+        #2980b9 11px,
+        #eee 10px,
+        #eee 20px /* determines size */
+      );
+    background-size: 28px 28px;
+    animation: move .5s linear infinite;
+  }
+  &.loading {
+    &:before { visibility: visible; }
+  }
 }
