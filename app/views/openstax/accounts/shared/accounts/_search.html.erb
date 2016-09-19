@@ -17,11 +17,24 @@
 
   <div class="form-group">
     <%= f.label :query, 'Search for' %>&nbsp;
-    <%= f.search_field :query, style: 'width:300px' %>&nbsp;
+    <%= f.search_field :query, autofocus: true, style: 'width:300px' %>&nbsp;
     <%= f.label :type, 'in' %>&nbsp;
-    <%= f.select :type, search_types, {}, {style: 'width: 150px'} %>&nbsp;
+    <%= f.select :type, search_types, {}, {tabindex: -1, style: 'width: 150px'} %>&nbsp;
 
-    <%= f.submit 'Search', class: 'btn btn-primary' %>
+    <%= f.submit 'Search', tabindex: -1, class: 'btn btn-primary' %>
   </div>
 
 <% end %>
+
+
+<script>
+  var input = $('input[name="search[query]"]');
+  var form  = $("#search-form");
+  input.keyup(function(){
+    var results = $('#search-results-list');
+    results.addClass('loading');
+    $.get(form.attr("action"), form.serialize(), null, 'script').then(function(){
+      results.removeClass('loading');
+    });
+  })
+</script>
