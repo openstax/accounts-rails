@@ -28,6 +28,15 @@ module OpenStax
             account.full_name    = @auth_data.info.name
             account.title        = @auth_data.info.title
             account.access_token = @auth_data.credentials.token
+
+            # Gracefully handle absent and unknown faculty status info
+            if @auth_data.extra.raw_info.present?
+              begin
+                account.faculty_status = @auth_data.extra.raw_info['faculty_status'] || :no_faculty_info
+              rescue ArgumentError => ee
+                account.faculty_status = :no_faculty_info
+              end
+            end
           end
         rescue ActiveRecord::RecordNotUnique
           retry
