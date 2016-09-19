@@ -3,7 +3,7 @@ require 'spec_helper'
 module OpenStax
   module Accounts
 
-    describe CreateGroup do
+    describe CreateGroup, type: :routine do
 
       before(:all) do
         @previous_enable_stubbing = OpenStax::Accounts.configuration.enable_stubbing

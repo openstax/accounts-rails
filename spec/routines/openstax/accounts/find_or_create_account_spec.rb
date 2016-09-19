@@ -4,7 +4,7 @@ require 'vcr_helper'
 module OpenStax
   module Accounts
 
-    describe FindOrCreateAccount, vcr: VCR_OPTS do
+    describe FindOrCreateAccount, type: :routine, vcr: VCR_OPTS do
 
       before(:all) do
         @previous_url = OpenStax::Accounts.configuration.openstax_accounts_url

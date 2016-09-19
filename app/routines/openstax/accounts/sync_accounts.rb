@@ -7,13 +7,12 @@ module OpenStax
 
     class SyncAccounts
 
-      SYNC_ATTRIBUTES = ['username', 'first_name', 'last_name',
-                         'full_name', 'title']
+      SYNC_ATTRIBUTES = ['username', 'first_name', 'last_name', 'full_name', 'title']
 
       lev_routine transaction: :no_transaction
-      
+
       protected
-      
+
       def exec(options={})
 
         return if OpenStax::Accounts.configuration.enable_stubbing?
@@ -43,12 +42,10 @@ module OpenStax
           next unless account.save
 
           updated_app_accounts << {user_id: account.openstax_uid,
-                                  read_updates: app_account.unread_updates}
+                                   read_updates: app_account.unread_updates}
         end
 
-        OpenStax::Accounts::Api.mark_account_updates_as_read(
-          updated_app_accounts
-        )
+        OpenStax::Accounts::Api.mark_account_updates_as_read(updated_app_accounts)
 
       end
 
