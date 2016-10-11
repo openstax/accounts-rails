@@ -32,22 +32,13 @@ module OmniAuth
       end
 
       extra do
-        hash = {}
-        hash['raw_info'] = raw_info
-        prune! hash
+        {
+          'raw_info' => raw_info
+        }
       end
 
       def raw_info
         @raw_info ||= access_token.get('/api/user.json').parsed
-      end
-
-      protected
-
-      def prune!(hash)
-        hash.delete_if do |_, value|
-          prune!(value) if value.is_a?(Hash)
-          value.nil? || (value.respond_to?(:empty?) && value.empty?)
-        end
       end
 
     end

@@ -12,7 +12,9 @@ module OpenStax
         end
 
         it "should deal with faculty status that is not present" do
-          result = described_class.handle(request: mock_omniauth_request(faculty_status: nil))
+          request = mock_omniauth_request()
+          remove_faculty_status!(request)
+          result = described_class.handle(request: request)
           expect(result.outputs.account).to be_no_faculty_info
         end
       end

@@ -42,11 +42,11 @@ end
 
 
 def mock_omniauth_request(uid: nil, first_name: nil, last_name: nil, title: nil, nickname: nil, faculty_status: nil)
-  extra_hash = prune!({
+  extra_hash = {
     'raw_info' => {
       'faculty_status' => faculty_status
     }
-  })
+  }
 
   OpenStruct.new(
     env: {
@@ -68,9 +68,7 @@ def mock_omniauth_request(uid: nil, first_name: nil, last_name: nil, title: nil,
   )
 end
 
-def prune!(hash)
-  hash.delete_if do |_, value|
-    prune!(value) if value.is_a?(Hash)
-    value.nil? || (value.respond_to?(:empty?) && value.empty?)
-  end
+def remove_faculty_status!(omniauth_request)
+  omniauth_request.env["omniauth.auth"].extra.raw_info.delete("faculty_status")
 end
+
