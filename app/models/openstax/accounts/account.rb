@@ -20,6 +20,10 @@ module OpenStax::Accounts
              inverse_of: :user
     has_many :groups_as_member, through: :group_members, source: :group
 
+    enum faculty_status: [:no_faculty_info, :pending_faculty, :confirmed_faculty, :rejected_faculty]
+    after_initialize { self.faculty_status ||= :no_faculty_info }
+    validates :faculty_status, presence: true
+
     validates :openstax_uid, :presence => true, :uniqueness => true
     validates :username, :presence => true, :uniqueness => true,
                          :unless => :syncing_or_stubbing

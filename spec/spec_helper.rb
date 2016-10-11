@@ -39,3 +39,36 @@ RSpec.configure do |config|
   #     --seed 1234
   config.order = "random"
 end
+
+
+def mock_omniauth_request(uid: nil, first_name: nil, last_name: nil, title: nil, nickname: nil, faculty_status: nil)
+  extra_hash = {
+    'raw_info' => {
+      'faculty_status' => faculty_status
+    }
+  }
+
+  OpenStruct.new(
+    env: {
+      'omniauth.auth' => OpenStruct.new({
+        uid: uid || SecureRandom.hex(4),
+        provider: "openstax",
+        info: OpenStruct.new({
+          nickname: nickname || "",
+          first_name: first_name || "",
+          last_name: last_name || "",
+          title: title || ""
+        }),
+        credentials: OpenStruct.new({
+          access_token: "foo"
+        }),
+        extra: OpenStruct.new(extra_hash)
+      })
+    }
+  )
+end
+
+def remove_faculty_status!(omniauth_request)
+  omniauth_request.env["omniauth.auth"].extra.raw_info.delete("faculty_status")
+end
+
