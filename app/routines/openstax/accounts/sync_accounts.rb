@@ -7,7 +7,8 @@ module OpenStax
 
     class SyncAccounts
 
-      SYNC_ATTRIBUTES = ['username', 'first_name', 'last_name', 'full_name', 'title', 'faculty_status']
+      SYNC_ATTRIBUTES = ['username', 'first_name', 'last_name', 'full_name', 'title',
+                         'faculty_status', 'salesforce_contact_id']
 
       lev_routine transaction: :no_transaction
 
