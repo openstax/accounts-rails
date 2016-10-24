@@ -14,8 +14,8 @@
 ActiveRecord::Schema.define(version: 1001) do
 
   create_table "openstax_accounts_accounts", force: true do |t|
-    t.integer  "openstax_uid",               null: false
-    t.string   "username",                   null: false
+    t.integer  "openstax_uid",                      null: false
+    t.string   "username",                          null: false
     t.string   "access_token"
     t.string   "first_name"
     t.string   "last_name"
@@ -23,7 +23,8 @@ ActiveRecord::Schema.define(version: 1001) do
     t.string   "title"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "faculty_status", default: 0, null: false
+    t.integer  "faculty_status",        default: 0, null: false
+    t.string   "salesforce_contact_id"
   end
 
   add_index "openstax_accounts_accounts", ["access_token"], name: "index_openstax_accounts_accounts_on_access_token", unique: true
@@ -32,6 +33,7 @@ ActiveRecord::Schema.define(version: 1001) do
   add_index "openstax_accounts_accounts", ["full_name"], name: "index_openstax_accounts_accounts_on_full_name"
   add_index "openstax_accounts_accounts", ["last_name"], name: "index_openstax_accounts_accounts_on_last_name"
   add_index "openstax_accounts_accounts", ["openstax_uid"], name: "index_openstax_accounts_accounts_on_openstax_uid", unique: true
+  add_index "openstax_accounts_accounts", ["salesforce_contact_id"], name: "index_openstax_accounts_accounts_on_salesforce_contact_id"
   add_index "openstax_accounts_accounts", ["username"], name: "index_openstax_accounts_accounts_on_username", unique: true
 
   create_table "openstax_accounts_group_members", force: true do |t|
