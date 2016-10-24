@@ -45,12 +45,18 @@ module OpenStax::Accounts
 
     def has_owner?(account)
       return false unless account.is_a? OpenStax::Accounts::Account
-      !group_owners.where(user_id: account.id).first.nil?
+
+      gos = group_owners
+      gos = gos.preload(:user) if persisted?
+      gos.any?{ |go| go.user == account }
     end
 
     def has_direct_member?(account)
       return false unless account.is_a? OpenStax::Accounts::Account
-      !group_members.where(user_id: account.id).first.nil?
+
+      gms = group_members
+      gms = gms.preload(:user) if persisted?
+      gms.any?{ |gm| gm.user == account }
     end
 
     def has_member?(account)
