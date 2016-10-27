@@ -6,6 +6,7 @@ module OpenStax
 
           # This representer is used to communicate with Accounts
           # and so must allow read/write on all properties
+          # Do not use it in create/update APIs!
 
           property :total_count,
                    inherit: true,
