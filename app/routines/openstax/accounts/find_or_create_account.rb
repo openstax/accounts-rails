@@ -15,7 +15,8 @@ module OpenStax
 
         if OpenStax::Accounts.configuration.enable_stubbing
           # We can only stub finding by username b/c accounts-rails doesn't persist emails
-          id = Account.find_by(username: username).try(:openstax_uid) || -SecureRandom.hex(4).to_i(16)/2
+          id = Account.find_by(username: username).try!(:openstax_uid) ||
+               -SecureRandom.hex(4).to_i(16)/2
         else
           response = Api.find_or_create_account(
             email: email, username: username, password: password,
@@ -40,7 +41,7 @@ module OpenStax
           account.full_name = full_name
           account.title = title
           account.salesforce_contact_id = salesforce_contact_id
-          account.faculty_status = faculty_status
+          account.faculty_status = faculty_status || :no_faculty_info
           account.save!
         end
 
