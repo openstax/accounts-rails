@@ -29,18 +29,23 @@ module OpenStax
         expect(account_2).not_to eq(account_3)
       end
 
-      it 'passes names to the API when creating users' do
+      it 'passes params to the API when creating users' do
         find_or_create_account_response = double('Response')
         allow(find_or_create_account_response).to receive(:status).and_return(201)
         allow(find_or_create_account_response).to receive(:body).and_return('{"id":1}')
         expect(OpenStax::Accounts::Api).to receive(:find_or_create_account).with(
           email: 'bob@example.com', username: nil, password: nil,
-          first_name: 'Bob', last_name: 'Smith', full_name: 'Bob Smith'
+          first_name: 'Bob', last_name: 'Smith', full_name: 'Bob Smith',
+          salesforce_contact_id: 'b0b', faculty_status: :rejected_faculty
         ).and_return(find_or_create_account_response)
 
         FindOrCreateAccount.call(
-          email: 'bob@example.com', first_name: 'Bob', last_name: 'Smith',
-          full_name: 'Bob Smith'
+          email: 'bob@example.com',
+          first_name: 'Bob',
+          last_name: 'Smith',
+          full_name: 'Bob Smith',
+          salesforce_contact_id: 'b0b',
+          faculty_status: :rejected_faculty
         )
       end
 

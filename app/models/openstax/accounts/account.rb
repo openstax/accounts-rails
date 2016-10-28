@@ -24,11 +24,11 @@ module OpenStax::Accounts
     after_initialize { self.faculty_status ||= :no_faculty_info }
     validates :faculty_status, presence: true
 
-    validates :openstax_uid, :presence => true, :uniqueness => true
-    validates :username, :presence => true, :uniqueness => true,
-                         :unless => :syncing_or_stubbing
+    validates :openstax_uid, presence: true, uniqueness: true
+    validates :username, presence: true, uniqueness: true,
+                         unless: :syncing_or_stubbing
 
-    before_update :update_openstax_accounts, :unless => :syncing_or_stubbing
+    before_update :update_openstax_accounts, unless: :syncing_or_stubbing
 
     def name
       (first_name || last_name) ? [first_name, last_name].compact.join(" ") : username

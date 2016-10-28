@@ -1,8 +1,4 @@
 # A representer for Accounts
-#
-# This representer can be used directly or subclassed for an object that
-# delegates openstax_uid, username, first_name, last_name, full_name and
-# title to an account
 
 module OpenStax
   module Accounts
@@ -12,6 +8,10 @@ module OpenStax
 
           # This representer is used to communicate with Accounts
           # and so must allow read/write on all properties
+          # Do not use it in create/update APIs!
+
+          # Otherwise, this representer can be used directly or subclassed
+          # for an object that delegates openstax_uid, username, first_name, last_name, full_name, # title, faculty_status and salesforce_contact_id to an account
 
           include Roar::JSON
 
@@ -52,6 +52,20 @@ module OpenStax
                    type: String,
                    schema_info: {
                      description: "The user's title"
+                   }
+
+          property :salesforce_contact_id,
+                   type: String,
+                   schema_info: {
+                     description: "The user's salesforce contact id"
+                   }
+
+          property :faculty_status,
+                   type: String,
+                   schema_info: {
+                     description: "One of #{
+                       OpenStax::Accounts::Account.faculty_statuses.keys.map(&:to_s).inspect
+                     }"
                    }
 
         end

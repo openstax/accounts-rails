@@ -92,9 +92,7 @@ module OpenStax
       # On failure, throws an Exception, just like the request method.
       # On success, returns an OAuth2::Response object.
       def self.mark_account_updates_as_read(application_users, options = {})
-        request(:put, 'application_users/updated', options.merge(
-          body: application_users.to_json
-        ))
+        request(:put, 'application_users/updated', options.merge(body: application_users.to_json))
       end
 
       # Retrieves information about groups that have been
@@ -157,8 +155,7 @@ module OpenStax
       # On failure, throws an Exception, just like the request method.
       # On success, returns an OAuth2::Response object.
       def self.destroy_group(account, group, options = {})
-        request_for_account(account, :delete,
-                            "groups/#{group.openstax_uid}", options)
+        request_for_account(account, :delete, "groups/#{group.openstax_uid}", options)
       end
 
       # Creates a group_member in the Accounts server.
@@ -228,7 +225,8 @@ module OpenStax
           :post,
           "groups/#{group_nesting.container_group_id}/nestings/#{
                     group_nesting.member_group_id}",
-                 options)
+          options
+        )
       end
 
       # Deletes a group_nesting from the Accounts server.
@@ -251,9 +249,7 @@ module OpenStax
       # On failure, throws an Exception, just like the request method.
       # On success, returns an OAuth2::Response object.
       def self.find_or_create_account(attributes, options = {})
-        request(:post, "user/find-or-create", options.merge(
-          body: attributes.to_json
-        ))
+        request(:post, "user/find-or-create", options.merge(body: attributes.to_json))
       end
 
       protected
