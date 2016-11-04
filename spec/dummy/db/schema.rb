@@ -21,15 +21,13 @@ ActiveRecord::Schema.define(version: 1001) do
     t.string   "last_name"
     t.string   "full_name"
     t.string   "title"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
     t.integer  "faculty_status",        default: 0, null: false
     t.string   "salesforce_contact_id"
-    t.integer  "account_type",                      null: false
   end
 
   add_index "openstax_accounts_accounts", ["access_token"], name: "index_openstax_accounts_accounts_on_access_token", unique: true
-  add_index "openstax_accounts_accounts", ["account_type"], name: "index_openstax_accounts_accounts_on_account_type"
   add_index "openstax_accounts_accounts", ["faculty_status"], name: "index_openstax_accounts_accounts_on_faculty_status"
   add_index "openstax_accounts_accounts", ["first_name"], name: "index_openstax_accounts_accounts_on_first_name"
   add_index "openstax_accounts_accounts", ["full_name"], name: "index_openstax_accounts_accounts_on_full_name"
@@ -41,8 +39,8 @@ ActiveRecord::Schema.define(version: 1001) do
   create_table "openstax_accounts_group_members", force: :cascade do |t|
     t.integer  "group_id",   null: false
     t.integer  "user_id",    null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   add_index "openstax_accounts_group_members", ["group_id", "user_id"], name: "index_openstax_accounts_group_members_on_group_id_and_user_id", unique: true
@@ -51,8 +49,8 @@ ActiveRecord::Schema.define(version: 1001) do
   create_table "openstax_accounts_group_nestings", force: :cascade do |t|
     t.integer  "member_group_id",    null: false
     t.integer  "container_group_id", null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
   end
 
   add_index "openstax_accounts_group_nestings", ["container_group_id"], name: "index_openstax_accounts_group_nestings_on_container_group_id"
@@ -61,8 +59,8 @@ ActiveRecord::Schema.define(version: 1001) do
   create_table "openstax_accounts_group_owners", force: :cascade do |t|
     t.integer  "group_id",   null: false
     t.integer  "user_id",    null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   add_index "openstax_accounts_group_owners", ["group_id", "user_id"], name: "index_openstax_accounts_group_owners_on_group_id_and_user_id", unique: true
@@ -74,8 +72,8 @@ ActiveRecord::Schema.define(version: 1001) do
     t.string   "name"
     t.text     "cached_subtree_group_ids"
     t.text     "cached_supertree_group_ids"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                                 null: false
+    t.datetime "updated_at",                                 null: false
   end
 
   add_index "openstax_accounts_groups", ["is_public"], name: "index_openstax_accounts_groups_on_is_public"
@@ -84,16 +82,16 @@ ActiveRecord::Schema.define(version: 1001) do
   create_table "ownerships", force: :cascade do |t|
     t.integer  "owner_id",   null: false
     t.string   "owner_type", null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   add_index "ownerships", ["owner_id", "owner_type"], name: "index_ownerships_on_owner_id_and_owner_type", unique: true
 
   create_table "users", force: :cascade do |t|
     t.integer  "account_id", null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   add_index "users", ["account_id"], name: "index_users_on_account_id", unique: true

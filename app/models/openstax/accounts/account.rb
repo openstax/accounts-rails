@@ -20,10 +20,10 @@ module OpenStax::Accounts
              inverse_of: :user
     has_many :groups_as_member, through: :group_members, source: :group
 
-    enum faculty_status: [:no_faculty_info, :pending_faculty, :confirmed_faculty, :rejected_faculty]
-    enum account_type: [:local, :remote]
+    enum faculty_status: [:no_faculty_info, :pending_faculty,
+                          :confirmed_faculty, :rejected_faculty]
 
-    after_initialize :set_faculty_status, :set_account_type
+    after_initialize :set_default_faculty_status
 
     validates :faculty_status, presence: true
 
@@ -53,30 +53,18 @@ module OpenStax::Accounts
       !openstax_uid.nil? && openstax_uid > 0
     end
 
-    def openstax_uid=(val)
-      super
+    protected
 
-      set_account_type(force: true)
-    end
-
-    def set_faculty_status
+    def set_default_faculty_status
       self.faculty_status ||= :no_faculty_info
     end
-
-    def set_account_type(force: false)
-      return account_type if account_type.present? && !force
-
-      self.account_type = valid_openstax_uid? ? :remote : :local
-    end
-
-    protected
 
     def syncing_or_stubbing?
       syncing || OpenStax::Accounts.configuration.enable_stubbing?
     end
 
     def should_send_updates_to_accounts?
-      !syncing_or_stubbing? && remote? && valid_openstax_uid?
+      !syncing_or_stubbing? && valid_openstax_uid?
     end
 
     def update_openstax_accounts

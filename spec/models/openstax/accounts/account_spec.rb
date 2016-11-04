@@ -22,7 +22,6 @@ module OpenStax::Accounts
       before do
         account.syncing = false
         account.openstax_uid = 1
-        account.account_type = :remote
       end
 
       context 'stubbing' do
@@ -69,24 +68,11 @@ module OpenStax::Accounts
           end
 
           context 'valid openstax_uid' do
-            context 'local account' do
-              before { account.account_type = :local }
+            it 'sends updates to accounts' do
+              expect(OpenStax::Accounts::Api).to receive(:update_account).once
 
-              it 'does not send updates to accounts' do
-                expect(OpenStax::Accounts::Api).not_to receive(:update_account)
-
-                account.username = 'Local User'
-                account.save!
-              end
-            end
-
-            context 'remote account' do
-              it 'does not send updates to accounts' do
-                expect(OpenStax::Accounts::Api).to receive(:update_account).once
-
-                account.username = 'Remote User'
-                account.save!
-              end
+              account.username = 'Real User'
+              account.save!
             end
           end
         end
