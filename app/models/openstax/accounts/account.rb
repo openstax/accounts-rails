@@ -21,10 +21,13 @@ module OpenStax::Accounts
     has_many :groups_as_member, through: :group_members, source: :group
 
     enum faculty_status: [:no_faculty_info, :pending_faculty, :confirmed_faculty, :rejected_faculty]
-    after_initialize { self.faculty_status ||= :no_faculty_info }
+    enum account_type: [:local, :remote]
+
+    after_initialize :set_faculty_status, :set_account_type
+
     validates :faculty_status, presence: true
 
-    validates :openstax_uid, presence: true, uniqueness: true
+    validates :openstax_uid, uniqueness: { allow_nil: true }
     validates :username, presence: true, uniqueness: true,
                          unless: :syncing_or_stubbing
 
@@ -44,6 +47,26 @@ module OpenStax::Accounts
 
     def has_authenticated?
       !access_token.nil?
+    end
+
+    def valid_openstax_uid?
+      !openstax_uid.nil? && openstax_uid > 0
+    end
+
+    def openstax_uid=(val)
+      super
+
+      set_account_type(force: true)
+    end
+
+    def set_faculty_status
+      self.faculty_status ||= :no_faculty_info
+    end
+
+    def set_account_type(force: false)
+      return account_type if account_type.present? && !force
+
+      self.account_type = valid_openstax_uid? ? :remote : :local
     end
 
     protected

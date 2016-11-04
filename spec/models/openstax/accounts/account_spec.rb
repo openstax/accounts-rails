@@ -3,10 +3,9 @@ require 'spec_helper'
 module OpenStax::Accounts
   describe Account do
     context 'validation' do
-      it 'requires a unique openstax_uid' do
+      it 'requires a unique openstax_uid, if given' do
         account = FactoryGirl.build(:openstax_accounts_account, openstax_uid: nil)
-        expect(account).not_to be_valid
-        expect(account.errors[:openstax_uid]).to eq(['can\'t be blank'])
+        expect(account).to be_valid
 
         account.openstax_uid = 1
         account.save!
