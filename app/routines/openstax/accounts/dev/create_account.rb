@@ -6,15 +6,15 @@ module OpenStax
     module Dev
       class CreateAccount
         lev_routine
-              
+
         protected
 
         def exec(inputs={})
-          fatal_error(:code => :cannot_create_account_in_production) if Rails.env.production?
-          fatal_error(:code => :can_only_create_account_when_stubbing) if !OpenStax::Accounts.configuration.enable_stubbing?
+          fatal_error(code: :cannot_create_account_in_production) if Rails.env.production?
+          fatal_error(code: :can_only_create_account_when_stubbing) if !OpenStax::Accounts.configuration.enable_stubbing?
 
           username = inputs[:username]
-          while username.nil? || Account.where(username: username).exists? do 
+          while username.nil? || Account.where(username: username).exists? do
             username = SecureRandom.hex(3).to_s
           end
 

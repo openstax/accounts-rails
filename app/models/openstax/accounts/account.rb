@@ -29,9 +29,9 @@ module OpenStax::Accounts
 
     validates :openstax_uid, uniqueness: { allow_nil: true }
     validates :username, presence: true, uniqueness: true,
-                         unless: :syncing_or_stubbing
+                         unless: :syncing_or_stubbing?
 
-    before_update :update_openstax_accounts, unless: :syncing_or_stubbing
+    before_update :update_openstax_accounts, if: :should_send_updates_to_accounts?
 
     def name
       (first_name || last_name) ? [first_name, last_name].compact.join(" ") : username
@@ -71,8 +71,12 @@ module OpenStax::Accounts
 
     protected
 
-    def syncing_or_stubbing
+    def syncing_or_stubbing?
       syncing || OpenStax::Accounts.configuration.enable_stubbing?
+    end
+
+    def should_send_updates_to_accounts?
+      !syncing_or_stubbing? && remote? && valid_openstax_uid?
     end
 
     def update_openstax_accounts

@@ -27,12 +27,12 @@ module OpenStax::Accounts
     has_many :member_groups, through: :member_group_nestings
 
     validates :openstax_uid, uniqueness: true, presence: true
-    validates_presence_of :requestor, unless: :syncing_or_stubbing
-    validates_uniqueness_of :name, allow_nil: true, unless: :syncing_or_stubbing
+    validates_presence_of :requestor, unless: :syncing_or_stubbing?
+    validates_uniqueness_of :name, allow_nil: true, unless: :syncing_or_stubbing?
 
-    before_validation :create_openstax_accounts_group, on: :create, unless: :syncing_or_stubbing
-    before_update :update_openstax_accounts_group, unless: :syncing_or_stubbing
-    before_destroy :destroy_openstax_accounts_group, unless: :syncing_or_stubbing
+    before_validation :create_openstax_accounts_group, on: :create, unless: :syncing_or_stubbing?
+    before_update :update_openstax_accounts_group, unless: :syncing_or_stubbing?
+    before_destroy :destroy_openstax_accounts_group, unless: :syncing_or_stubbing?
 
     scope :visible_for, lambda { |account|
       next where(is_public: true) unless account.is_a? OpenStax::Accounts::Account
@@ -116,7 +116,7 @@ module OpenStax::Accounts
 
     protected
 
-    def syncing_or_stubbing
+    def syncing_or_stubbing?
       syncing || OpenStax::Accounts.configuration.enable_stubbing?
     end
 

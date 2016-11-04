@@ -10,14 +10,14 @@ module OpenStax::Accounts
 
     validates :group, presence: true
     validates :user, presence: true, uniqueness: { scope: :group }
-    validates :requestor, presence: true, unless: :syncing_or_stubbing
+    validates :requestor, presence: true, unless: :syncing_or_stubbing?
 
-    before_create :create_openstax_accounts_group_member, unless: :syncing_or_stubbing
-    before_destroy :destroy_openstax_accounts_group_member, unless: :syncing_or_stubbing
+    before_create :create_openstax_accounts_group_member, unless: :syncing_or_stubbing?
+    before_destroy :destroy_openstax_accounts_group_member, unless: :syncing_or_stubbing?
 
     protected
 
-    def syncing_or_stubbing
+    def syncing_or_stubbing?
       syncing || OpenStax::Accounts.configuration.enable_stubbing?
     end
 
