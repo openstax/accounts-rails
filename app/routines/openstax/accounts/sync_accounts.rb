@@ -22,7 +22,7 @@ module OpenStax
 
         app_accounts = []
         app_accounts_rep = OpenStax::Accounts::Api::V1::ApplicationAccountsRepresenter
-                           .new(app_accounts)
+                             .new(app_accounts)
         app_accounts_rep.from_json(response.body)
 
         return if app_accounts.empty?
@@ -30,7 +30,7 @@ module OpenStax
         updated_app_accounts = []
         app_accounts.each do |app_account|
           account = OpenStax::Accounts::Account.where(
-            :openstax_uid => app_account.account.openstax_uid
+            openstax_uid: app_account.account.openstax_uid
           ).first || app_account.account
           account.syncing = true
 

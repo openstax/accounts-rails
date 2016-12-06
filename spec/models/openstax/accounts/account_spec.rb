@@ -1,19 +1,81 @@
 require 'spec_helper'
 
 module OpenStax::Accounts
-  describe Account do
-    context 'validation' do
-      it 'requires a unique openstax_uid' do
-        account = FactoryGirl.build(:openstax_accounts_account, openstax_uid: nil)
-        expect(account).not_to be_valid
-        expect(account.errors[:openstax_uid]).to eq(['can\'t be blank'])
+  RSpec.describe Account do
+    subject(:account) { FactoryGirl.create(:openstax_accounts_account) }
 
-        account.openstax_uid = 1
+    context 'validation' do
+      it 'requires a unique openstax_uid, if given' do
+        account.openstax_uid = nil
+        expect(account).to be_valid
+
+        account.openstax_uid = -1
         account.save!
 
-        account_2 = FactoryGirl.build(:openstax_accounts_account, openstax_uid: 1)
+        account_2 = FactoryGirl.build(:openstax_accounts_account, openstax_uid: -1)
         expect(account_2).not_to be_valid
         expect(account_2.errors[:openstax_uid]).to eq(['has already been taken'])
+      end
+    end
+
+    context 'updates' do
+      before do
+        account.syncing = false
+        account.openstax_uid = 1
+      end
+
+      context 'stubbing' do
+        it 'does not send updates to accounts' do
+          expect(OpenStax::Accounts::Api).not_to receive(:update_account)
+
+          account.username = 'Stubbed User'
+          account.save!
+        end
+      end
+
+      context 'not stubbing' do
+        before(:all) { OpenStax::Accounts.configuration.enable_stubbing = false }
+        after(:all)  { OpenStax::Accounts.configuration.enable_stubbing = true }
+
+        context 'syncing' do
+          before{ account.syncing = true }
+
+          it 'does not send updates to accounts' do
+            expect(OpenStax::Accounts::Api).not_to receive(:update_account)
+
+            account.username = 'Syncing User'
+            account.save!
+          end
+        end
+
+        context 'not syncing' do
+          context 'invalid openstax_uid' do
+            it 'does not send updates to accounts' do
+              expect(OpenStax::Accounts::Api).not_to receive(:update_account)
+
+              account.openstax_uid = nil
+              account.username = 'Nil User'
+              account.save!
+
+              account.openstax_uid = 0
+              account.username = 'Zeroth User'
+              account.save!
+
+              account.openstax_uid = -1
+              account.username = 'Negative User'
+              account.save!
+            end
+          end
+
+          context 'valid openstax_uid' do
+            it 'sends updates to accounts' do
+              expect(OpenStax::Accounts::Api).to receive(:update_account).once
+
+              account.username = 'Real User'
+              account.save!
+            end
+          end
+        end
       end
     end
 

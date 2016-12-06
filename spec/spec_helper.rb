@@ -1,13 +1,15 @@
 ENV['RAILS_ENV'] ||= 'test'
 
 require File.expand_path('../dummy/config/environment.rb',  __FILE__)
+
 require 'rspec/rails'
-require 'rspec/autorun'
 require 'factory_girl_rails'
 
-# Requires supporting ruby files with custom matchers and macros, etc,
 Rails.backtrace_cleaner.remove_silencers!
 
+ActiveRecord::Migration.maintain_test_schema!
+
+# Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 
@@ -37,7 +39,7 @@ RSpec.configure do |config|
   # order dependency and want to debug it, you can fix the order by providing
   # the seed, which is printed after each run.
   #     --seed 1234
-  config.order = "random"
+  config.order = :random
 end
 
 
@@ -71,4 +73,3 @@ end
 def remove_faculty_status!(omniauth_request)
   omniauth_request.env["omniauth.auth"].extra.raw_info.delete("faculty_status")
 end
-

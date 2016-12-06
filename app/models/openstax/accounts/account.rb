@@ -20,15 +20,18 @@ module OpenStax::Accounts
              inverse_of: :user
     has_many :groups_as_member, through: :group_members, source: :group
 
-    enum faculty_status: [:no_faculty_info, :pending_faculty, :confirmed_faculty, :rejected_faculty]
-    after_initialize { self.faculty_status ||= :no_faculty_info }
+    enum faculty_status: [:no_faculty_info, :pending_faculty,
+                          :confirmed_faculty, :rejected_faculty]
+
+    after_initialize :set_default_faculty_status
+
     validates :faculty_status, presence: true
 
-    validates :openstax_uid, presence: true, uniqueness: true
+    validates :openstax_uid, uniqueness: { allow_nil: true }
     validates :username, presence: true, uniqueness: true,
-                         unless: :syncing_or_stubbing
+                         unless: :syncing_or_stubbing?
 
-    before_update :update_openstax_accounts, unless: :syncing_or_stubbing
+    before_update :update_openstax_accounts, if: :should_send_updates_to_accounts?
 
     def name
       (first_name || last_name) ? [first_name, last_name].compact.join(" ") : username
@@ -46,10 +49,22 @@ module OpenStax::Accounts
       !access_token.nil?
     end
 
+    def valid_openstax_uid?
+      !openstax_uid.nil? && openstax_uid > 0
+    end
+
     protected
 
-    def syncing_or_stubbing
+    def set_default_faculty_status
+      self.faculty_status ||= :no_faculty_info
+    end
+
+    def syncing_or_stubbing?
       syncing || OpenStax::Accounts.configuration.enable_stubbing?
+    end
+
+    def should_send_updates_to_accounts?
+      !syncing_or_stubbing? && valid_openstax_uid?
     end
 
     def update_openstax_accounts

@@ -10,18 +10,18 @@ module OpenStax::Accounts
 
     validates :container_group, presence: true
     validates :member_group, presence: true, uniqueness: true
-    validates :requestor, presence: true, unless: :syncing_or_stubbing
-    validate :no_loops, unless: :syncing_or_stubbing
+    validates :requestor, presence: true, unless: :syncing_or_stubbing?
+    validate :no_loops, unless: :syncing_or_stubbing?
 
     before_create :update_group_caches, unless: :syncing
     before_destroy :update_group_caches, unless: :syncing
 
-    before_create :create_openstax_accounts_group_nesting, unless: :syncing_or_stubbing
-    before_destroy :destroy_openstax_accounts_group_nesting, unless: :syncing_or_stubbing
+    before_create :create_openstax_accounts_group_nesting, unless: :syncing_or_stubbing?
+    before_destroy :destroy_openstax_accounts_group_nesting, unless: :syncing_or_stubbing?
 
     protected
 
-    def syncing_or_stubbing
+    def syncing_or_stubbing?
       syncing || OpenStax::Accounts.configuration.enable_stubbing?
     end
 
