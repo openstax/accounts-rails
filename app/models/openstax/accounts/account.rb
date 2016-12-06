@@ -28,8 +28,7 @@ module OpenStax::Accounts
     validates :faculty_status, presence: true
 
     validates :openstax_uid, uniqueness: { allow_nil: true }
-    validates :username, presence: true, uniqueness: true,
-                         unless: :syncing_or_stubbing?
+    validates :username, uniqueness: { allow_nil: true }
 
     before_update :update_openstax_accounts, if: :should_send_updates_to_accounts?
 

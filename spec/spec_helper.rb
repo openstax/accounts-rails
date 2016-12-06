@@ -73,3 +73,17 @@ end
 def remove_faculty_status!(omniauth_request)
   omniauth_request.env["omniauth.auth"].extra.raw_info.delete("faculty_status")
 end
+
+def remove_nickname!(omniauth_request)
+  omniauth_request.env["omniauth.auth"].info.nickname = nil
+end
+
+def with_stubbing(value)
+  begin
+    original = OpenStax::Accounts.configuration.enable_stubbing
+    OpenStax::Accounts.configuration.enable_stubbing = value
+    yield
+  ensure
+    OpenStax::Accounts.configuration.enable_stubbing = original
+  end
+end
