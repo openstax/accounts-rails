@@ -17,6 +17,16 @@ module OpenStax
           result = described_class.handle(request: request)
           expect(result.outputs.account).to be_no_faculty_info
         end
+
+        it "should deal with null nickname" do
+          with_stubbing(false) do
+            request = mock_omniauth_request
+            remove_nickname!(request)
+            result = described_class.handle(request: request)
+            expect(result.outputs.account).to be_valid
+            expect(result.outputs.account).to be_persisted
+          end
+        end
       end
 
     end

@@ -16,6 +16,24 @@ module OpenStax::Accounts
         expect(account_2).not_to be_valid
         expect(account_2.errors[:openstax_uid]).to eq(['has already been taken'])
       end
+
+      it 'allows nil username' do
+        account.username = nil
+        expect(account).to be_valid
+      end
+
+      it 'requires unique username if not nil' do
+        expect{
+          FactoryGirl.create(:openstax_accounts_account, username: account.username)
+        }.to raise_error(ActiveRecord::RecordInvalid)
+      end
+
+      it 'allows multiple accounts saved with nil username' do
+        FactoryGirl.create(:openstax_accounts_account, username: nil)
+        expect{
+          FactoryGirl.create(:openstax_accounts_account, username: nil)
+        }.not_to raise_error
+      end
     end
 
     context 'updates' do
