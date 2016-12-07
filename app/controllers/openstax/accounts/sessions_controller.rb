@@ -10,7 +10,10 @@ module OpenStax
             store_url url: params[:return_to], key: :accounts_return_to, strategies: [:session]
           end
           store_fallback key: :accounts_return_to, strategies: [:session]
-          redirect_to openstax_login_path
+
+          forwardable_params =
+            params.slice(*configuration.forwardable_login_param_keys.map(&:to_s))
+          redirect_to openstax_login_path(forwardable_params)
         end
       end
 
