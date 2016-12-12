@@ -35,8 +35,17 @@ module OpenStax
       SETUP_PROC = lambda do |env|
         # Useful link for how to pass params through omniauth/doorkeeper:
         #  https://github.com/doorkeeper-gem/doorkeeper/wiki/Passing-parameters-from-a-devise-client-to-doorkeeper-(like-locale)
-        env['omniauth.strategy'].options.authorize_params = env["rack.request.query_hash"]
-        env['omniauth.strategy'].options[:client_options][:site] = OpenStax::Accounts.configuration.openstax_accounts_url
+
+        # request spec `env` doesn't honor "rack.request.query_hash" shortcut, so we fallback
+        # to manually parsing the query string.  Also make sure to use an extra fallback of an
+        # empty hash because setting the authorize_params to nil upsets Omniauth.
+        query_hash = env["rack.request.query_hash"] ||
+                     Rack::Utils.parse_nested_query(env["QUERY_STRING"]) ||
+                     {}
+        env['omniauth.strategy'].options.authorize_params = query_hash
+
+        env['omniauth.strategy'].options[:client_options][:site] =
+          OpenStax::Accounts.configuration.openstax_accounts_url
       end
 
       # Doesn't work to put this omniauth code in an engine initializer, instead:

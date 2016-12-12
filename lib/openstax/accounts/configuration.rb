@@ -98,7 +98,7 @@ module OpenStax
         @max_search_items = 10
         @logout_redirect_url = nil
         @return_to_url_approver = nil
-        @forwardable_login_param_keys = [:signup_at]
+        @forwardable_login_param_keys = [:signup_at, :go]
         super
       end
 
