@@ -4,7 +4,7 @@ module OpenStax
       module Base
 
         def self.included(base)
-          base.helper_method :current_user, :signed_in?
+          base.helper_method :current_user, :signed_in?, :openstax_accounts_login_path
         end
 
         # Returns the current user
@@ -39,6 +39,14 @@ module OpenStax
             OpenStax::Accounts::CurrentUserManager.new(request, session, cookies)
         end
 
+        def login_params
+          @login_params ||= {}
+        end
+
+        def openstax_accounts_login_path
+          openstax_accounts.login_path(login_params)
+        end
+
         def authenticate_user!
           account = current_account
 
@@ -48,7 +56,9 @@ module OpenStax
 
           respond_to do |format|
             format.json { head(:forbidden) }
-            format.any  { redirect_to openstax_accounts.login_url }
+            format.any  {
+              redirect_to openstax_accounts_login_path
+            }
           end
         end
 

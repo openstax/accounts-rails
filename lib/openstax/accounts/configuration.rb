@@ -60,6 +60,10 @@ module OpenStax
       # to the default Accounts logout URL.
       attr_writer :logout_redirect_url
 
+      # forwardable_login_param_keys
+      # Which params are forwarded on the accounts login path
+      attr_accessor :forwardable_login_param_keys
+
       def logout_redirect_url(request)
         (@logout_redirect_url.is_a?(Proc) ?
            @logout_redirect_url.call(request) :
@@ -94,6 +98,7 @@ module OpenStax
         @max_search_items = 10
         @logout_redirect_url = nil
         @return_to_url_approver = nil
+        @forwardable_login_param_keys = [:signup_at, :go]
         super
       end
 
