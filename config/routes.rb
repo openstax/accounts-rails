@@ -17,6 +17,8 @@ OpenStax::Accounts::Engine.routes.draw do
     end
   end
 
+  get 'remote/v1', :to => 'remote#loader', :as=>'remote_js_loader'
+
   # OmniAuth local routes (SessionsController)
   scope module: 'sessions' do
     get 'callback', :path => 'auth/:provider/callback' # Authentication success
