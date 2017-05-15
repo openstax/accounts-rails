@@ -27,7 +27,6 @@ module OpenStax::Accounts
     validates :faculty_status, presence: true
 
     enum role: [:unknown_role, :student, :instructor, :administrator, :librarian, :designer, :other]
-    after_initialize :set_default_role
     validates :role, presence: true
 
     validates :openstax_uid, uniqueness: { allow_nil: true }
@@ -59,10 +58,6 @@ module OpenStax::Accounts
 
     def set_default_faculty_status
       self.faculty_status ||= :no_faculty_info
-    end
-
-    def set_default_role
-      self.role ||= :unknown_role
     end
 
     def syncing_or_stubbing?
