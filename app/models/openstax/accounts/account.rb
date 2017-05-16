@@ -24,8 +24,10 @@ module OpenStax::Accounts
                           :confirmed_faculty, :rejected_faculty]
 
     after_initialize :set_default_faculty_status
-
     validates :faculty_status, presence: true
+
+    enum role: [:unknown_role, :student, :instructor, :administrator, :librarian, :designer, :other]
+    validates :role, presence: true
 
     validates :openstax_uid, uniqueness: { allow_nil: true }
     validates :username, uniqueness: { allow_nil: true }

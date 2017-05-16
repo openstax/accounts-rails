@@ -68,6 +68,22 @@ module OpenStax
                      }"
                    }
 
+          property :role,
+                   as: :self_reported_role,
+                   type: String,
+                   schema_info: {
+                      description: "The user's uncorroborated role, one of [#{
+                        OpenStax::Accounts::Account.roles.keys.map(&:to_s).join(', ')
+                      }]",
+                      required: true
+                   }
+
+          property :uuid,
+                   type: String,
+                   schema_info: {
+                     description: "The UUID as set by Accounts"
+                   }
+
         end
       end
     end

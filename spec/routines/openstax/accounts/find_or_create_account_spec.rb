@@ -36,7 +36,8 @@ module OpenStax
         expect(OpenStax::Accounts::Api).to receive(:find_or_create_account).with(
           email: 'bob@example.com', username: nil, password: nil,
           first_name: 'Bob', last_name: 'Smith', full_name: 'Bob Smith',
-          salesforce_contact_id: 'b0b', faculty_status: :rejected_faculty
+          salesforce_contact_id: 'b0b', faculty_status: :rejected_faculty,
+          role: :instructor
         ).and_return(find_or_create_account_response)
 
         FindOrCreateAccount.call(
@@ -45,7 +46,8 @@ module OpenStax
           last_name: 'Smith',
           full_name: 'Bob Smith',
           salesforce_contact_id: 'b0b',
-          faculty_status: :rejected_faculty
+          faculty_status: :rejected_faculty,
+          role: :instructor
         )
       end
 

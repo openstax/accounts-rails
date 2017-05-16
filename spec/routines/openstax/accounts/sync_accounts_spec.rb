@@ -10,7 +10,7 @@ module OpenStax
         allow_any_instance_of(controller_class).to(
           receive(:updates) do |controller|
             controller.render :json => [{id: 1, application_id: 1,
-                                        user: {id: 2, username: 'user'},
+                                        user: {id: 2, username: 'user', self_reported_role: 'instructor', uuid: 'booyah'},
                                         unread_updates: 1, default_contact_info_id: 1},
                                         {id: 3, application_id: 1,
                                         user: {id: 4, username: 'fuego'},
@@ -36,6 +36,8 @@ module OpenStax
           expect(Account.count).to eq 2
           expect(Account.first.openstax_uid).to eq 2
           expect(Account.first.username).to eq 'user'
+          expect(Account.first.role).to eq 'instructor'
+          expect(Account.first.uuid).to eq 'booyah'
           expect(Account.last.openstax_uid).to eq 4
           expect(Account.last.username).to eq 'fuego'
 

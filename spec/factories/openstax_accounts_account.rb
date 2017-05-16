@@ -4,5 +4,7 @@ FactoryGirl.define do
     username     { SecureRandom.hex.to_s }
     access_token { SecureRandom.hex.to_s }
     faculty_status { OpenStax::Accounts::Account.faculty_statuses[:no_faculty_info] }
+    role         { OpenStax::Accounts::Account.roles[:unknown_role] }
+    uuid         { SecureRandom.uuid }
   end
 end

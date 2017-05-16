@@ -25,6 +25,8 @@ ActiveRecord::Schema.define(version: 1001) do
     t.datetime "updated_at",                        null: false
     t.integer  "faculty_status",        default: 0, null: false
     t.string   "salesforce_contact_id"
+    t.string   "uuid"
+    t.integer  "role",                  default: 0, null: false
   end
 
   add_index "openstax_accounts_accounts", ["access_token"], name: "index_openstax_accounts_accounts_on_access_token", unique: true
@@ -33,8 +35,10 @@ ActiveRecord::Schema.define(version: 1001) do
   add_index "openstax_accounts_accounts", ["full_name"], name: "index_openstax_accounts_accounts_on_full_name"
   add_index "openstax_accounts_accounts", ["last_name"], name: "index_openstax_accounts_accounts_on_last_name"
   add_index "openstax_accounts_accounts", ["openstax_uid"], name: "index_openstax_accounts_accounts_on_openstax_uid", unique: true
+  add_index "openstax_accounts_accounts", ["role"], name: "index_openstax_accounts_accounts_on_role"
   add_index "openstax_accounts_accounts", ["salesforce_contact_id"], name: "index_openstax_accounts_accounts_on_salesforce_contact_id"
   add_index "openstax_accounts_accounts", ["username"], name: "index_openstax_accounts_accounts_on_username", unique: true
+  add_index "openstax_accounts_accounts", ["uuid"], name: "index_openstax_accounts_accounts_on_uuid", unique: true
 
   create_table "openstax_accounts_group_members", force: :cascade do |t|
     t.integer  "group_id",   null: false

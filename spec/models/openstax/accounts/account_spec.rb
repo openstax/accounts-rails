@@ -34,6 +34,12 @@ module OpenStax::Accounts
           FactoryGirl.create(:openstax_accounts_account, username: nil)
         }.not_to raise_error
       end
+
+      it 'requires a role' do
+        expect{
+          FactoryGirl.create(:openstax_accounts_account, role: nil)
+        }.to raise_error(ActiveRecord::RecordInvalid)
+      end
     end
 
     context 'updates' do
