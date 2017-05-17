@@ -74,12 +74,14 @@ module OpenStax
 
       # Retrieves information about accounts that have been
       # recently updated.
-      # Results are limited to accounts that have used the current app.
+      # Results are limited to accounts that have used the current app, and
+      # limited in quantity per call by a configuration parameter.
       # Takes an options hash.
       # On failure, throws an Exception, just like the request method.
       # On success, returns an OAuth2::Response object.
       def self.get_application_account_updates(options = {})
-        request(:get, 'application_users/updates', options)
+        limit = OpenStax::Accounts.configuration.max_user_updates_per_request
+        request(:get, "application_users/updates#{ '?limit=' + limit.to_s if !limit.blank? }", options)
       end
 
       # Marks account updates as "read".
