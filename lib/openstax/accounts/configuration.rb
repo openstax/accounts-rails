@@ -64,6 +64,13 @@ module OpenStax
       # Which params are forwarded on the accounts login path
       attr_accessor :forwardable_login_param_keys
 
+      # max_user_updates_per_request
+      # When the user profile sync operation is called, this parameter will limit
+      # the number of returned profile updates from Accounts; helpful when all
+      # accounts have been marked as updated on Accounts so that we don't get
+      # overloaded.
+      attr_accessor :max_user_updates_per_request
+
       def logout_redirect_url(request)
         (@logout_redirect_url.is_a?(Proc) ?
            @logout_redirect_url.call(request) :
@@ -99,6 +106,7 @@ module OpenStax
         @logout_redirect_url = nil
         @return_to_url_approver = nil
         @forwardable_login_param_keys = [:signup_at, :go]
+        @max_user_updates_per_request = 250
         super
       end
 
