@@ -43,17 +43,20 @@ RSpec.configure do |config|
 end
 
 
-def mock_omniauth_request(uid: nil, first_name: nil, last_name: nil, title: nil, nickname: nil, faculty_status: nil)
+def mock_omniauth_request(uid: nil, first_name: nil, last_name: nil, title: nil,
+                          nickname: nil, faculty_status: nil, uuid: nil, self_reported_role: nil)
   extra_hash = {
     'raw_info' => {
-      'faculty_status' => faculty_status
+      'faculty_status' => faculty_status,
+      'uuid' => uuid,
+      'self_reported_role' => self_reported_role
     }
   }
 
   OpenStruct.new(
     env: {
       'omniauth.auth' => OpenStruct.new({
-        uid: uid || SecureRandom.hex(4),
+        uid: uid || SecureRandom.random_number(10000000),
         provider: "openstax",
         info: OpenStruct.new({
           nickname: nickname || "",
@@ -86,4 +89,12 @@ def with_stubbing(value)
   ensure
     OpenStax::Accounts.configuration.enable_stubbing = original
   end
+end
+
+def silence_omniauth
+  previous_logger = OmniAuth.config.logger
+  OmniAuth.config.logger = Logger.new("/dev/null")
+  yield
+ensure
+  OmniAuth.config.logger = previous_logger
 end

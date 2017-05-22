@@ -29,24 +29,26 @@ describe "Forwards params", type: :request do
   end
 
   def test_forwards(key:, value:)
-    get '/forwards_params_route'
+    silence_omniauth do
+      get '/forwards_params_route'
 
-    expect(redirect_path).to eq "/accounts/login"
-    expect(redirect_query_hash).to include(key => value)
+      expect(redirect_path).to eq "/accounts/login"
+      expect(redirect_query_hash).to include(key => value)
 
-    with_stubbing(false) do
+      with_stubbing(false) do
+        get redirect_path_and_query
+      end
+
+      expect(redirect_path).to eq "/accounts/auth/openstax"
+      expect(redirect_query_hash).to include(key => value)
+
       get redirect_path_and_query
+
+      expect(redirect_path).to eq("/oauth/authorize")
+      expect(redirect_query_hash).to include(key => value)
+
+      # This last redirect was to Accounts, so we don't follow it
     end
-
-    expect(redirect_path).to eq "/accounts/auth/openstax"
-    expect(redirect_query_hash).to include(key => value)
-
-    get redirect_path_and_query
-
-    expect(redirect_path).to eq("/oauth/authorize")
-    expect(redirect_query_hash).to include(key => value)
-
-    # This last redirect was to Accounts, so we don't follow it
   end
 
   def redirect_path
