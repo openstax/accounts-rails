@@ -9,9 +9,10 @@
                    method: :post,
                    html: {class: 'form-inline'} do |f| %>
 
-    <%= f.label :username %>&nbsp;
+
     <div class="form-group">
-      <%= f.text_field :username %>&nbsp;
+      <%= f.text_field :username, placeholder: "Username" %>&nbsp;
+      <%= f.select :role, OpenStax::Accounts::Account.roles.keys.map{|rr| [rr, rr]} %>&nbsp;
       <%= f.submit 'Create', class: 'btn btn-primary' %>
     </div>
 

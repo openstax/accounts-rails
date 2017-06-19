@@ -17,6 +17,13 @@ module OpenStax
                      required: true
                    }
 
+          property :uuid,
+                   type: String,
+                   schema_info: {
+                     description: "The unclaimed account's UUID",
+                     required: true
+                   }
+
         end
       end
     end
