@@ -9,6 +9,7 @@ module OpenStax
         paramify :create do
           attribute :username, type: String
           validates :username, presence: true
+          attribute :role, type: String
         end
 
         uses_routine OpenStax::Accounts::Dev::CreateAccount,
@@ -23,10 +24,10 @@ module OpenStax
         end
 
         def handle
-          run(:create_account, create_params.as_hash(:username))
+          run(:create_account, create_params.as_hash(:username, :role))
         end
 
-      end 
+      end
     end
 
   end

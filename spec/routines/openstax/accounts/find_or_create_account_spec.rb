@@ -15,8 +15,10 @@ module OpenStax
       end
 
       it 'can create users' do
-        account_1 = FindOrCreateAccount.call(email: 'alice@example.com').outputs.account
+        account_1 = FindOrCreateAccount.call(email: 'alice@example.com', role: 'instructor').outputs.account
         expect(account_1).to be_persisted
+        expect(account_1.uuid).to match(/\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\z/i)
+        expect(account_1.role).to eq 'instructor'
 
         account_2 = FindOrCreateAccount.call(username: 'alice').outputs.account
         expect(account_2).to be_persisted
