@@ -50,21 +50,4 @@ describe "Forwards params", type: :request do
       # This last redirect was to Accounts, so we don't follow it
     end
   end
-
-  def redirect_path
-    redirect_uri.path
-  end
-
-  def redirect_path_and_query
-    "#{redirect_uri.path}?#{redirect_uri.query}"
-  end
-
-  def redirect_query_hash
-    Rack::Utils.parse_nested_query(redirect_uri.query).symbolize_keys
-  end
-
-  def redirect_uri
-    expect(response.code).to eq "302"
-    uri = URI.parse(response.headers["Location"])
-  end
 end
