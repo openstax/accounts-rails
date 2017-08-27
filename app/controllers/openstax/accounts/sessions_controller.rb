@@ -1,3 +1,5 @@
+require 'openssl'
+
 module OpenStax
   module Accounts
     class SessionsController < OpenStax::Accounts::ApplicationController
@@ -13,6 +15,18 @@ module OpenStax
 
           forwardable_params =
             params.slice(*configuration.forwardable_login_param_keys.map(&:to_s))
+
+          if params[:sign].present?
+            forwardable_params.merge!(timestamp: Time.now.to_i)
+
+            # http://stackoverflow.com/questions/4084979/ruby-way-to-generate-a-hmac-sha1-signature-for-oauth
+            signature = OpenSSL::HMAC.hexdigest('sha1',
+                                                configuration.openstax_application_secret,
+                                                QueryHelper.normalize(forwardable_params))
+
+            forwardable_params.merge!(signature: signature)
+          end
+
           redirect_to openstax_login_path(forwardable_params)
         end
       end

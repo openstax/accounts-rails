@@ -23,6 +23,8 @@ OpenStax::Accounts::Engine.routes.draw do
     get 'failure', :path => 'auth/failure' # Authentication failure
 
     get 'login', :action => :new # Redirects to /auth/openstax or stub
+    get 'signed_login', :action => :new, :sign => 1 # signs query parameters
+
     match 'logout', :action => :destroy, # Redirects to logout path or stub
                     :via => OpenStax::Accounts.configuration.logout_via
     get 'profile', :action => :profile # Redirects to profile path or stub

@@ -98,3 +98,20 @@ def silence_omniauth
 ensure
   OmniAuth.config.logger = previous_logger
 end
+
+def redirect_path
+  redirect_uri.path
+end
+
+def redirect_path_and_query
+  "#{redirect_uri.path}?#{redirect_uri.query}"
+end
+
+def redirect_query_hash
+  Rack::Utils.parse_nested_query(redirect_uri.query).symbolize_keys
+end
+
+def redirect_uri
+  expect(response.code).to eq "302"
+  uri = URI.parse(response.headers["Location"])
+end
