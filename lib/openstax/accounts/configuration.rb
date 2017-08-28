@@ -105,7 +105,11 @@ module OpenStax
         @max_search_items = 10
         @logout_redirect_url = nil
         @return_to_url_approver = nil
-        @forwardable_login_param_keys = [:signup_at, :go]
+        @forwardable_login_param_keys = [
+          :signup_at,
+          :go,
+          :sp          # "signed payload"; "sp" for short to keep nested parameter names short
+        ]
         @max_user_updates_per_request = 250
         super
       end
