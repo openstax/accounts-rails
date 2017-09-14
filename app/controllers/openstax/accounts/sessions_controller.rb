@@ -3,14 +3,14 @@ module OpenStax
     class SessionsController < OpenStax::Accounts::ApplicationController
 
       def new
+        if configuration.is_return_to_url_approved?(params[:return_to])
+          store_url url: params[:return_to], key: :accounts_return_to, strategies: [:session]
+        end
+        store_fallback key: :accounts_return_to, strategies: [:session]
+
         if configuration.enable_stubbing?
           redirect_to dev_accounts_path
         else
-          if configuration.is_return_to_url_approved?(params[:return_to])
-            store_url url: params[:return_to], key: :accounts_return_to, strategies: [:session]
-          end
-          store_fallback key: :accounts_return_to, strategies: [:session]
-
           forwardable_params =
             params.slice(*configuration.forwardable_login_param_keys.map(&:to_s))
           redirect_to openstax_login_path(forwardable_params)
