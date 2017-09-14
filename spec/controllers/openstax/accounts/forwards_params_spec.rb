@@ -11,6 +11,7 @@ describe "Forwards params", type: :request do
     def set_login_param
       login_params[:signup_at] = "foo"
       login_params[:go] = "bar"
+      login_params[:sp] = "blah"
     end
   end
 
@@ -26,6 +27,10 @@ describe "Forwards params", type: :request do
 
   it "should forward go" do
     test_forwards(key: :go, value: "bar")
+  end
+
+  it "should forward go" do
+    test_forwards(key: :sp, value: "blah")
   end
 
   def test_forwards(key:, value:)
