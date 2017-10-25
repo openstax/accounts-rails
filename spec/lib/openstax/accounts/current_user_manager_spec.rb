@@ -1,7 +1,7 @@
 module OpenStax
   module Accounts
     describe CurrentUserManager do
-      let!(:account) { FactoryGirl.create(:openstax_accounts_account,
+      let!(:account) { FactoryBot.create(:openstax_accounts_account,
                          username: 'some_user',
                          openstax_uid: 1) }
       let!(:user)    { User.create(:account => account) }

@@ -10,7 +10,7 @@ module OpenStax
         OpenStax::Accounts.configuration.enable_stubbing = true
       end
 
-      let!(:owner) { FactoryGirl.create :openstax_accounts_account }
+      let!(:owner) { FactoryBot.create :openstax_accounts_account }
 
       it 'can create groups' do
         group = CreateGroup[owner: owner, name: 'Test', is_public: true]

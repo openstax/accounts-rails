@@ -4,7 +4,7 @@ module OpenStax::Accounts
   describe SessionsController, type: :controller do
     routes { Engine.routes }
 
-    let!(:account) { FactoryGirl.create :openstax_accounts_account,
+    let!(:account) { FactoryBot.create :openstax_accounts_account,
                                         username: 'some_user',
                                         openstax_uid: 10 }
 

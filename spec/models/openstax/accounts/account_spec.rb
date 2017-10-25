@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module OpenStax::Accounts
   RSpec.describe Account do
-    subject(:account) { FactoryGirl.create(:openstax_accounts_account) }
+    subject(:account) { FactoryBot.create(:openstax_accounts_account) }
 
     context 'validation' do
       it 'requires a unique openstax_uid, if given' do
@@ -12,7 +12,7 @@ module OpenStax::Accounts
         account.openstax_uid = -1
         account.save!
 
-        account_2 = FactoryGirl.build(:openstax_accounts_account, openstax_uid: -1)
+        account_2 = FactoryBot.build(:openstax_accounts_account, openstax_uid: -1)
         expect(account_2).not_to be_valid
         expect(account_2.errors[:openstax_uid]).to eq(['has already been taken'])
       end
@@ -24,20 +24,20 @@ module OpenStax::Accounts
 
       it 'requires unique username if not nil' do
         expect{
-          FactoryGirl.create(:openstax_accounts_account, username: account.username)
+          FactoryBot.create(:openstax_accounts_account, username: account.username)
         }.to raise_error(ActiveRecord::RecordInvalid)
       end
 
       it 'allows multiple accounts saved with nil username' do
-        FactoryGirl.create(:openstax_accounts_account, username: nil)
+        FactoryBot.create(:openstax_accounts_account, username: nil)
         expect{
-          FactoryGirl.create(:openstax_accounts_account, username: nil)
+          FactoryBot.create(:openstax_accounts_account, username: nil)
         }.not_to raise_error
       end
 
       it 'requires a role' do
         expect{
-          FactoryGirl.create(:openstax_accounts_account, role: nil)
+          FactoryBot.create(:openstax_accounts_account, role: nil)
         }.to raise_error(ActiveRecord::RecordInvalid)
       end
     end

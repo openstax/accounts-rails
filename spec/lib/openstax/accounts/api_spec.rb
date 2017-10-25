@@ -23,7 +23,7 @@ module OpenStax
 
       context 'users' do
         before(:each) { reset(::Api::UsersController) }
-        let!(:account) { FactoryGirl.create :openstax_accounts_account }
+        let!(:account) { FactoryBot.create :openstax_accounts_account }
 
         it 'makes api call to users index' do
           Api.search_accounts('something')
@@ -89,8 +89,8 @@ module OpenStax
       context 'groups' do
         before(:each) { reset(::Api::GroupsController) }
 
-        let!(:account) { FactoryGirl.create :openstax_accounts_account }
-        let!(:group)   { FactoryGirl.create :openstax_accounts_group }
+        let!(:account) { FactoryBot.create :openstax_accounts_account }
+        let!(:group)   { FactoryBot.create :openstax_accounts_group }
 
         it 'makes api call to groups create' do
           Api.create_group(account, group)
@@ -121,8 +121,8 @@ module OpenStax
       context 'group_members' do
         before(:each) { reset(::Api::GroupMembersController) }
 
-        let!(:account) { FactoryGirl.create :openstax_accounts_account }
-        let!(:group_member)   { FactoryGirl.build :openstax_accounts_group_member }
+        let!(:account) { FactoryBot.create :openstax_accounts_account }
+        let!(:group_member)   { FactoryBot.build :openstax_accounts_group_member }
 
         it 'makes api call to group_members create' do
           Api.create_group_member(account, group_member)
@@ -145,8 +145,8 @@ module OpenStax
       context 'group_owners' do
         before(:each) { reset(::Api::GroupOwnersController) }
 
-        let!(:account)      { FactoryGirl.create :openstax_accounts_account }
-        let!(:group_owner) { FactoryGirl.build :openstax_accounts_group_owner }
+        let!(:account)      { FactoryBot.create :openstax_accounts_account }
+        let!(:group_owner) { FactoryBot.build :openstax_accounts_group_owner }
 
         it 'makes api call to group_owners create' do
           Api.create_group_owner(account, group_owner)
@@ -169,8 +169,8 @@ module OpenStax
       context 'group_nestings' do
         before(:each) { reset(::Api::GroupNestingsController) }
 
-        let!(:account)      { FactoryGirl.create :openstax_accounts_account }
-        let!(:group_nesting) { FactoryGirl.build :openstax_accounts_group_nesting }
+        let!(:account)      { FactoryBot.create :openstax_accounts_account }
+        let!(:group_nesting) { FactoryBot.build :openstax_accounts_group_nesting }
 
         it 'makes api call to group_nestings (create)' do
           Api.create_group_nesting(account, group_nesting)

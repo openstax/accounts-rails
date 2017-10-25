@@ -11,12 +11,12 @@ load 'rails/tasks/engine.rake'
 
 Bundler::GemHelper.install_tasks
 
-begin
-  require 'rspec/core/rake_task'
+Dir[File.join(File.dirname(__FILE__), 'tasks/**/*.rake')].each { |f| load f }
 
-  RSpec::Core::RakeTask.new(spec: 'app:db:test:prepare')
+require 'rspec/core'
+require 'rspec/core/rake_task'
 
-  task default: :spec
-rescue LoadError
-  # no rspec available
-end
+desc 'Run all specs in spec directory (excluding plugin specs)'
+RSpec::Core::RakeTask.new(spec: 'app:db:test:prepare')
+
+task default: :spec
