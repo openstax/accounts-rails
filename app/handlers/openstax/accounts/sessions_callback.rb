@@ -45,7 +45,6 @@ module OpenStax
               end
 
               account.uuid = raw_info['uuid']
-
             end
           end
 

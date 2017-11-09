@@ -9,20 +9,57 @@ module OpenStax
         controller_class = ::Api::ApplicationGroupsController
         allow_any_instance_of(controller_class).to(
           receive(:updates) do |controller|
-            controller.render :json => [{id: 1, application_id: 1,
-                                         group: {id: 2, name: 'M', members: [], owners: [],
-                                                 nestings: [{container_group_id: 2,
-                                                             member_group_id: 3}]},
-                                         unread_updates: 1, default_contact_info_id: 1},
-                                        {id: 3, application_id: 1,
-                                         group: {id: 3, name: 'Fuego\'s Deputies',
-                                                 members: [{group_id: 3,
-                                                            user: {id: 2, username: 'User'}}],
-                                                 owners: [{group_id: 3,
-                                                           user: {id: 3, username: 'Fuego'}}],
-                                                 nestings: []},
-                                         unread_updates: 2, default_contact_info_id: 5}]
-          end)
+            controller.render json: [
+              {
+                id: 1,
+                application_id: 1,
+                group: {
+                  id: 2,
+                  name: 'M',
+                  members: [],
+                  owners: [],
+                  nestings: [
+                    {
+                      container_group_id: 2,
+                      member_group_id: 3
+                    }
+                  ]
+                },
+                unread_updates: 1,
+                default_contact_info_id: 1
+              },
+              {
+                id: 3,
+                application_id: 1,
+                group: {
+                  id: 3,
+                  name: 'Fuego\'s Deputies',
+                  members: [
+                    {
+                      group_id: 3,
+                      user: {
+                        id: 2,
+                        username: 'User'
+                      }
+                    }
+                  ],
+                  owners: [
+                    {
+                      group_id: 3,
+                      user: {
+                        id: 3,
+                        username: 'Fuego'
+                      }
+                    }
+                  ],
+                  nestings: []
+                },
+                unread_updates: 2,
+                default_contact_info_id: 5
+              }
+            ]
+          end
+        )
 
         u = OpenStax::Accounts::Account.new
         u.openstax_uid = 2

@@ -4,14 +4,14 @@ module OpenStax::Accounts
   describe Group do
     context 'validation' do
       it 'requires a unique openstax_uid' do
-        group = FactoryGirl.build(:openstax_accounts_group, openstax_uid: nil)
+        group = FactoryBot.build(:openstax_accounts_group, openstax_uid: nil)
         expect(group).not_to be_valid
         expect(group.errors[:openstax_uid]).to eq(['can\'t be blank'])
 
         group.openstax_uid = 1
         group.save!
 
-        group_2 = FactoryGirl.build(:openstax_accounts_group, openstax_uid: 1)
+        group_2 = FactoryBot.build(:openstax_accounts_group, openstax_uid: 1)
         expect(group_2).not_to be_valid
         expect(group_2.errors[:openstax_uid]).to eq(['has already been taken'])
       end
@@ -25,9 +25,9 @@ module OpenStax::Accounts
 
       after(:all)      { OpenStax::Accounts.configuration.enable_stubbing = @stubbing }
 
-      let!(:requestor) { FactoryGirl.create(:openstax_accounts_account) }
+      let!(:requestor) { FactoryBot.create(:openstax_accounts_account) }
       let!(:group)     do
-        FactoryGirl.build(:openstax_accounts_group).tap{ |group| group.requestor = requestor }
+        FactoryBot.build(:openstax_accounts_group).tap{ |group| group.requestor = requestor }
       end
 
       it 'calls OpenStax Accounts when created' do

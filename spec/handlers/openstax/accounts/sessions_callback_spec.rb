@@ -31,8 +31,9 @@ module OpenStax
 
       context "uuid" do
         it "sets the UUID on the account" do
-          result = described_class.handle(request: mock_omniauth_request(uuid: "howdy_ho"))
-          expect(result.outputs.account.uuid).to eq "howdy_ho"
+          uuid = SecureRandom.uuid
+          result = described_class.handle(request: mock_omniauth_request(uuid: uuid))
+          expect(result.outputs.account.uuid).to eq uuid
         end
       end
 
@@ -50,7 +51,8 @@ module OpenStax
 
       context "user exists" do
         it "updates the user's data" do
-          existing_account = FactoryGirl.create :openstax_accounts_account
+          existing_account = FactoryBot.create :openstax_accounts_account
+          uuid = SecureRandom.uuid
           result = described_class.handle(
             request: mock_omniauth_request(
               uid: existing_account.openstax_uid,
@@ -59,7 +61,7 @@ module OpenStax
               title: "900",
               nickname: "191919",
               faculty_status: "confirmed_faculty",
-              uuid: "yoyoma",
+              uuid: uuid,
               self_reported_role: "instructor")
           )
 
@@ -70,7 +72,7 @@ module OpenStax
           expect(account.title).to eq "900"
           expect(account.username).to eq "191919"
           expect(account).to be_confirmed_faculty
-          expect(account.uuid).to eq "yoyoma"
+          expect(account.uuid).to eq uuid
           expect(account).to be_instructor
         end
       end

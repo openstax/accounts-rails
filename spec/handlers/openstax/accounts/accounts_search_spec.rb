@@ -5,28 +5,28 @@ module OpenStax
 
     describe AccountsSearch do
       
-      let!(:account_1)          { FactoryGirl.create :openstax_accounts_account,
+      let!(:account_1)          { FactoryBot.create :openstax_accounts_account,
                                                   first_name: 'John',
                                                   last_name: 'Stravinsky',
                                                   username: 'jstrav' }
-      let!(:account_2)          { FactoryGirl.create :openstax_accounts_account,
+      let!(:account_2)          { FactoryBot.create :openstax_accounts_account,
                                                   first_name: 'Mary',
                                                   last_name: 'Mighty',
                                                   full_name: 'Mary Mighty',
                                                   username: 'mary' }
-      let!(:account_3)          { FactoryGirl.create :openstax_accounts_account,
+      let!(:account_3)          { FactoryBot.create :openstax_accounts_account,
                                                   first_name: 'John',
                                                   last_name: 'Stead',
                                                   username: 'jstead' }
 
-      let!(:account_4)          { FactoryGirl.create :openstax_accounts_account,
+      let!(:account_4)          { FactoryBot.create :openstax_accounts_account,
                                                   first_name: 'Bob',
                                                   last_name: 'JST',
                                                   username: 'bigbear' }
 
       let!(:billy_accounts) {
         (0..49).to_a.collect{|ii|
-          FactoryGirl.create :openstax_accounts_account,
+          FactoryBot.create :openstax_accounts_account,
                              first_name: "Billy#{ii.to_s.rjust(2, '0')}",
                              last_name: "Bob_#{(49-ii).to_s.rjust(2,'0')}",
                              username: "billy_#{ii.to_s.rjust(2, '0')}"

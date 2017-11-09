@@ -3,7 +3,7 @@ ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../dummy/config/environment.rb',  __FILE__)
 
 require 'rspec/rails'
-require 'factory_girl_rails'
+require 'factory_bot_rails'
 
 Rails.backtrace_cleaner.remove_silencers!
 
@@ -48,7 +48,7 @@ def mock_omniauth_request(uid: nil, first_name: nil, last_name: nil, title: nil,
   extra_hash = {
     'raw_info' => {
       'faculty_status' => faculty_status,
-      'uuid' => uuid,
+      'uuid' => uuid || SecureRandom.uuid,
       'self_reported_role' => self_reported_role
     }
   }

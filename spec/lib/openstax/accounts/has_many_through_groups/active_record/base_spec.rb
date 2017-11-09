@@ -3,17 +3,17 @@ module OpenStax
     module HasManyThroughGroups
       module ActiveRecord
         describe Base do
-          let!(:account_1) { FactoryGirl.create(:openstax_accounts_account,
+          let!(:account_1) { FactoryBot.create(:openstax_accounts_account,
                              username: 'some_user',
                              openstax_uid: 1) }
           let!(:user_1)    { User.create(:account => account_1) }
 
-          let!(:account_2) { FactoryGirl.create(:openstax_accounts_account,
+          let!(:account_2) { FactoryBot.create(:openstax_accounts_account,
                              username: 'another_user',
                              openstax_uid: 2) }
           let!(:user_2)    { User.create(:account => account_2) }
 
-          let!(:group_nesting) { FactoryGirl.create(:openstax_accounts_group_nesting) }
+          let!(:group_nesting) { FactoryBot.create(:openstax_accounts_group_nesting) }
 
           before(:each) do
             group_nesting.member_group.add_member(account_1)

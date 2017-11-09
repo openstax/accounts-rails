@@ -13,17 +13,23 @@ module OpenStax::Accounts
 
     has_many :group_members, dependent: :destroy,
              class_name: 'OpenStax::Accounts::GroupMember',
-             primary_key: :openstax_uid, inverse_of: :group
+             primary_key: :openstax_uid,
+             inverse_of: :group
     has_many :members, through: :group_members, source: :user
 
     has_one :container_group_nesting, dependent: :destroy,
-            class_name: 'OpenStax::Accounts::GroupNesting', primary_key: :openstax_uid,
-            foreign_key: :member_group_id, inverse_of: :member_group
+            class_name: 'OpenStax::Accounts::GroupNesting',
+            primary_key: :openstax_uid,
+            foreign_key: :member_group_id,
+            inverse_of: :member_group
     has_one :container_group, through: :container_group_nesting
 
-    has_many :member_group_nestings, dependent: :destroy,
-             class_name: 'OpenStax::Accounts::GroupNesting', primary_key: :openstax_uid,
-             foreign_key: :container_group_id, inverse_of: :container_group
+    has_many :member_group_nestings,
+             class_name: 'OpenStax::Accounts::GroupNesting',
+             primary_key: :openstax_uid,
+             foreign_key: :container_group_id,
+             dependent: :destroy,
+             inverse_of: :container_group
     has_many :member_groups, through: :member_group_nestings
 
     validates :openstax_uid, uniqueness: true, presence: true
@@ -34,14 +40,31 @@ module OpenStax::Accounts
     before_update :update_openstax_accounts_group, unless: :syncing_or_stubbing?
     before_destroy :destroy_openstax_accounts_group, unless: :syncing_or_stubbing?
 
-    scope :visible_for, lambda { |account|
-      next where(is_public: true) unless account.is_a? OpenStax::Accounts::Account
+    scope(
+      :visible_for, ->(account) do
+        next where(is_public: true) unless account.is_a? OpenStax::Accounts::Account
 
-      includes(:group_members).includes(:group_owners)
-      .where{((is_public.eq true) |\
-               (group_members.user_id.eq my{account.id}) |\
-               (group_owners.user_id.eq my{account.id}))}
-    }
+        groups = arel_table
+        group_members = OpenStax::Accounts::GroupMember.arel_table
+        group_owners = OpenStax::Accounts::GroupOwner.arel_table
+
+        where(
+          groups[:is_public].eq(true).or(
+            OpenStax::Accounts::GroupMember.where(
+              group_members[:group_id].eq(groups[:openstax_uid]).and(
+                group_members[:user_id].eq(account.id)
+              )
+            ).exists
+          ).or(
+            OpenStax::Accounts::GroupOwner.where(
+              group_owners[:group_id].eq(groups[:openstax_uid]).and(
+                group_owners[:user_id].eq(account.id)
+              )
+            ).exists
+          )
+        )
+      end
+    )
 
     def has_owner?(account)
       return false unless account.is_a? OpenStax::Accounts::Account
@@ -91,11 +114,12 @@ module OpenStax::Accounts
       return [] unless persisted?
       reload
 
-      gids = [openstax_uid] + (Group.includes(:member_group_nestings)
-                                    .where(member_group_nestings: {
-                                             member_group_id: openstax_uid
-                                           })
-                                    .first.try(:supertree_group_ids) || [])
+      gids = [openstax_uid] + (
+        self.class.joins(:member_group_nestings)
+                  .where(openstax_accounts_group_nestings: { member_group_id: openstax_uid })
+                  .first
+                  .try!(:supertree_group_ids) || []
+      )
       update_column(:cached_supertree_group_ids, gids)
       self.cached_supertree_group_ids = gids
     end
@@ -105,11 +129,10 @@ module OpenStax::Accounts
       return [] unless persisted?
       reload
 
-      gids = [openstax_uid] + Group.includes(:container_group_nesting)
-                                   .where(container_group_nesting: {
-                                            container_group_id: openstax_uid
-                                          })
-                                   .collect{|g| g.subtree_group_ids}.flatten
+      gids = [openstax_uid] +
+        self.class.joins(:container_group_nesting)
+                  .where(openstax_accounts_group_nestings: { container_group_id: openstax_uid })
+                  .map { |group| group.subtree_group_ids }.flatten
       update_column(:cached_subtree_group_ids, gids)
       self.cached_subtree_group_ids = gids
     end

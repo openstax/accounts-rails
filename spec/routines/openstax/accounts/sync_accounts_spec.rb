@@ -7,14 +7,33 @@ module OpenStax
 
       it 'can sync accounts' do
         controller_class = ::Api::ApplicationUsersController
+        uuid = SecureRandom.uuid
         allow_any_instance_of(controller_class).to(
           receive(:updates) do |controller|
-            controller.render :json => [{id: 1, application_id: 1,
-                                        user: {id: 2, username: 'user', self_reported_role: 'instructor', uuid: 'booyah'},
-                                        unread_updates: 1, default_contact_info_id: 1},
-                                        {id: 3, application_id: 1,
-                                        user: {id: 4, username: 'fuego'},
-                                        unread_updates: 2, default_contact_info_id: 5}]
+            controller.render json: [
+              {
+                id: 1,
+                application_id: 1,
+                user: {
+                  id: 2,
+                  username: 'user',
+                  self_reported_role: 'instructor',
+                  uuid: uuid
+                },
+                unread_updates: 1,
+                default_contact_info_id: 1
+              },
+              {
+                id: 3,
+                application_id: 1,
+                user: {
+                  id: 4,
+                  username: 'fuego'
+                },
+                unread_updates: 2,
+                default_contact_info_id: 5
+              }
+            ]
           end
         )
 
@@ -37,7 +56,7 @@ module OpenStax
           expect(Account.first.openstax_uid).to eq 2
           expect(Account.first.username).to eq 'user'
           expect(Account.first.role).to eq 'instructor'
-          expect(Account.first.uuid).to eq 'booyah'
+          expect(Account.first.uuid).to eq uuid
           expect(Account.last.openstax_uid).to eq 4
           expect(Account.last.username).to eq 'fuego'
 

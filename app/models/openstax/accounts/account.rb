@@ -31,6 +31,7 @@ module OpenStax::Accounts
 
     validates :openstax_uid, uniqueness: { allow_nil: true }
     validates :username, uniqueness: { allow_nil: true }
+    validates :uuid, uniqueness: { allow_nil: true }
 
     before_update :update_openstax_accounts, if: :should_send_updates_to_accounts?
 
