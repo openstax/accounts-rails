@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module OpenStax
   module Accounts
-    describe Api do
+    RSpec.describe Api do
 
       let!(:account) { OpenStax::Accounts::Account.create(username: 'some_user',
                          first_name: 'Some', last_name: 'User', full_name: 'SomeUser',

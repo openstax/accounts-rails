@@ -47,7 +47,7 @@ http_interactions:
     body:
       encoding: UTF-8
       string: '{"access_token":"c31fe09157c9801c88356a972d0e0c95aa13081cea77ae45f098b5dc7f614642","token_type":"bearer","created_at":1497844427}'
-    http_version: 
+    http_version:
   recorded_at: Mon, 19 Jun 2017 03:53:47 GMT
 - request:
     method: post
@@ -97,8 +97,8 @@ http_interactions:
       - thin
     body:
       encoding: UTF-8
-      string: '{"id":18,"uuid":"8c5c819f-d9d9-46e7-98b9-d737fc0f13fe"}'
-    http_version: 
+      string: '{"id":18,"uuid":"8c5c819f-d9d9-46e7-98b9-d737fc0f13fe","support_identifier":"cs_6f3b305b"}'
+    http_version:
   recorded_at: Mon, 19 Jun 2017 03:53:47 GMT
 - request:
     method: post
@@ -147,7 +147,7 @@ http_interactions:
     body:
       encoding: UTF-8
       string: '{"access_token":"1c4df98e8f1b07b4dd33aa81150262c829999aaf0564721c423f01c263c2114f","token_type":"bearer","created_at":1497844427}'
-    http_version: 
+    http_version:
   recorded_at: Mon, 19 Jun 2017 03:53:47 GMT
 - request:
     method: post
@@ -197,8 +197,8 @@ http_interactions:
       - thin
     body:
       encoding: UTF-8
-      string: '{"id":19,"uuid":"c1ebaa86-b8ef-4100-9213-a16ca741d47f"}'
-    http_version: 
+      string: '{"id":19,"uuid":"c1ebaa86-b8ef-4100-9213-a16ca741d47f","support_identifier":"cs_edc0b069"}'
+    http_version:
   recorded_at: Mon, 19 Jun 2017 03:53:47 GMT
 - request:
     method: post
@@ -247,7 +247,7 @@ http_interactions:
     body:
       encoding: UTF-8
       string: '{"access_token":"21bb7c60df067e7354ec7e3b2e83d2d39831aece5938d20e8e68e6ea52ab59ff","token_type":"bearer","created_at":1497844427}'
-    http_version: 
+    http_version:
   recorded_at: Mon, 19 Jun 2017 03:53:47 GMT
 - request:
     method: post
@@ -297,7 +297,7 @@ http_interactions:
       - thin
     body:
       encoding: UTF-8
-      string: '{"id":20,"uuid":"76c36a75-5b5a-4dbd-8800-5c1916c6f1f2"}'
-    http_version: 
+      string: '{"id":20,"uuid":"76c36a75-5b5a-4dbd-8800-5c1916c6f1f2","support_identifier":"cs_bccb058a"}'
+    http_version:
   recorded_at: Mon, 19 Jun 2017 03:53:48 GMT
 recorded_with: VCR 3.0.3

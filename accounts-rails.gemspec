@@ -13,7 +13,8 @@ Gem::Specification.new do |s|
   s.summary     = "Rails common code and bindings for the 'accounts' API"
   s.description = "This gem allows Rails apps to easily access the API's and login infrastructure of OpenStax Accounts."
 
-  s.files = Dir["{app,config,db,lib}/**/*", "spec/factories/**/*"] + ["MIT-LICENSE", "Rakefile", "README.md"]
+  s.files = Dir["{app,config,db,lib}/**/*", "spec/factories/**/*"] +
+            ["MIT-LICENSE", "Rakefile", "README.md"]
   s.test_files = Dir["spec/**/*"]
 
   s.add_dependency "rails", ">= 4.1"
@@ -32,6 +33,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rspec-rails"
   s.add_development_dependency "capybara"
   s.add_development_dependency "factory_bot_rails"
+  s.add_development_dependency "shoulda-matchers"
   s.add_development_dependency "quiet_assets"
   s.add_development_dependency "thin"
   s.add_development_dependency "responders"

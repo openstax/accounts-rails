@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 module OpenStax::Accounts
-  describe SessionsController, type: :controller do
+  RSpec.describe SessionsController, type: :controller do
     routes { Engine.routes }
 
     let!(:account) { FactoryBot.create :openstax_accounts_account,

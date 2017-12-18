@@ -3,7 +3,7 @@ require 'spec_helper'
 module OpenStax
   module Accounts
 
-    describe SyncGroups, type: :routine do
+    RSpec.describe SyncGroups, type: :routine do
 
       it 'can sync groups' do
         controller_class = ::Api::ApplicationGroupsController
@@ -61,95 +61,77 @@ module OpenStax
           end
         )
 
-        u = OpenStax::Accounts::Account.new
-        u.openstax_uid = 2
-        u.username = 'User'
+        u = FactoryBot.create :openstax_accounts_account, openstax_uid: 2, username: 'User'
         u.syncing = true
-        u.save!
 
-        u2 = OpenStax::Accounts::Account.new
-        u2.openstax_uid = 3
-        u2.username = 'Fuego'
+        u2 = FactoryBot.create :openstax_accounts_account, openstax_uid: 3, username: 'Fuego'
         u2.syncing = true
-        u2.save!
 
-        g = OpenStax::Accounts::Group.new
-        g.name = 'Member Group'
-        g.openstax_uid = 2
+        g = FactoryBot.create :openstax_accounts_group, openstax_uid: 2, name: 'Member Group'
         g.syncing = true
-        g.save!
 
-        gm = GroupMember.new
-        gm.group = g
-        gm.user = u
-        gm.save!
+        gm = FactoryBot.create :openstax_accounts_group_member, group: g, user: u
 
-        g2 = OpenStax::Accounts::Group.new
-        g2.name = 'Container Group'
-        g2.openstax_uid = 4
+        g2 = FactoryBot.create :openstax_accounts_group, openstax_uid: 4, name: 'Container Group'
         g2.syncing = true
-        g2.save!
 
-        go = GroupOwner.new
-        go.group = g2
-        go.user = u
-        go.save!
+        go = FactoryBot.create :openstax_accounts_group_owner, group: g2, user: u
 
-        gn = GroupNesting.new
-        gn.container_group = g2
-        gn.member_group = g
-        gn.save!
+        gn = FactoryBot.create :openstax_accounts_group_nesting, container_group: g2,
+                                                                 member_group: g
 
         begin
           OpenStax::Accounts.configuration.enable_stubbing = false
-          expect(Group.count).to eq 2
-          expect(Group.first.openstax_uid).to eq 2
-          expect(Group.first.name).to eq 'Member Group'
-          expect(Group.first.members).to include u
-          expect(Group.last.openstax_uid).to eq 4
-          expect(Group.last.name).to eq 'Container Group'
-          expect(Group.last.member_groups).to include g
-          expect(Group.last.owners).to include u
+          expect(g.reload.openstax_uid).to eq 2
+          expect(g.name).to eq 'Member Group'
+          expect(g.members).to eq [ u ]
+          expect(g2.reload.openstax_uid).to eq 4
+          expect(g2.name).to eq 'Container Group'
+          expect(g2.member_groups).to eq [ g ]
+          expect(g2.owners).to eq [ u ]
 
           controller_class.last_action = nil
           controller_class.last_json = nil
 
-          SyncGroups.call
-          expect(Group.count).to eq 3
-          expect(Group.first.openstax_uid).to eq 2
-          expect(Group.first.name).to eq 'M'
-          expect(Group.first.member_groups).to include Group.last
-          expect(Group.all.second.openstax_uid).to eq 4
-          expect(Group.all.second.name).to eq 'Container Group'
-          expect(Group.all.second.member_groups).to include Group.first
-          expect(Group.last.openstax_uid).to eq 3
-          expect(Group.last.name).to eq 'Fuego\'s Deputies'
-          expect(Group.last.owners).to include Account.last
-          expect(Group.last.members).to include Account.first
+          expect { SyncGroups.call }.to change { Group.count }.by(1)
+
+          g3 = Group.find_by(openstax_uid: 3)
+
+          expect(g.reload.openstax_uid).to eq 2
+          expect(g.name).to eq 'M'
+          expect(g.member_groups).to eq [ g3 ]
+          expect(g2.reload.openstax_uid).to eq 4
+          expect(g2.name).to eq 'Container Group'
+          expect(g2.member_groups).to eq [ g ]
+          expect(g3.name).to eq 'Fuego\'s Deputies'
+          expect(g3.owners).to eq [ u2 ]
+          expect(g3.members).to eq [ u ]
 
           expect(controller_class.last_action).to eq :updated
-          expect(controller_class.last_json).to eq [{'group_id' => 2, 'read_updates' => 1},
-                                                    {'group_id' => 3, 'read_updates' => 2}]
+          expect(controller_class.last_json).to eq [
+            {'group_id' => 2, 'read_updates' => 1}, {'group_id' => 3, 'read_updates' => 2}
+          ]
 
           controller_class.last_action = nil
           controller_class.last_json = nil
 
-          SyncGroups.call
-          expect(Group.count).to eq 3
-          expect(Group.first.openstax_uid).to eq 2
-          expect(Group.first.name).to eq 'M'
-          expect(Group.first.member_groups).to include Group.last
-          expect(Group.all.second.openstax_uid).to eq 4
-          expect(Group.all.second.name).to eq 'Container Group'
-          expect(Group.all.second.member_groups).to include Group.first
-          expect(Group.last.openstax_uid).to eq 3
-          expect(Group.last.name).to eq 'Fuego\'s Deputies'
-          expect(Group.last.owners).to include Account.last
-          expect(Group.last.members).to include Account.first
+          expect { SyncGroups.call }.not_to change { Group.count }
+
+          expect(g.reload.openstax_uid).to eq 2
+          expect(g.name).to eq 'M'
+          expect(g.member_groups).to eq [ g3 ]
+          expect(g2.reload.openstax_uid).to eq 4
+          expect(g2.name).to eq 'Container Group'
+          expect(g2.member_groups).to eq [ g ]
+          expect(g3.reload.openstax_uid).to eq 3
+          expect(g3.name).to eq 'Fuego\'s Deputies'
+          expect(g3.owners).to eq [ u2 ]
+          expect(g3.members).to eq [ u ]
 
           expect(controller_class.last_action).to eq :updated
-          expect(controller_class.last_json).to eq [{'group_id' => 2, 'read_updates' => 1},
-                                                    {'group_id' => 3, 'read_updates' => 2}]
+          expect(controller_class.last_json).to eq [
+            {'group_id' => 2, 'read_updates' => 1}, {'group_id' => 3, 'read_updates' => 2}
+          ]
         ensure
           OpenStax::Accounts.configuration.enable_stubbing = true
         end

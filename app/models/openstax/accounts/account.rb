@@ -20,8 +20,7 @@ module OpenStax::Accounts
              inverse_of: :user
     has_many :groups_as_member, through: :group_members, source: :group
 
-    enum faculty_status: [:no_faculty_info, :pending_faculty,
-                          :confirmed_faculty, :rejected_faculty]
+    enum faculty_status: [:no_faculty_info, :pending_faculty, :confirmed_faculty, :rejected_faculty]
 
     after_initialize :set_default_faculty_status
     validates :faculty_status, presence: true
@@ -31,7 +30,8 @@ module OpenStax::Accounts
 
     validates :openstax_uid, uniqueness: { allow_nil: true }
     validates :username, uniqueness: { allow_nil: true }
-    validates :uuid, uniqueness: { allow_nil: true }
+    validates :uuid, presence: true, uniqueness: true
+    validates :support_identifier, uniqueness: { allow_nil: true }
 
     before_update :update_openstax_accounts, if: :should_send_updates_to_accounts?
 

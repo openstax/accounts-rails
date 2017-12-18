@@ -4,7 +4,7 @@ require 'vcr_helper'
 module OpenStax
   module Accounts
 
-    describe FindOrCreateAccount, type: :routine, vcr: VCR_OPTS do
+    RSpec.describe FindOrCreateAccount, type: :routine, vcr: VCR_OPTS do
 
       before(:all) do
         @previous_url = OpenStax::Accounts.configuration.openstax_accounts_url
@@ -15,17 +15,22 @@ module OpenStax
       end
 
       it 'can create users' do
-        account_1 = FindOrCreateAccount.call(email: 'alice@example.com', role: 'instructor').outputs.account
+        account_1 = described_class.call(
+          email: 'alice@example.com', role: 'instructor'
+        ).outputs.account
         expect(account_1).to be_persisted
-        expect(account_1.uuid).to match(/\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\z/i)
+        expect(account_1.uuid).to(
+          match(/\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\z/i)
+        )
+        expect(account_1.support_identifier).to match(/\Acs_[0-9a-f]{8}\z/i)
         expect(account_1.role).to eq 'instructor'
 
-        account_2 = FindOrCreateAccount.call(username: 'alice').outputs.account
+        account_2 = described_class.call(username: 'alice').outputs.account
         expect(account_2).to be_persisted
         expect(account_1).not_to eq(account_2)
 
-        account_3 = FindOrCreateAccount.call(username: 'alice2',
-                                             password: 'abcdefghijklmnop').outputs.account
+        account_3 = described_class.call(username: 'alice2',
+                                         password: 'abcdefghijklmnop').outputs.account
         expect(account_3).to be_persisted
         expect(account_1).not_to eq(account_3)
         expect(account_2).not_to eq(account_3)
@@ -34,7 +39,12 @@ module OpenStax
       it 'passes params to the API when creating users' do
         find_or_create_account_response = double('Response')
         allow(find_or_create_account_response).to receive(:status).and_return(201)
-        allow(find_or_create_account_response).to receive(:body).and_return('{"id":1}')
+        allow(find_or_create_account_response).to(
+          receive(:body).and_return(
+            "{\"id\":1,\"uuid\":\"#{SecureRandom.uuid
+            }\",\"support_identifier\":\"cs_#{SecureRandom.hex(4)}\"}"
+          )
+        )
         expect(OpenStax::Accounts::Api).to receive(:find_or_create_account).with(
           email: 'bob@example.com', username: nil, password: nil,
           first_name: 'Bob', last_name: 'Smith', full_name: 'Bob Smith',
@@ -42,7 +52,7 @@ module OpenStax
           role: :instructor
         ).and_return(find_or_create_account_response)
 
-        FindOrCreateAccount.call(
+        described_class.call(
           email: 'bob@example.com',
           first_name: 'Bob',
           last_name: 'Smith',
