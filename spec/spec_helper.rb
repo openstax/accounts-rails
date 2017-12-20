@@ -4,6 +4,7 @@ require File.expand_path('../dummy/config/environment.rb',  __FILE__)
 
 require 'rspec/rails'
 require 'factory_bot_rails'
+require 'shoulda-matchers'
 
 Rails.backtrace_cleaner.remove_silencers!
 
@@ -42,33 +43,40 @@ RSpec.configure do |config|
   config.order = :random
 end
 
+Shoulda::Matchers.configure do |config|
+  config.integrate do |with|
+    with.test_framework :rspec
+    with.library :rails
+  end
+end
 
-def mock_omniauth_request(uid: nil, first_name: nil, last_name: nil, title: nil,
-                          nickname: nil, faculty_status: nil, uuid: nil, self_reported_role: nil)
+def mock_omniauth_request(
+    uid: nil, first_name: nil, last_name: nil, title: nil, nickname: nil, faculty_status: nil,
+    uuid: nil, support_identifier: nil, self_reported_role: nil
+  )
   extra_hash = {
     'raw_info' => {
       'faculty_status' => faculty_status,
       'uuid' => uuid || SecureRandom.uuid,
+      'support_identifier' => support_identifier || "cs_#{SecureRandom.hex(4)}",
       'self_reported_role' => self_reported_role
     }
   }
 
   OpenStruct.new(
     env: {
-      'omniauth.auth' => OpenStruct.new({
+      'omniauth.auth' => OpenStruct.new(
         uid: uid || SecureRandom.random_number(10000000),
         provider: "openstax",
-        info: OpenStruct.new({
+        info: OpenStruct.new(
           nickname: nickname || "",
           first_name: first_name || "",
           last_name: last_name || "",
           title: title || ""
-        }),
-        credentials: OpenStruct.new({
-          access_token: "foo"
-        }),
+        ),
+        credentials: OpenStruct.new(access_token: "foo"),
         extra: OpenStruct.new(extra_hash)
-      })
+      )
     }
   )
 end

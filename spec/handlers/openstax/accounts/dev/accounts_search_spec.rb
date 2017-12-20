@@ -3,7 +3,7 @@ require 'spec_helper'
 module OpenStax
   module Accounts
 
-    describe Dev::AccountsSearch do
+    RSpec.describe Dev::AccountsSearch do
       
       let!(:account_1)          { FactoryBot.create :openstax_accounts_account,
                                                   first_name: 'John',

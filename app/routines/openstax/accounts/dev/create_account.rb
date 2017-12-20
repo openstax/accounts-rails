@@ -23,8 +23,9 @@ module OpenStax
           account.openstax_uid = -SecureRandom.hex(4).to_i(16)/2
           account.access_token = SecureRandom.hex.to_s
           account.username = username
-          account.uuid = SecureRandom.uuid
           account.role = inputs[:role] || :unknown_role
+          account.uuid = SecureRandom.uuid
+          account.support_identifier = "cs_#{SecureRandom.hex(4)}"
 
           account.save
 

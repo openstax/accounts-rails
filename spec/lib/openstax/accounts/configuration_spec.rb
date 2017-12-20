@@ -1,6 +1,6 @@
 module OpenStax
   module Accounts
-    describe Configuration do
+    RSpec.describe Configuration do
 
       let!(:config) { Configuration.new.tap {|c| c.openstax_accounts_url = "https://accounts.openstax.org"} }
       let!(:a_fake_request) { OpenStruct.new(url: "http://foo.com") }

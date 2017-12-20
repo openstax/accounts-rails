@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 module OpenStax::Accounts
-  describe Group do
+  RSpec.describe Group, type: :model do
     context 'validation' do
       it 'requires a unique openstax_uid' do
         group = FactoryBot.build(:openstax_accounts_group, openstax_uid: nil)

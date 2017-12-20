@@ -2,7 +2,7 @@ module OpenStax
   module Accounts
     module HasManyThroughGroups
       module ActiveRecord
-        describe Base do
+        RSpec.describe Base do
           let!(:account_1) { FactoryBot.create(:openstax_accounts_account,
                              username: 'some_user',
                              openstax_uid: 1) }

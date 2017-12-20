@@ -18,6 +18,7 @@ module OpenStax
           id = Account.find_by(username: username).try!(:openstax_uid) ||
                -SecureRandom.hex(4).to_i(16)/2
           uuid = SecureRandom.uuid
+          support_identifier = "cs_#{SecureRandom.hex(4)}"
         else
           response = Api.find_or_create_account(
             email: email, username: username, password: password,
@@ -30,6 +31,7 @@ module OpenStax
           Api::V1::UnclaimedAccountRepresenter.new(struct).from_json(response.body)
           id = struct.id
           uuid = struct.uuid
+          support_identifier = struct.support_identifier
         end
 
         account = Account.find_or_initialize_by(openstax_uid: id)
@@ -47,6 +49,7 @@ module OpenStax
           account.faculty_status = faculty_status || :no_faculty_info
           account.role = role || :unknown_role
           account.uuid = uuid
+          account.support_identifier = support_identifier
           account.save!
         end
 

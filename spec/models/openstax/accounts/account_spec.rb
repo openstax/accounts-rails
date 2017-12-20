@@ -1,8 +1,12 @@
 require 'spec_helper'
 
 module OpenStax::Accounts
-  RSpec.describe Account do
+  RSpec.describe Account, type: :model do
     subject(:account) { FactoryBot.create(:openstax_accounts_account) }
+
+    it { is_expected.to validate_presence_of(:uuid) }
+    it { is_expected.to validate_uniqueness_of(:uuid).case_insensitive }
+    it { is_expected.to validate_uniqueness_of(:support_identifier).case_insensitive.allow_nil }
 
     context 'validation' do
       it 'requires a unique openstax_uid, if given' do

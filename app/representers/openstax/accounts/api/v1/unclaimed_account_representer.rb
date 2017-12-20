@@ -24,6 +24,12 @@ module OpenStax
                      required: true
                    }
 
+          property :support_identifier,
+                   type: String,
+                   schema_info: {
+                     description: "The unclaimed account's support_identifier"
+                   }
+
         end
       end
     end

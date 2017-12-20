@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "Forwards params", type: :request do
+RSpec.describe "Forwards params", type: :request do
 
   class ForwardsParamsController < OpenStax::Accounts::ApplicationController
     before_filter :set_login_param

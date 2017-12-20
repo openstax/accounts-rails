@@ -3,22 +3,25 @@ require 'spec_helper'
 module OpenStax
   module Accounts
 
-    describe SessionsCallback do
+    RSpec.describe SessionsCallback do
 
       context "faculty_status" do
-        it "should deal with faculty status it doesn't know (e.g. if Accounts updated but this repo not)" do
-          result = described_class.handle(request: mock_omniauth_request(faculty_status: "howdy_ho"))
+        it "should default to no_faculty_info if the received faculty_status is unknown" +
+           " (e.g. if Accounts is updated but this repo is not)" do
+          result = described_class.handle(
+            request: mock_omniauth_request(faculty_status: "howdy_ho")
+          )
           expect(result.outputs.account).to be_no_faculty_info
         end
 
-        it "should deal with faculty status that is not present" do
+        it "should default to no_faculty_info if faculty status is not present" do
           request = mock_omniauth_request()
           remove_faculty_status!(request)
           result = described_class.handle(request: request)
           expect(result.outputs.account).to be_no_faculty_info
         end
 
-        it "should deal with null nickname" do
+        it "should deal with null nicknames" do
           with_stubbing(false) do
             request = mock_omniauth_request
             remove_nickname!(request)
@@ -37,14 +40,28 @@ module OpenStax
         end
       end
 
+      context "support_identifier" do
+        it "sets the support_identifier on the account" do
+          support_identifier = "cs_#{SecureRandom.hex(4)}"
+          result = described_class.handle(
+            request: mock_omniauth_request(support_identifier: support_identifier)
+          )
+          expect(result.outputs.account.support_identifier).to eq support_identifier
+        end
+      end
+
       context "role" do
         it "sets the role on the account" do
-          result = described_class.handle(request: mock_omniauth_request(self_reported_role: "instructor"))
+          result = described_class.handle(
+            request: mock_omniauth_request(self_reported_role: "instructor")
+          )
           expect(result.outputs.account.role).to eq "instructor"
         end
 
         it "deals with unknown role (e.g. if Accounts update but this repo not)" do
-          result = described_class.handle(request: mock_omniauth_request(self_reported_role: "howdy_ho"))
+          result = described_class.handle(
+            request: mock_omniauth_request(self_reported_role: "howdy_ho")
+          )
           expect(result.outputs.account).to be_unknown_role
         end
       end
@@ -53,6 +70,7 @@ module OpenStax
         it "updates the user's data" do
           existing_account = FactoryBot.create :openstax_accounts_account
           uuid = SecureRandom.uuid
+          support_identifier = "cs_#{SecureRandom.hex(4)}"
           result = described_class.handle(
             request: mock_omniauth_request(
               uid: existing_account.openstax_uid,
@@ -62,6 +80,7 @@ module OpenStax
               nickname: "191919",
               faculty_status: "confirmed_faculty",
               uuid: uuid,
+              support_identifier: support_identifier,
               self_reported_role: "instructor")
           )
 
@@ -73,6 +92,7 @@ module OpenStax
           expect(account.username).to eq "191919"
           expect(account).to be_confirmed_faculty
           expect(account.uuid).to eq uuid
+          expect(account.support_identifier).to eq support_identifier
           expect(account).to be_instructor
         end
       end

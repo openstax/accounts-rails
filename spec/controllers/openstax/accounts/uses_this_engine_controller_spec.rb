@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "Controllers that use this engine", type: :controller do
+RSpec.describe "Controllers that use this engine", type: :controller do
 
   controller do
     before_filter :authenticate_user!

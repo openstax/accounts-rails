@@ -45,6 +45,7 @@ module OpenStax
               end
 
               account.uuid = raw_info['uuid']
+              account.support_identifier = raw_info['support_identifier']
             end
           end
 

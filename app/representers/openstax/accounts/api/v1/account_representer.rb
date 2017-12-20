@@ -84,6 +84,12 @@ module OpenStax
                      description: "The UUID as set by Accounts"
                    }
 
+          property :support_identifier,
+                   type: String,
+                   schema_info: {
+                     description: "The support_identifier as set by Accounts"
+                   }
+
         end
       end
     end

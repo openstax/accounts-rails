@@ -1,6 +1,6 @@
 module OpenStax
   module Accounts
-    describe CurrentUserManager do
+    RSpec.describe CurrentUserManager do
       let!(:account) { FactoryBot.create(:openstax_accounts_account,
                          username: 'some_user',
                          openstax_uid: 1) }

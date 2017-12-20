@@ -16,6 +16,7 @@ ActiveRecord::Schema.define(version: 1001) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "pgcrypto"
+  enable_extension "citext"
 
   create_table "openstax_accounts_accounts", force: :cascade do |t|
     t.integer  "openstax_uid"
@@ -31,6 +32,7 @@ ActiveRecord::Schema.define(version: 1001) do
     t.string   "salesforce_contact_id"
     t.uuid     "uuid",                  default: "gen_random_uuid()", null: false
     t.integer  "role",                  default: 0,                   null: false
+    t.citext   "support_identifier"
   end
 
   add_index "openstax_accounts_accounts", ["access_token"], name: "index_openstax_accounts_accounts_on_access_token", unique: true, using: :btree
@@ -41,6 +43,7 @@ ActiveRecord::Schema.define(version: 1001) do
   add_index "openstax_accounts_accounts", ["openstax_uid"], name: "index_openstax_accounts_accounts_on_openstax_uid", unique: true, using: :btree
   add_index "openstax_accounts_accounts", ["role"], name: "index_openstax_accounts_accounts_on_role", using: :btree
   add_index "openstax_accounts_accounts", ["salesforce_contact_id"], name: "index_openstax_accounts_accounts_on_salesforce_contact_id", using: :btree
+  add_index "openstax_accounts_accounts", ["support_identifier"], name: "index_openstax_accounts_accounts_on_support_identifier", unique: true, using: :btree
   add_index "openstax_accounts_accounts", ["username"], name: "index_openstax_accounts_accounts_on_username", unique: true, using: :btree
   add_index "openstax_accounts_accounts", ["uuid"], name: "index_openstax_accounts_accounts_on_uuid", unique: true, using: :btree
 
