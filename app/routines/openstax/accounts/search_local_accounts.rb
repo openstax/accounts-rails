@@ -25,8 +25,6 @@ module OpenStax
         params[:pp] ||= args[2]
         params[:p] ||= args[3]
 
-
-
         run(:search, relation: OpenStax::Accounts::Account.unscoped,
                      sortable_fields: SORTABLE_FIELDS,
                      params: params) do |with|
@@ -88,6 +86,22 @@ module OpenStax
               sanitized_ids = to_string_array(id)
               next @items = @items.none if sanitized_ids.empty?
               @items = @items.where(ACCOUNTS[:openstax_uid].eq_any(sanitized_ids))
+            end
+          end
+
+          with.keyword :uuid do |uuids|
+            uuids.each do |uuid|
+              sanitized_uuids = to_string_array(uuid)
+              next @items = @items.none if sanitized_uuids.empty?
+              @items = @items.where(ACCOUNTS[:uuid].eq_any(sanitized_uuids))
+            end
+          end
+
+          with.keyword :support_identifier do |support_identifiers|
+            support_identifiers.each do |support_identifier|
+              sanitized_identifiers = to_string_array(support_identifier)
+              next @items = @items.none if sanitized_identifiers.empty?
+              @items = @items.where(ACCOUNTS[:support_identifier].eq_any(sanitized_identifiers))
             end
           end
 
