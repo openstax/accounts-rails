@@ -30,6 +30,12 @@ module OpenStax
                      description: "The unclaimed account's support_identifier"
                    }
 
+          property :is_test,
+                   type: :boolean,
+                   schema_info: {
+                     description: "Whether or not this is a test account"
+                   }
+
         end
       end
     end

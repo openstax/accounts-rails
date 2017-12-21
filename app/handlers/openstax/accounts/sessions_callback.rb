@@ -46,6 +46,7 @@ module OpenStax
 
               account.uuid = raw_info['uuid']
               account.support_identifier = raw_info['support_identifier']
+              account.is_test = raw_info['is_test']
             end
           end
 

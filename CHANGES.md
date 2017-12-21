@@ -1,3 +1,13 @@
+7.12.0
+-----
+
+* Add `is_test` field to accounts
+
+7.11.0
+-----
+
+* Search local accounts by `support_identifier`
+
 7.10.0
 -----
 

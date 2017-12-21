@@ -32,6 +32,7 @@ module OpenStax
           id = struct.id
           uuid = struct.uuid
           support_identifier = struct.support_identifier
+          is_test = struct.is_test
         end
 
         account = Account.find_or_initialize_by(openstax_uid: id)
@@ -50,6 +51,7 @@ module OpenStax
           account.role = role || :unknown_role
           account.uuid = uuid
           account.support_identifier = support_identifier
+          account.is_test = is_test
           account.save!
         end
 
