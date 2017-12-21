@@ -20,9 +20,10 @@ module OpenStax
                 user: {
                   id: 2,
                   username: 'user',
+                  self_reported_role: 'instructor',
                   uuid: uuid_1,
                   support_identifier: support_identifier_1,
-                  self_reported_role: 'instructor'
+                  is_test: true
                 },
                 unread_updates: 1,
                 default_contact_info_id: 1
@@ -32,9 +33,9 @@ module OpenStax
                 application_id: 1,
                 user: {
                   id: 4,
+                  username: 'fuego',
                   uuid: uuid_2,
-                  support_identifier: support_identifier_2,
-                  username: 'fuego'
+                  support_identifier: support_identifier_2
                 },
                 unread_updates: 2,
                 default_contact_info_id: 5
@@ -57,16 +58,18 @@ module OpenStax
 
           expect { SyncAccounts.call }.to change { Account.count }.by(1)
 
-          account2 = Account.find_by(openstax_uid: 4)
+          account_2 = Account.find_by(openstax_uid: 4)
 
           expect(account.reload.openstax_uid).to eq 2
           expect(account.username).to eq 'user'
           expect(account.role).to eq 'instructor'
           expect(account.uuid).to eq uuid_1
           expect(account.support_identifier).to eq support_identifier_1
-          expect(account2.username).to eq 'fuego'
-          expect(account2.uuid).to eq uuid_2
-          expect(account2.support_identifier).to eq support_identifier_2
+          expect(account.is_test).to eq true
+          expect(account_2.username).to eq 'fuego'
+          expect(account_2.uuid).to eq uuid_2
+          expect(account_2.support_identifier).to eq support_identifier_2
+          expect(account_2.is_test).to be_nil
 
           expect(controller_class.last_action).to eq :updated
           expect(controller_class.last_json).to eq [
@@ -80,8 +83,8 @@ module OpenStax
 
           expect(account.reload.openstax_uid).to eq 2
           expect(account.username).to eq 'user'
-          expect(account2.reload.openstax_uid).to eq 4
-          expect(account2.username).to eq 'fuego'
+          expect(account_2.reload.openstax_uid).to eq 4
+          expect(account_2.username).to eq 'fuego'
 
           expect(controller_class.last_action).to eq :updated
           expect(controller_class.last_json).to eq [

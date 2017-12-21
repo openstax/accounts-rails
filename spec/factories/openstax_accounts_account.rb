@@ -7,5 +7,6 @@ FactoryBot.define do
     role               { OpenStax::Accounts::Account.roles[:unknown_role] }
     uuid               { SecureRandom.uuid }
     support_identifier { "cs_#{SecureRandom.hex(4)}" }
+    is_test            true
   end
 end

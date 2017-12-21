@@ -90,6 +90,12 @@ module OpenStax
                      description: "The support_identifier as set by Accounts"
                    }
 
+          property :is_test,
+                   type: :boolean,
+                   schema_info: {
+                     description: "Whether or not this is a test account"
+                   }
+
         end
       end
     end

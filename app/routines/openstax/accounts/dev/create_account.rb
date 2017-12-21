@@ -26,6 +26,7 @@ module OpenStax
           account.role = inputs[:role] || :unknown_role
           account.uuid = SecureRandom.uuid
           account.support_identifier = "cs_#{SecureRandom.hex(4)}"
+          account.is_test = true
 
           account.save
 
