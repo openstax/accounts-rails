@@ -11,9 +11,18 @@ module OpenStax
         if configuration.enable_stubbing?
           redirect_to dev_accounts_path
         else
-          forwardable_params =
-            params.slice(*configuration.forwardable_login_param_keys.map(&:to_s))
-          redirect_to openstax_login_path(forwardable_params)
+          forwardable = configuration.forwardable_login_param_keys.map(&:to_s)
+
+          redirect_to openstax_login_path(
+                        params.permit(*forwardable).slice(*forwardable)
+                      )
+
+
+
+          # params.require(:person).permit(:name, :age)
+          # forwardable_params =
+          #   params.slice(*configuration.forwardable_login_param_keys.map(&:to_s))
+          # redirect_to openstax_login_path(forwardable_params)
         end
       end
 

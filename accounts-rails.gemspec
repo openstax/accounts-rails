@@ -19,9 +19,9 @@ Gem::Specification.new do |s|
 
   s.add_dependency "rails", "~> 5.1"
   s.add_dependency "jquery-rails", "~> 4.3"
-  s.add_dependency "omniauth", ">= 1.1"
-  s.add_dependency "omniauth-oauth2", ">= 1.1"
-  s.add_dependency "oauth2", ">= 0.5.0"
+  s.add_dependency "omniauth", ">= 1.8"
+  s.add_dependency "omniauth-oauth2", "1.3.1" # https://github.com/omniauth/omniauth-oauth2/issues/81
+  s.add_dependency "oauth2", ">= 1.4"
   s.add_dependency "representable", ">= 2.0"
   s.add_dependency "roar", ">= 1.0"
   s.add_dependency "lev", ">= 2.2.1"
