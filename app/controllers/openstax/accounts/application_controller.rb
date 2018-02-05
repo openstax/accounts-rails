@@ -5,8 +5,6 @@ module OpenStax
 
       include Lev::HandleWith
 
-      skip_before_filter :authenticate_user!
-
       def configuration
         OpenStax::Accounts.configuration
       end

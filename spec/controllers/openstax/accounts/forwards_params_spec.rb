@@ -3,8 +3,8 @@ require 'spec_helper'
 RSpec.describe "Forwards params", type: :request do
 
   class ForwardsParamsController < OpenStax::Accounts::ApplicationController
-    before_filter :set_login_param
-    before_filter :authenticate_user!
+    before_action :set_login_param
+    before_action :authenticate_user!
 
     def action_needing_authentication; end
 

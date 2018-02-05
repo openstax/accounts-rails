@@ -3,7 +3,7 @@ require 'spec_helper'
 RSpec.describe "Controllers that use this engine", type: :controller do
 
   controller do
-    before_filter :authenticate_user!
+    before_action :authenticate_user!
     def action_needing_authentication; end
   end
 
