@@ -29,8 +29,7 @@ Gem::Specification.new do |s|
   s.add_dependency "openstax_utilities", ">= 4.1.0"
   s.add_dependency "openstax_api", ">= 3.1.0"
   s.add_dependency "action_interceptor", ">= 1.0"
-  s.add_dependency "pg"
-
+  s.add_dependency "pg", "0.18" # update once Rails is upgraded: https://github.com/rails/rails/pull/31671
   s.add_development_dependency "rspec-rails"
   s.add_development_dependency "capybara"
   s.add_development_dependency "factory_bot_rails"
