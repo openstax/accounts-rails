@@ -21,12 +21,10 @@ module OpenStax::Accounts
     has_many :groups_as_member, through: :group_members, source: :group
 
     enum faculty_status: [:no_faculty_info, :pending_faculty, :confirmed_faculty, :rejected_faculty]
-
-    after_initialize :set_default_faculty_status
-    validates :faculty_status, presence: true
-
     enum role: [:unknown_role, :student, :instructor, :administrator, :librarian, :designer, :other]
-    validates :role, presence: true
+    enum school_type: [:unknown_school_type, :other_school_type, :college]
+
+    validates :faculty_status, :role, :school_type, presence: true
 
     validates :openstax_uid, uniqueness: { allow_nil: true }
     validates :username, uniqueness: { allow_nil: true }
@@ -56,10 +54,6 @@ module OpenStax::Accounts
     end
 
     protected
-
-    def set_default_faculty_status
-      self.faculty_status ||= :no_faculty_info
-    end
 
     def syncing_or_stubbing?
       syncing || OpenStax::Accounts.configuration.enable_stubbing?

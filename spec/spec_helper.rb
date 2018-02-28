@@ -52,14 +52,15 @@ end
 
 def mock_omniauth_request(
     uid: nil, first_name: nil, last_name: nil, title: nil, nickname: nil, faculty_status: nil,
-    uuid: nil, support_identifier: nil, self_reported_role: nil
+    uuid: nil, support_identifier: nil, self_reported_role: nil, school_type: nil
   )
   extra_hash = {
     'raw_info' => {
       'faculty_status' => faculty_status,
       'uuid' => uuid || SecureRandom.uuid,
       'support_identifier' => support_identifier || "cs_#{SecureRandom.hex(4)}",
-      'self_reported_role' => self_reported_role
+      'self_reported_role' => self_reported_role,
+      'school_type' => school_type
     }
   }
 

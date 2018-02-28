@@ -8,7 +8,7 @@ module OpenStax
 
       def exec(email: nil, username: nil, password: nil,
                first_name: nil, last_name: nil, full_name: nil, title: nil,
-               salesforce_contact_id: nil, faculty_status: nil, role: nil)
+               salesforce_contact_id: nil, faculty_status: nil, role: nil, school_type: nil)
         raise ArgumentError,
               'You must specify either an email address or a username (and an optional password)' \
                 if email.nil? && username.nil?
@@ -24,7 +24,7 @@ module OpenStax
             email: email, username: username, password: password,
             first_name: first_name, last_name: last_name, full_name: full_name,
             salesforce_contact_id: salesforce_contact_id, faculty_status: faculty_status,
-            role: role)
+            role: role, school_type: school_type)
           fatal_error(code: :invalid_inputs) unless (200..202).include?(response.status)
 
           struct = OpenStruct.new
@@ -49,6 +49,7 @@ module OpenStax
           account.salesforce_contact_id = salesforce_contact_id
           account.faculty_status = faculty_status || :no_faculty_info
           account.role = role || :unknown_role
+          account.school_type = school_type || :unknown_school_type
           account.uuid = uuid
           account.support_identifier = support_identifier
           account.is_test = is_test

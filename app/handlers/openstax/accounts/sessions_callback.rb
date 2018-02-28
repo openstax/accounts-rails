@@ -44,6 +44,12 @@ module OpenStax
                 account.role = :unknown_role
               end
 
+              begin
+                account.school_type = raw_info['school_type'] || :unknown_school_type
+              rescue ArgumentError => ee
+                account.school_type = :unknown_school_type
+              end
+
               account.uuid = raw_info['uuid']
               account.support_identifier = raw_info['support_identifier']
               account.is_test = raw_info['is_test']

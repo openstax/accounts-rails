@@ -5,30 +5,13 @@ module OpenStax
 
     RSpec.describe SessionsCallback do
 
-      context "faculty_status" do
-        it "should default to no_faculty_info if the received faculty_status is unknown" +
-           " (e.g. if Accounts is updated but this repo is not)" do
-          result = described_class.handle(
-            request: mock_omniauth_request(faculty_status: "howdy_ho")
-          )
-          expect(result.outputs.account).to be_no_faculty_info
-        end
-
-        it "should default to no_faculty_info if faculty status is not present" do
-          request = mock_omniauth_request()
-          remove_faculty_status!(request)
+      it "deals with null faculty_status" do
+        with_stubbing(false) do
+          request = mock_omniauth_request
+          remove_nickname!(request)
           result = described_class.handle(request: request)
-          expect(result.outputs.account).to be_no_faculty_info
-        end
-
-        it "should deal with null nicknames" do
-          with_stubbing(false) do
-            request = mock_omniauth_request
-            remove_nickname!(request)
-            result = described_class.handle(request: request)
-            expect(result.outputs.account).to be_valid
-            expect(result.outputs.account).to be_persisted
-          end
+          expect(result.outputs.account).to be_valid
+          expect(result.outputs.account).to be_persisted
         end
       end
 
@@ -50,12 +33,29 @@ module OpenStax
         end
       end
 
+      context "faculty_status" do
+        it "defaults to no_faculty_info if the received faculty_status is unknown" +
+           " (e.g. if Accounts is updated but this repo is not)" do
+          result = described_class.handle(
+            request: mock_omniauth_request(faculty_status: "howdy_ho")
+          )
+          expect(result.outputs.account).to be_no_faculty_info
+        end
+
+        it "defaults to no_faculty_info if faculty status is not present" do
+          request = mock_omniauth_request()
+          remove_faculty_status!(request)
+          result = described_class.handle(request: request)
+          expect(result.outputs.account).to be_no_faculty_info
+        end
+      end
+
       context "role" do
         it "sets the role on the account" do
           result = described_class.handle(
             request: mock_omniauth_request(self_reported_role: "instructor")
           )
-          expect(result.outputs.account.role).to eq "instructor"
+          expect(result.outputs.account).to be_instructor
         end
 
         it "deals with unknown role (e.g. if Accounts update but this repo not)" do
@@ -63,6 +63,22 @@ module OpenStax
             request: mock_omniauth_request(self_reported_role: "howdy_ho")
           )
           expect(result.outputs.account).to be_unknown_role
+        end
+      end
+
+      context "school_type" do
+        it "sets the school_type on the account" do
+          result = described_class.handle(
+            request: mock_omniauth_request(school_type: "college")
+          )
+          expect(result.outputs.account).to be_college
+        end
+
+        it "deals with unknown school_type (e.g. if Accounts update but this repo not)" do
+          result = described_class.handle(
+            request: mock_omniauth_request(school_type: "howdy_ho")
+          )
+          expect(result.outputs.account).to be_unknown_school_type
         end
       end
 
