@@ -54,7 +54,7 @@ http_interactions:
     uri: http://localhost:2999/api/user/find-or-create
     body:
       encoding: UTF-8
-      string: '{"email":"alice@example.com","username":null,"password":null,"first_name":null,"last_name":null,"full_name":null,"salesforce_contact_id":null,"faculty_status":null,"role":null}'
+      string: '{"email":"alice@example.com","username":null,"password":null,"first_name":null,"last_name":null,"full_name":null,"salesforce_contact_id":null,"faculty_status":null,"role":null,"school_type":null}'
     headers:
       User-Agent:
       - Faraday v0.9.2
@@ -154,7 +154,7 @@ http_interactions:
     uri: http://localhost:2999/api/user/find-or-create
     body:
       encoding: UTF-8
-      string: '{"email":null,"username":"alice","password":null,"first_name":null,"last_name":null,"full_name":null,"salesforce_contact_id":null,"faculty_status":null,"role":null}'
+      string: '{"email":null,"username":"alice","password":null,"first_name":null,"last_name":null,"full_name":null,"salesforce_contact_id":null,"faculty_status":null,"role":null,"school_type":null}'
     headers:
       User-Agent:
       - Faraday v0.9.2
@@ -254,7 +254,7 @@ http_interactions:
     uri: http://localhost:2999/api/user/find-or-create
     body:
       encoding: UTF-8
-      string: '{"email":null,"username":"alice2","password":"abcdefghijklmnop","first_name":null,"last_name":null,"full_name":null,"salesforce_contact_id":null,"faculty_status":null,"role":null}'
+      string: '{"email":null,"username":"alice2","password":"abcdefghijklmnop","first_name":null,"last_name":null,"full_name":null,"salesforce_contact_id":null,"faculty_status":null,"role":null,"school_type":null}'
     headers:
       User-Agent:
       - Faraday v0.9.2

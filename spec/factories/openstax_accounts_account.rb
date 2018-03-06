@@ -5,6 +5,7 @@ FactoryBot.define do
     access_token       { SecureRandom.hex.to_s }
     faculty_status     { OpenStax::Accounts::Account.faculty_statuses[:no_faculty_info] }
     role               { OpenStax::Accounts::Account.roles[:unknown_role] }
+    school_type        { OpenStax::Accounts::Account.school_types[:unknown_school_type] }
     uuid               { SecureRandom.uuid }
     support_identifier { "cs_#{SecureRandom.hex(4)}" }
     is_test            true

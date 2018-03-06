@@ -49,7 +49,7 @@ module OpenStax
           email: 'bob@example.com', username: nil, password: nil,
           first_name: 'Bob', last_name: 'Smith', full_name: 'Bob Smith',
           salesforce_contact_id: 'b0b', faculty_status: :rejected_faculty,
-          role: :instructor
+          role: :instructor, school_type: :college
         ).and_return(find_or_create_account_response)
 
         described_class.call(
@@ -59,7 +59,8 @@ module OpenStax
           full_name: 'Bob Smith',
           salesforce_contact_id: 'b0b',
           faculty_status: :rejected_faculty,
-          role: :instructor
+          role: :instructor,
+          school_type: :college
         )
       end
 
