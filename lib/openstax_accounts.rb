@@ -8,6 +8,7 @@ require 'openstax/accounts/configuration'
 require 'openstax/accounts/current_user_manager'
 require 'openstax/accounts/default_account_user_mapper'
 require 'openstax/accounts/engine'
+require 'openstax_api'
 
 module OpenStax
   module Accounts
@@ -27,7 +28,7 @@ module OpenStax
       #     ...
       #   end
       #
-      
+
       def configure
         yield configuration
       end
