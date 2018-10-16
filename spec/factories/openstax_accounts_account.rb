@@ -8,6 +8,6 @@ FactoryBot.define do
     school_type        { OpenStax::Accounts::Account.school_types[:unknown_school_type] }
     uuid               { SecureRandom.uuid }
     support_identifier { "cs_#{SecureRandom.hex(4)}" }
-    is_test            true
+    is_test            { true }
   end
 end

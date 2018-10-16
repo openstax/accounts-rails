@@ -21,7 +21,16 @@ module OpenStax::Accounts
     has_many :groups_as_member, through: :group_members, source: :group
 
     enum faculty_status: [:no_faculty_info, :pending_faculty, :confirmed_faculty, :rejected_faculty]
-    enum role: [:unknown_role, :student, :instructor, :administrator, :librarian, :designer, :other]
+    enum role: [
+      :unknown_role,
+      :student,
+      :instructor,
+      :administrator,
+      :librarian,
+      :designer,
+      :other,
+      :adjunct
+    ]
     enum school_type: [:unknown_school_type, :other_school_type, :college]
 
     validates :faculty_status, :role, :school_type, presence: true

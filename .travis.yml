@@ -1,14 +1,13 @@
 sudo: false
 dist: trusty
 language: ruby
-rvm: "2.2.3"
+rvm: 2.3.7
 cache: bundler
 branches:
-  only:
-    - master
+  only: master
 bundler_args: --without production --retry=6
 addons:
- postgresql: "9.5"
+ postgresql: 9.6
 env:
   global:
     - OX_AR_DB_USER=postgres
