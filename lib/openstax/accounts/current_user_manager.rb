@@ -60,6 +60,14 @@ module OpenStax
       def load_session
         return unless @current_account.nil?
 
+        # first try to use SSO authentication
+        sso = OpenStax::Accounts::Sso.decrypt @request
+        if sso.present?
+          load_session_from_sso(sso)
+          return
+        end
+
+        # If no SSO was found, fall back to using our own session
         # Sign the user out to reset the session if the request is SSL
         # and the signed secure ID doesn't match the unsecure ID
         # http://railscasts.com/episodes/356-dangers-of-session-hijacking
@@ -87,6 +95,18 @@ module OpenStax
 
         # Bring the user inline with the account
         @current_user = account_user_mapper.account_to_user(@current_account)
+      end
+
+      def load_session_from_sso(sso)
+        user_attrs = sso['user']
+        account = FindOrCreateFromSso[user_attrs]
+        if account.present?
+          self.current_user = account_user_mapper.account_to_user(account)
+          set_session account
+          @session[:account_id] = account.id
+        else
+          sign_out!
+        end
       end
 
       # Sets the current account, updates the session and loads it

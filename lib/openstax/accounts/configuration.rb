@@ -71,6 +71,20 @@ module OpenStax
       # overloaded.
       attr_accessor :max_user_updates_per_request
 
+      # sso_secret_key
+      # The secret key used to decode the SSO cookie
+      # will be used to decryp the shared user session set by accounts
+      # when a user logs in, and cleared when they logout
+      attr_accessor :sso_secret_key
+
+      # sso_secret_salt
+      # The salt that should be used to decypt the SSO session. Defaults to 'cookie'
+      attr_accessor :sso_secret_salt
+
+      # sso_cookie_name
+      # The name of the cookie that stores the SSO session. Defaults to 'ox'
+      attr_accessor :sso_cookie_name
+
       def logout_redirect_url(request)
         (@logout_redirect_url.is_a?(Proc) ?
            @logout_redirect_url.call(request) :
@@ -111,6 +125,8 @@ module OpenStax
           :sp          # "signed payload"; "sp" for short to keep nested parameter names short
         ]
         @max_user_updates_per_request = 250
+        @sso_cookie_name = 'ox'
+        @sso_secret_salt = 'cookie'
         super
       end
 

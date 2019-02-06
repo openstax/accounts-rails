@@ -1,16 +1,21 @@
+require_relative '../../../spec_helper'
+
 module OpenStax
   module Accounts
     RSpec.describe CurrentUserManager do
       let!(:account) { FactoryBot.create(:openstax_accounts_account,
-                         username: 'some_user',
-                         openstax_uid: 1) }
+                                         username: 'some_user',
+                                         uuid: '4ad8b085-a999-4a16-93a0-d78d4f21aba2',
+                                         openstax_uid: 1) }
       let!(:user)    { User.create(:account => account) }
 
       let!(:request) { double('request',
+                              :cookies => {},
                               :host => 'localhost',
                               :ssl? => false) }
 
       let!(:ssl_request) { double('request',
+                                  :cookies => {},
                                   :host => 'localhost',
                                   :ssl? => true) }
 
@@ -128,6 +133,36 @@ module OpenStax
             eq(AnonymousAccount.instance))
           expect(current_user_manager.current_user).to(
             eq(AnonymousUser.instance))
+        end
+
+      end
+
+      context 'using sso' do
+        let!(:request) { double('request',
+                                :cookies => {
+                                  'ox' => 'MnJMZ1gzdWJhVHR6eVQ4N2NqdDBxQ1RYMHU2NU1PLzVqZmdtUzRZSEI2YURIZ1NtV1RrU091UVBtOFV5RGRMQVVZN2plM1BlMVo1d0p5YUwxaWZQaW95RVFsUnlIaDZ4L3RIcDd2ZzlwQndJbVo3SU5lbUtuUUx6eXAyenZJUENDUzRSTndkNmdXTXNBTHFNL1VNbUEvSmthUnlLeGlqeUpWelc1YndCM29VPS0tYmZlcXliaXE4UWR6SXlhZEt4UklFZz09--dcd97b632fe6e700dc4e8629e70a66ee091d4f5d'
+                                },
+                                :host => 'localhost',
+                                :ssl? => false) }
+
+        it 'signs in a user' do
+          expect(OpenStax::Accounts.configuration).to(
+            receive(:sso_secret_key).at_most(:once).and_return('1234567890abcd')
+          )
+          expect(current_user_manager.signed_in?).to eq(true)
+          expect(
+            current_user_manager.current_account.attributes
+          ).to include({
+                         openstax_uid: 1, username: 'admin', uuid: '4ad8b085-a999-4a16-93a0-d78d4f21aba2',
+                         first_name: 'Admin', last_name: 'Admin'
+                       }.stringify_keys)
+        end
+
+        it 'is ignored if its invalid' do
+          expect(OpenStax::Accounts.configuration).to receive(:sso_secret_key).and_return 'a-bad-secret-key'
+          OpenStax::Accounts::Sso.remove_instance_variable(:@encryptor) if OpenStax::Accounts::Sso.instance_variable_defined? :@encryptor
+          expect(current_user_manager.signed_in?).to eq(false)
+          OpenStax::Accounts::Sso.remove_instance_variable(:@encryptor)
         end
 
       end
