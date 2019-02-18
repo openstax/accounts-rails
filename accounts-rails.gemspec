@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   s.test_files = Dir["spec/**/*"]
 
   # rails < 5.0 because of openstax-api; adding the version here helps bundler not hang forever
-  s.add_dependency "rails", ">= 4.1", "< 5.0"
+  s.add_dependency "rails", ">= 4.2", "< 5.0"
   s.add_dependency "omniauth", ">= 1.1"
   s.add_dependency "omniauth-oauth2", ">= 1.1"
   s.add_dependency "oauth2", ">= 0.5.0"
