@@ -3,7 +3,7 @@ module OpenStax
     module Dev
       class AccountsController < OpenStax::Accounts::Dev::BaseController
         # Allow accessing from inside an iframe
-        before_filter :allow_iframe_access, only: [:index, :search]
+        before_action :allow_iframe_access, only: [:index, :search]
 
         def index
         end
