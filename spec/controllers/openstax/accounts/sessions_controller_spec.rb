@@ -47,14 +47,14 @@ module OpenStax::Accounts
     it 'should store specified url for redirection after to login if approved' do
       OpenStax::Accounts.configuration.return_to_url_approver = ->(url) { true }
       allow(OpenStax::Accounts.configuration).to receive(:enable_stubbing?) {false}
-      get :new, return_to: "https://woohoo"
+      get :new, params: { return_to: "https://woohoo" }
       expect(session["accounts_return_to"]).to eq "https://woohoo"
     end
 
     it 'should not store specified url for redirection after login if not approved' do
       OpenStax::Accounts.configuration.return_to_url_approver = ->(url) { false }
       allow(OpenStax::Accounts.configuration).to receive(:enable_stubbing?) {false}
-      get :new, return_to: "https://woohoo"
+      get :new, params: { return_to: "https://woohoo" }
       expect(session["accounts_return_to"]).to eq nil
     end
 
@@ -65,7 +65,7 @@ module OpenStax::Accounts
       allow(OpenStax::Accounts.configuration).to receive(:enable_stubbing?) {false}
       expect(my_lambda).to receive(:call).with("http://jimmy")
 
-      get :new, return_to: 'http://jimmy'
+      get :new, params: { return_to: 'http://jimmy' }
     end
   end
 end

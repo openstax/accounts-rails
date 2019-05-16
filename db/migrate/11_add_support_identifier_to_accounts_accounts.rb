@@ -1,4 +1,4 @@
-class AddSupportIdentifierToAccountsAccounts < ActiveRecord::Migration
+class AddSupportIdentifierToAccountsAccounts < ActiveRecord::Migration[4.2]
   def change
     enable_extension :citext
 

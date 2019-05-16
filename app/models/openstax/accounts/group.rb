@@ -116,7 +116,7 @@ module OpenStax::Accounts
 
       gids = [openstax_uid] + (
         self.class.joins(:member_group_nestings)
-                  .where(openstax_accounts_group_nestings: { member_group_id: openstax_uid })
+                  .where(member_group_nestings: { member_group_id: openstax_uid })
                   .first
                   .try!(:supertree_group_ids) || []
       )
@@ -131,7 +131,7 @@ module OpenStax::Accounts
 
       gids = [openstax_uid] +
         self.class.joins(:container_group_nesting)
-                  .where(openstax_accounts_group_nestings: { container_group_id: openstax_uid })
+                  .where(container_group_nesting: { container_group_id: openstax_uid })
                   .map { |group| group.subtree_group_ids }.flatten
       update_column(:cached_subtree_group_ids, gids)
       self.cached_subtree_group_ids = gids

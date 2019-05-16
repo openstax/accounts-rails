@@ -17,8 +17,7 @@ Gem::Specification.new do |s|
             ["MIT-LICENSE", "Rakefile", "README.md"]
   s.test_files = Dir["spec/**/*"]
 
-  # rails < 5.0 because of openstax-api; adding the version here helps bundler not hang forever
-  s.add_dependency "rails", ">= 5.0"
+  s.add_dependency "rails", ">= 4.1"
   s.add_dependency "omniauth", ">= 1.1"
   s.add_dependency "omniauth-oauth2", ">= 1.1"
   s.add_dependency "oauth2", ">= 0.5.0"
@@ -29,7 +28,7 @@ Gem::Specification.new do |s|
   s.add_dependency "openstax_utilities", ">= 4.1.0"
   s.add_dependency "openstax_api", ">= 3.1.0"
   s.add_dependency "action_interceptor", ">= 1.0"
-  s.add_dependency "pg", "~> 1.1"
+  s.add_dependency "pg", ">= 1.1"
 
   s.add_development_dependency "rspec-rails"
   s.add_development_dependency "capybara"
