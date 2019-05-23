@@ -24,7 +24,9 @@ module OpenStax
 
         begin
           encryptor.decrypt_and_verify(cookie)
-        rescue ActiveSupport::MessageVerifier::InvalidSignature, InvalidSecretsConfiguration
+        rescue InvalidSecretsConfiguration,
+               ActiveSupport::MessageVerifier::InvalidSignature,
+               ActiveSupport::MessageEncryptor::InvalidMessage
           {}
         end
 
@@ -32,18 +34,25 @@ module OpenStax
 
       private
 
+      # Not thread-safe
       def encryptor
-        @encryptor ||= (
+        @encryptor ||= begin
           key = OpenStax::Accounts.configuration.sso_secret_key
           raise InvalidSecretsConfiguration, 'Missing sso_secret_key configuration' if key.blank?
 
           salt          = OpenStax::Accounts.configuration.sso_secret_salt
           signed_salt   = "signed encrypted #{salt}"
           key_generator = ActiveSupport::KeyGenerator.new(key, iterations: 1000)
-          secret        = key_generator.generate_key(salt)[0, OpenSSL::Cipher.new('aes-256-cbc').key_len]
+          secret        = key_generator.generate_key(salt)[
+            0, OpenSSL::Cipher.new('aes-256-cbc').key_len
+          ]
           sign_secret   = key_generator.generate_key(signed_salt)
           ActiveSupport::MessageEncryptor.new(secret, sign_secret, serializer: JSON)
-        )
+        end
+      end
+
+      def reset_config
+        @encryptor = nil
       end
 
     end
