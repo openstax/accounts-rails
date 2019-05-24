@@ -12,7 +12,7 @@ module OpenStax
           redirect_to dev_accounts_path
         else
           forwardable_params =
-            params.slice(*configuration.forwardable_login_param_keys.map(&:to_s))
+            params.permit(*configuration.forwardable_login_param_keys.map(&:to_s)).to_h
           redirect_to openstax_login_path(forwardable_params)
         end
       end
@@ -20,13 +20,12 @@ module OpenStax
       def callback
         handle_with(
           SessionsCallback,
-            success: lambda {
-              sign_in(@handler_result.outputs[:account])
-              redirect_back key: :accounts_return_to, strategies: [:session]
-            },
-            failure: lambda {
-              failure
-            })
+          success: -> do
+            sign_in(@handler_result.outputs[:account])
+            redirect_back key: :accounts_return_to, strategies: [:session]
+          end,
+          failure: -> { failure }
+        )
       end
 
       def destroy

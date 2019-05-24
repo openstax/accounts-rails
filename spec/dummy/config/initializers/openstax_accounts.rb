@@ -11,4 +11,5 @@ OpenStax::Accounts.configure do |config|
   config.logout_via = :delete
   config.min_search_characters = 3
   config.max_search_items = 10
+  config.sso_secret_key = '1234567890abcd'
 end

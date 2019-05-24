@@ -3,11 +3,12 @@ require 'omniauth'
 require 'openstax_utilities'
 require 'uri'
 require 'omniauth/strategies/openstax'
-require 'openstax/accounts/api'
-require 'openstax/accounts/configuration'
-require 'openstax/accounts/current_user_manager'
-require 'openstax/accounts/default_account_user_mapper'
-require 'openstax/accounts/engine'
+require_relative 'openstax/accounts/api'
+require_relative 'openstax/accounts/sso'
+require_relative 'openstax/accounts/configuration'
+require_relative 'openstax/accounts/current_user_manager'
+require_relative 'openstax/accounts/default_account_user_mapper'
+require_relative 'openstax/accounts/engine'
 
 module OpenStax
   module Accounts
@@ -27,7 +28,6 @@ module OpenStax
       #     ...
       #   end
       #
-      
       def configure
         yield configuration
       end
@@ -37,6 +37,5 @@ module OpenStax
       end
 
     end
-
   end
 end

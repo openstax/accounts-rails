@@ -1,4 +1,4 @@
-class CreateOpenStaxAccountsGroupMembers < ActiveRecord::Migration
+class CreateOpenStaxAccountsGroupMembers < ActiveRecord::Migration[4.2]
   def change
     create_table :openstax_accounts_group_members do |t|
       t.references :group, null: false

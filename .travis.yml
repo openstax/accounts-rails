@@ -1,7 +1,7 @@
 sudo: false
 dist: trusty
 language: ruby
-rvm: 2.3.7
+rvm: 2.6.1
 cache: bundler
 branches:
   only: master

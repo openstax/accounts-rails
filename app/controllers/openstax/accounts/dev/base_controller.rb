@@ -3,7 +3,7 @@ module OpenStax
     module Dev
       class BaseController < OpenStax::Accounts::ApplicationController
 
-        before_filter do
+        before_action do
           raise SecurityTransgression if Rails.env.production?
         end
 

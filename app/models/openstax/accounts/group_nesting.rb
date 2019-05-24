@@ -26,25 +26,26 @@ module OpenStax::Accounts
     end
 
     def no_loops
-      return if member_group.nil? ||\
-                !member_group.subtree_group_ids.include?(container_group_id)
+      return if member_group.nil? || !member_group.subtree_group_ids.include?(container_group_id)
+
       errors.add(:base, 'would create a loop') if errors[:base].blank?
-      false
+      throw :abort
     end
 
     def update_group_caches
-      # Returns false if the update fails (aborting the save transaction)
-      UpdateGroupCaches.call(self).errors.none?
+      UpdateGroupCaches.call(self)
+
+      throw(:abort) if errors.any?
     end
 
     def create_openstax_accounts_group_nesting
-      return false if requestor.nil? || requestor.is_anonymous?
+      throw(:abort) if requestor.nil? || requestor.is_anonymous?
 
       OpenStax::Accounts::Api.create_group_nesting(requestor, self) if requestor.has_authenticated?
     end
 
     def destroy_openstax_accounts_group_nesting
-      return false if requestor.nil? || requestor.is_anonymous?
+      throw(:abort) if requestor.nil? || requestor.is_anonymous?
 
       OpenStax::Accounts::Api.destroy_group_nesting(requestor, self) \
         if requestor.has_authenticated?

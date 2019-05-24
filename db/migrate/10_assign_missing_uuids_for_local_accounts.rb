@@ -1,6 +1,6 @@
-class AssignMissingUuidsForLocalAccounts < ActiveRecord::Migration
+class AssignMissingUuidsForLocalAccounts < ActiveRecord::Migration[4.2]
   def change
-    enable_extension 'pgcrypto'
+    enable_extension :pgcrypto
 
     OpenStax::Accounts::Account.where(uuid: nil).update_all('"uuid" = gen_random_uuid()')
 

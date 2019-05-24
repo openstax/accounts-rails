@@ -3,7 +3,7 @@ require 'spec_helper'
 RSpec.describe "Controllers that use this engine", type: :controller do
 
   controller do
-    before_filter :authenticate_user!
+    before_action :authenticate_user!
     def action_needing_authentication; end
   end
 
@@ -15,8 +15,6 @@ RSpec.describe "Controllers that use this engine", type: :controller do
 
     routes.draw { get "action_needing_authentication" => "anonymous#action_needing_authentication" }
 
-    expect{
-      get :action_needing_authentication, format: :'6'
-    }.not_to raise_error
+    expect { get :action_needing_authentication, format: :'6' }.not_to raise_error
   end
 end

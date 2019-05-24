@@ -1,5 +1,6 @@
 default: &default
   adapter: postgresql
+  host: localhost
   username: <%= ENV['OX_AR_DB_USER'] || 'ox_accounts_rails' %>
   password: <%= ENV['OX_AR_DB_PASS'] || 'ox_accounts_rails_secret_password' %>
 

@@ -115,10 +115,12 @@ module OpenStax::Accounts
       reload
 
       gids = [openstax_uid] + (
-        self.class.joins(:member_group_nestings)
-                  .where(openstax_accounts_group_nestings: { member_group_id: openstax_uid })
-                  .first
-                  .try!(:supertree_group_ids) || []
+        self.class.joins(:member_group_nestings).where(
+          # This could have been:
+          # member_group_nestings: { member_group_id: openstax_uid }
+          # However that needs a monkeypatch to work in Rails 5 so we currently do this:
+          openstax_accounts_group_nestings: { member_group_id: openstax_uid }
+        ).first.try!(:supertree_group_ids) || []
       )
       update_column(:cached_supertree_group_ids, gids)
       self.cached_supertree_group_ids = gids
@@ -129,10 +131,12 @@ module OpenStax::Accounts
       return [] unless persisted?
       reload
 
-      gids = [openstax_uid] +
-        self.class.joins(:container_group_nesting)
-                  .where(openstax_accounts_group_nestings: { container_group_id: openstax_uid })
-                  .map { |group| group.subtree_group_ids }.flatten
+      gids = [openstax_uid] + self.class.joins(:container_group_nesting).where(
+        # This could have been:
+        # container_group_nesting: { container_group_id: openstax_uid }
+        # However that needs a monkeypatch to work in Rails 5 so we currently do this:
+        openstax_accounts_group_nestings: { container_group_id: openstax_uid }
+      ).map { |group| group.subtree_group_ids }.flatten
       update_column(:cached_subtree_group_ids, gids)
       self.cached_subtree_group_ids = gids
     end
