@@ -13,9 +13,7 @@ Gem::Specification.new do |s|
   s.summary     = "Rails common code and bindings for the 'accounts' API"
   s.description = "This gem allows Rails apps to easily access the API's and login infrastructure of OpenStax Accounts."
 
-  s.files = Dir["{app,config,db,lib}/**/*", "spec/factories/**/*"] +
-            ["MIT-LICENSE", "Rakefile", "README.md"]
-  s.test_files = Dir["spec/**/*"]
+  s.files = Dir["{app,config,db,lib}/**/*", "spec/factories/**/*"] + ["MIT-LICENSE", "README.md"]
 
   s.add_dependency "rails"
   s.add_dependency "omniauth"
