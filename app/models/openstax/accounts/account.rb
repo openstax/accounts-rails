@@ -43,7 +43,8 @@ module OpenStax::Accounts
       :librarian,
       :designer,
       :other,
-      :adjunct
+      :adjunct,
+      :homeschool
     ]
     enum school_type: [:unknown_school_type, :other_school_type, :college]
 

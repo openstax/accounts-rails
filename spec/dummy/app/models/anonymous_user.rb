@@ -23,7 +23,7 @@ class AnonymousUser
     nil
   end
 
-  def authentications 
+  def authentications
     []
   end
 
@@ -38,11 +38,10 @@ class AnonymousUser
   end
 
   def full_name
-    "Anonymous User"
+    'Anonymous User'
   end
 
   def casual_name
     full_name
   end
-
 end
