@@ -51,43 +51,43 @@ Shoulda::Matchers.configure do |config|
 end
 
 def mock_omniauth_request(
-    uid: nil, first_name: nil, last_name: nil, title: nil, nickname: nil, faculty_status: nil,
-    uuid: nil, support_identifier: nil, self_reported_role: nil, school_type: nil
+    id: SecureRandom.random_number(10000000),
+    first_name: nil,
+    last_name: nil,
+    name: nil,
+    full_name: nil,
+    title: nil,
+    username: nil,
+    uuid: SecureRandom.uuid,
+    support_identifier: "cs_#{SecureRandom.hex(4)}",
+    faculty_status: 'no_faculty_info',
+    self_reported_role: 'unknown_role',
+    school_type: 'unknown_school_type',
+    salesforce_contact_id: nil
   )
-  extra_hash = {
-    'raw_info' => {
-      'faculty_status' => faculty_status,
-      'uuid' => uuid || SecureRandom.uuid,
-      'support_identifier' => support_identifier || "cs_#{SecureRandom.hex(4)}",
-      'self_reported_role' => self_reported_role,
-      'school_type' => school_type
-    }
-  }
+  bd = binding
+  raw_info = {}
+  # https://stackoverflow.com/a/31234292
+  method(__method__).parameters.each do |_, name|
+    value = bd.local_variable_get(name)
+    next if value.nil?
+
+    raw_info[name] = value
+  end
+
+  info = raw_info.slice(:name, :first_name, :last_name, :title).merge(nickname: raw_info[:username])
 
   OpenStruct.new(
     env: {
       'omniauth.auth' => OpenStruct.new(
-        uid: uid || SecureRandom.random_number(10000000),
-        provider: "openstax",
-        info: OpenStruct.new(
-          nickname: nickname || "",
-          first_name: first_name || "",
-          last_name: last_name || "",
-          title: title || ""
-        ),
-        credentials: OpenStruct.new(access_token: "foo"),
-        extra: OpenStruct.new(extra_hash)
+        uid: raw_info[:id],
+        provider: 'openstax',
+        info: OpenStruct.new(info),
+        credentials: OpenStruct.new(access_token: 'foo'),
+        extra: OpenStruct.new(raw_info: raw_info)
       )
     }
   )
-end
-
-def remove_faculty_status!(omniauth_request)
-  omniauth_request.env["omniauth.auth"].extra.raw_info.delete("faculty_status")
-end
-
-def remove_nickname!(omniauth_request)
-  omniauth_request.env["omniauth.auth"].info.nickname = nil
 end
 
 def with_stubbing(value)

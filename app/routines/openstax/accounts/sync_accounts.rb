@@ -7,11 +7,6 @@ module OpenStax
 
     class SyncAccounts
 
-      SYNC_ATTRIBUTES = [
-        'username', 'first_name', 'last_name', 'full_name', 'title', 'role', 'faculty_status',
-        'school_type', 'salesforce_contact_id', 'uuid', 'support_identifier', 'is_test'
-      ]
-
       lev_routine transaction: :no_transaction
 
       protected
@@ -37,7 +32,7 @@ module OpenStax
           account.syncing = true
 
           if account != app_account.account
-            SYNC_ATTRIBUTES.each do |attribute|
+            OpenStax::Accounts::Account::SYNC_ATTRIBUTES.each do |attribute|
               account.send("#{attribute}=", app_account.account.send(attribute))
             end
           end

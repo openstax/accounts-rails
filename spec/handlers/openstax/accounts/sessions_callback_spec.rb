@@ -2,13 +2,10 @@ require 'spec_helper'
 
 module OpenStax
   module Accounts
-
     RSpec.describe SessionsCallback do
-
-      it "deals with null faculty_status" do
+      it "deals with null username" do
         with_stubbing(false) do
           request = mock_omniauth_request
-          remove_nickname!(request)
           result = described_class.handle(request: request)
           expect(result.outputs.account).to be_valid
           expect(result.outputs.account).to be_persisted
@@ -43,8 +40,7 @@ module OpenStax
         end
 
         it "defaults to no_faculty_info if faculty status is not present" do
-          request = mock_omniauth_request()
-          remove_faculty_status!(request)
+          request = mock_omniauth_request(faculty_status: nil)
           result = described_class.handle(request: request)
           expect(result.outputs.account).to be_no_faculty_info
         end
@@ -82,6 +78,16 @@ module OpenStax
         end
       end
 
+      context "salesforce_contact_id" do
+        it "sets the salesforce_contact_id on the account" do
+          sf_contact_id = 'SomeSfId'
+          result = described_class.handle(
+            request: mock_omniauth_request(salesforce_contact_id: sf_contact_id)
+          )
+          expect(result.outputs.account.salesforce_contact_id).to eq sf_contact_id
+        end
+      end
+
       context "user exists" do
         it "updates the user's data" do
           existing_account = FactoryBot.create :openstax_accounts_account
@@ -89,11 +95,11 @@ module OpenStax
           support_identifier = "cs_#{SecureRandom.hex(4)}"
           result = described_class.handle(
             request: mock_omniauth_request(
-              uid: existing_account.openstax_uid,
+              id: existing_account.openstax_uid,
               first_name: "1234",
               last_name: "5678",
               title: "900",
-              nickname: "191919",
+              username: "191919",
               faculty_status: "confirmed_faculty",
               uuid: uuid,
               support_identifier: support_identifier,
@@ -112,8 +118,6 @@ module OpenStax
           expect(account).to be_instructor
         end
       end
-
     end
-
   end
 end

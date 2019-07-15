@@ -3,6 +3,20 @@ module OpenStax::Accounts
 
     USERNAME_DISCARDED_CHAR_REGEX = /[^A-Za-z\d_]/
     USERNAME_MAX_LENGTH = 50
+    SYNC_ATTRIBUTES = [
+      :username,
+      :first_name,
+      :last_name,
+      :full_name,
+      :title,
+      :self_reported_role,
+      :faculty_status,
+      :school_type,
+      :salesforce_contact_id,
+      :uuid,
+      :support_identifier,
+      :is_test
+    ]
 
     attr_accessor :syncing
 
@@ -29,7 +43,8 @@ module OpenStax::Accounts
       :librarian,
       :designer,
       :other,
-      :adjunct
+      :adjunct,
+      :homeschool
     ]
     enum school_type: [:unknown_school_type, :other_school_type, :college]
 
@@ -60,6 +75,14 @@ module OpenStax::Accounts
 
     def valid_openstax_uid?
       !openstax_uid.nil? && openstax_uid > 0
+    end
+
+    def self_reported_role
+      role
+    end
+
+    def self_reported_role=(role)
+      self.role = role
     end
 
     protected
