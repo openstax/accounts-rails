@@ -4,7 +4,7 @@ module OpenStax
       module V1
         class UnclaimedAccountRepresenter < Roar::Decorator
 
-          # This representer is used to communicate with Accounts
+          # This representer is used to read from Accounts
           # and so must allow read/write on all properties
           # Do not use it in create/update APIs!
 
@@ -28,12 +28,6 @@ module OpenStax
                    type: String,
                    schema_info: {
                      description: "The unclaimed account's support_identifier"
-                   }
-
-          property :is_test,
-                   type: :boolean,
-                   schema_info: {
-                     description: "Whether or not this is a test account"
                    }
 
         end
