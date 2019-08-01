@@ -16,7 +16,7 @@ module OpenStax
 
       it 'makes api requests' do
         reset(::Api::DummyController)
-        Api.request(:post, 'dummy', :params => {:test => true})
+        Api.request(:post, 'dummy', params: { test: true })
         expect(::Api::DummyController.last_action).to eq :dummy
         expect(::Api::DummyController.last_params).to include 'test' => 'true'
       end
@@ -28,30 +28,30 @@ module OpenStax
         it 'makes api call to users index' do
           Api.search_accounts('something')
           expect(::Api::UsersController.last_action).to eq :index
-          expect(::Api::UsersController.last_params).to include :q => 'something'
+          expect(::Api::UsersController.last_params).to include q: 'something'
         end
 
         it 'makes api call to user update' do
           Api.update_account(account)
           expect(::Api::UsersController.last_action).to eq :update
-          expect(::Api::UsersController.last_json).to include(
-            account.attributes.slice('username', 'first_name',
-              'last_name', 'full_name', 'title'))
-        end
-
-        it 'makes api call to (temp) user create by email' do
-          Api.find_or_create_account(email: 'dummy@dum.my')
-          expect(::Api::UsersController.last_action).to eq :create
-          expect(::Api::UsersController.last_json).to(
-            include('email' => 'dummy@dum.my')
+          expect(::Api::UsersController.last_json).to include account.attributes.slice(
+            'username', 'first_name', 'last_name', 'full_name', 'title'
           )
         end
 
-        it 'makes api call to (temp) user create by username' do
-          Api.find_or_create_account(username: 'dummy')
+        it 'makes api call to unclaimed user create by email' do
+          Api.find_or_create_account(email: 'dummy@dum.my', is_test: true)
           expect(::Api::UsersController.last_action).to eq :create
           expect(::Api::UsersController.last_json).to(
-            include('username' => 'dummy')
+            include('email' => 'dummy@dum.my', 'is_test' => true)
+          )
+        end
+
+        it 'makes api call to unclaimed user create by username' do
+          Api.find_or_create_account(username: 'dummy', is_test: false)
+          expect(::Api::UsersController.last_action).to eq :create
+          expect(::Api::UsersController.last_json).to(
+            include('username' => 'dummy', 'is_test' => false)
           )
         end
       end

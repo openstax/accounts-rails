@@ -6,12 +6,13 @@ module OpenStax
 
       protected
 
-      def exec(email: nil, username: nil, password: nil,
-               first_name: nil, last_name: nil, full_name: nil, title: nil,
-               salesforce_contact_id: nil, faculty_status: nil, role: nil, school_type: nil)
-        raise ArgumentError,
-              'You must specify either an email address or a username (and an optional password)' \
-                if email.nil? && username.nil?
+      def exec(email: nil, username: nil, password: nil, first_name: nil, last_name: nil,
+               full_name: nil, title: nil, salesforce_contact_id: nil, faculty_status: nil,
+               role: nil, school_type: nil, is_test: nil)
+        raise(
+          ArgumentError,
+          'You must specify either an email address or a username (and an optional password)'
+        ) if email.nil? && username.nil?
 
         if OpenStax::Accounts.configuration.enable_stubbing
           # We can only stub finding by username b/c accounts-rails doesn't persist emails
@@ -24,7 +25,7 @@ module OpenStax
             email: email, username: username, password: password,
             first_name: first_name, last_name: last_name, full_name: full_name,
             salesforce_contact_id: salesforce_contact_id, faculty_status: faculty_status,
-            role: role, school_type: school_type)
+            role: role, school_type: school_type, is_test: is_test)
           fatal_error(code: :invalid_inputs) unless (200..202).include?(response.status)
 
           struct = OpenStruct.new
@@ -32,7 +33,6 @@ module OpenStax
           id = struct.id
           uuid = struct.uuid
           support_identifier = struct.support_identifier
-          is_test = struct.is_test
         end
 
         account = Account.find_or_initialize_by(openstax_uid: id)
@@ -57,7 +57,7 @@ module OpenStax
         end
 
         transfer_errors_from(account, {type: :verbatim}, true)
-        outputs[:account] = account
+        outputs.account = account
       end
 
     end
