@@ -11,5 +11,9 @@ OpenStax::Accounts.configure do |config|
   config.logout_via = :delete
   config.min_search_characters = 3
   config.max_search_items = 10
-  config.sso_secret_key = '1234567890abcd'
+
+  # these values copied from the Accounts development env values
+  config.sso_secret_key = '265127c36133669bedcf47f326e64e22623c1be35fffe04199f0d86bf45a3485'
+  config.sso_cookie_name = 'ox'
+  config.sso_secret_salt = 'ox-shared-salt'
 end
