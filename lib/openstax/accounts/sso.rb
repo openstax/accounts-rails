@@ -14,7 +14,7 @@ module OpenStax
       extend self
 
       def user_uuid(request)
-        decrypt(request)['user_uuid']
+        (decrypt(request) || {}).dig("user", "uuid")
       end
 
       # https://github.com/rails/rails/blob/4-2-stable/activesupport/lib/active_support/message_encryptor.rb#L90
@@ -40,14 +40,15 @@ module OpenStax
           key = OpenStax::Accounts.configuration.sso_secret_key
           raise InvalidSecretsConfiguration, 'Missing sso_secret_key configuration' if key.blank?
 
+          cipher        = 'aes-256-cbc'
           salt          = OpenStax::Accounts.configuration.sso_secret_salt
           signed_salt   = "signed encrypted #{salt}"
           key_generator = ActiveSupport::KeyGenerator.new(key, iterations: 1000)
           secret        = key_generator.generate_key(salt)[
-            0, OpenSSL::Cipher.new('aes-256-cbc').key_len
+            0, OpenSSL::Cipher.new(cipher).key_len
           ]
           sign_secret   = key_generator.generate_key(signed_salt)
-          ActiveSupport::MessageEncryptor.new(secret, sign_secret, serializer: JSON)
+          ActiveSupport::MessageEncryptor.new(secret, sign_secret, cipher: cipher, serializer: JSON)
         end
       end
 
