@@ -15,15 +15,13 @@ module OpenStax
 
       def handle
         # Don't worry if the account is logged in or not beforehand. Just assume that they aren't.
-
         # tap is used because we want the block to always run (not just when initializing)
         begin
-          outputs.account = Account.find_or_initialize_by(
-            openstax_uid: @auth_data.uid
-          ).tap do |account|
+          outputs.account = Account.find_or_initialize_by(uuid: @auth_data.uid).tap do |account|
             account.access_token = @auth_data.credentials.token
 
             raw_info = @auth_data.extra.raw_info
+            raw_info = raw_info.merge openstax_uid: raw_info[:id]
             OpenStax::Accounts::Account::SYNC_ATTRIBUTES.each do |attribute|
               begin
                 account.send "#{attribute}=", raw_info[attribute]

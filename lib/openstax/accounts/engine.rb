@@ -12,7 +12,7 @@ require 'roar'
 require 'roar/decorator'
 require 'roar/json'
 require 'openstax/accounts/action_controller/base'
-require 'openstax/accounts/has_many_through_groups/active_record/base'
+require 'omniauth'
 
 module OpenStax
   module Accounts

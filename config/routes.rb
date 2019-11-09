@@ -1,5 +1,4 @@
 OpenStax::Accounts::Engine.routes.draw do
-
   # Redirect here if we don't know what to do (theoretically should not happen)
   root to: 'sessions#new'
 
@@ -8,14 +7,12 @@ OpenStax::Accounts::Engine.routes.draw do
   get '/auth/openstax', as: 'openstax_login'
 
   # User profile route
-  if OpenStax::Accounts.configuration.enable_stubbing?
-    namespace :dev do
-      resources :accounts, only: [:index, :create] do
-        post 'become', on: :member
-        get 'search', on: :collection
-      end
+  namespace :dev do
+    resources :accounts, only: [:index, :create] do
+      post 'become', on: :member
+      get 'search', on: :collection
     end
-  end
+  end if OpenStax::Accounts.configuration.enable_stubbing?
 
   # OmniAuth local routes (SessionsController)
   scope module: 'sessions' do
@@ -27,5 +24,4 @@ OpenStax::Accounts::Engine.routes.draw do
                     via: OpenStax::Accounts.configuration.logout_via
     get 'profile', action: :profile # Redirects to profile path or stub
   end
-
 end

@@ -1,7 +1,6 @@
 module OpenStax
   module Accounts
     class CurrentUserManager
-
       def initialize(request, session, cookies)
         @request = request
         @session = session
@@ -22,9 +21,7 @@ module OpenStax
 
       # Signs in the given user or account
       def sign_in!(user)
-        user.is_a?(Account) ?
-          self.current_account = user :
-          self.current_user = user
+        user.is_a?(Account) ? self.current_account = user : self.current_user = user
       end
 
       alias_method :sign_in, :sign_in!
@@ -126,7 +123,6 @@ module OpenStax
       def account_user_mapper
         OpenStax::Accounts.configuration.account_user_mapper
       end
-
     end
   end
 end

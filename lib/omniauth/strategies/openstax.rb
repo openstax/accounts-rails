@@ -11,7 +11,7 @@ module OmniAuth
         authorize_url: "/oauth/authorize"
       }
 
-      uid { raw_info[:id] }
+      uid { raw_info[:uuid] }
 
       info do
         # Changed to conform to the omniauth schema

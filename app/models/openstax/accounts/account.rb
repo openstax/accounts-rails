@@ -1,9 +1,9 @@
 module OpenStax::Accounts
     class Account < ActiveRecord::Base
-
     USERNAME_DISCARDED_CHAR_REGEX = /[^A-Za-z\d_]/
     USERNAME_MAX_LENGTH = 50
     SYNC_ATTRIBUTES = [
+      :openstax_uid,
       :username,
       :first_name,
       :last_name,
@@ -13,26 +13,11 @@ module OpenStax::Accounts
       :faculty_status,
       :school_type,
       :salesforce_contact_id,
-      :uuid,
       :support_identifier,
       :is_test
     ]
 
     attr_accessor :syncing
-
-    has_many :group_owners, dependent: :destroy,
-             class_name: 'OpenStax::Accounts::GroupOwner',
-             primary_key: :openstax_uid,
-             foreign_key: :user_id,
-             inverse_of: :user
-    has_many :groups_as_owner, through: :group_owners, source: :group
-
-    has_many :group_members, dependent: :destroy,
-             class_name: 'OpenStax::Accounts::GroupMember',
-             primary_key: :openstax_uid,
-             foreign_key: :user_id,
-             inverse_of: :user
-    has_many :groups_as_member, through: :group_members, source: :group
 
     enum faculty_status: [:no_faculty_info, :pending_faculty, :confirmed_faculty, :rejected_faculty]
     enum role: [
@@ -50,9 +35,9 @@ module OpenStax::Accounts
 
     validates :faculty_status, :role, :school_type, presence: true
 
+    validates :uuid, presence: true, uniqueness: true
     validates :openstax_uid, uniqueness: { allow_nil: true }
     validates :username, uniqueness: { allow_nil: true }
-    validates :uuid, presence: true, uniqueness: true
     validates :support_identifier, uniqueness: { allow_nil: true }
 
     before_update :update_openstax_accounts, if: :should_send_updates_to_accounts?
@@ -98,6 +83,5 @@ module OpenStax::Accounts
     def update_openstax_accounts
       OpenStax::Accounts::Api.update_account(self)
     end
-
   end
 end

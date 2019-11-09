@@ -2,9 +2,7 @@ require 'spec_helper'
 
 module OpenStax
   module Accounts
-
     RSpec.describe SyncAccounts, type: :routine do
-
       it 'can sync accounts' do
         controller_class = ::Api::ApplicationUsersController
         uuid_1 = SecureRandom.uuid
@@ -44,30 +42,31 @@ module OpenStax
           end
         )
 
-        account = FactoryBot.create :openstax_accounts_account, username: 'u', openstax_uid: 2
+        account = FactoryBot.create :openstax_accounts_account, username: 'u', uuid: uuid_1
         account.syncing = true
 
         begin
           OpenStax::Accounts.configuration.enable_stubbing = false
-          expect(account.reload.openstax_uid).to eq 2
+          expect(account.reload.openstax_uid).not_to eq 2
           expect(account.username).to eq 'u'
-          expect(Account.find_by(openstax_uid: 4)).to be_nil
+          expect(Account.find_by(uuid: uuid_2)).to be_nil
 
           controller_class.last_action = nil
           controller_class.last_json = nil
 
-          expect { SyncAccounts.call }.to change { Account.count }.by(1)
+          expect { SyncAccounts.call }.to  change     { Account.count }.by(1)
+                                      .and change     { account.reload.openstax_uid }.to(2)
+                                      .and not_change { account.uuid }
 
-          account_2 = Account.find_by(openstax_uid: 4)
+          account_2 = Account.find_by(uuid: uuid_2)
 
           expect(account.reload.openstax_uid).to eq 2
           expect(account.username).to eq 'user'
           expect(account.role).to eq 'instructor'
-          expect(account.uuid).to eq uuid_1
           expect(account.support_identifier).to eq support_identifier_1
           expect(account.is_test).to eq true
           expect(account_2.username).to eq 'fuego'
-          expect(account_2.uuid).to eq uuid_2
+          expect(account_2.openstax_uid).to eq 4
           expect(account_2.support_identifier).to eq support_identifier_2
           expect(account_2.is_test).to be_nil
 
@@ -94,8 +93,6 @@ module OpenStax
           OpenStax::Accounts.configuration.enable_stubbing = true
         end
       end
-
     end
-
   end
 end

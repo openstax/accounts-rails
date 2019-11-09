@@ -9,18 +9,6 @@ module OpenStax::Accounts
     it { is_expected.to validate_uniqueness_of(:support_identifier).case_insensitive.allow_nil }
 
     context 'validation' do
-      it 'requires a unique openstax_uid, if given' do
-        account.openstax_uid = nil
-        expect(account).to be_valid
-
-        account.openstax_uid = -1
-        account.save!
-
-        account_2 = FactoryBot.build(:openstax_accounts_account, openstax_uid: -1)
-        expect(account_2).not_to be_valid
-        expect(account_2.errors[:openstax_uid]).to eq(['has already been taken'])
-      end
-
       it 'allows nil username' do
         account.username = nil
         expect(account).to be_valid
