@@ -14,17 +14,16 @@ module OpenStax::Accounts
         expect(account).to be_valid
       end
 
-      it 'requires unique username if not nil' do
-        expect{
-          FactoryBot.create(:openstax_accounts_account, username: account.username)
-        }.to raise_error(ActiveRecord::RecordInvalid)
-      end
-
-      it 'allows multiple accounts saved with nil username' do
+      it 'allows multiple accounts saved with the same username' do
         FactoryBot.create(:openstax_accounts_account, username: nil)
-        expect{
+        expect do
           FactoryBot.create(:openstax_accounts_account, username: nil)
-        }.not_to raise_error
+        end.not_to raise_error
+
+        FactoryBot.create(:openstax_accounts_account, username: 'test')
+        expect do
+          FactoryBot.create(:openstax_accounts_account, username: 'test')
+        end.not_to raise_error
       end
 
       it 'requires a role' do

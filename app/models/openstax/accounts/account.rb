@@ -36,8 +36,6 @@ module OpenStax::Accounts
     validates :faculty_status, :role, :school_type, presence: true
 
     validates :uuid, presence: true, uniqueness: true
-    validates :openstax_uid, uniqueness: { allow_nil: true }
-    validates :username, uniqueness: { allow_nil: true }
     validates :support_identifier, uniqueness: { allow_nil: true }
 
     before_update :update_openstax_accounts, if: :should_send_updates_to_accounts?
