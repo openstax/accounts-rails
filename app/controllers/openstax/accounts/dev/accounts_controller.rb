@@ -18,7 +18,7 @@ module OpenStax
         end
 
         def become
-          @account = Account.find_by(openstax_uid: params[:id])
+          @account = Account.find(params[:id])
           sign_in(@account)
           redirect_back key: :accounts_return_to, strategies: [:session]
         end
@@ -28,7 +28,6 @@ module OpenStax
         def allow_iframe_access
           response.headers.except! 'X-Frame-Options'
         end
-
       end
     end
   end

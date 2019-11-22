@@ -9,34 +9,21 @@ module OpenStax::Accounts
     it { is_expected.to validate_uniqueness_of(:support_identifier).case_insensitive.allow_nil }
 
     context 'validation' do
-      it 'requires a unique openstax_uid, if given' do
-        account.openstax_uid = nil
-        expect(account).to be_valid
-
-        account.openstax_uid = -1
-        account.save!
-
-        account_2 = FactoryBot.build(:openstax_accounts_account, openstax_uid: -1)
-        expect(account_2).not_to be_valid
-        expect(account_2.errors[:openstax_uid]).to eq(['has already been taken'])
-      end
-
       it 'allows nil username' do
         account.username = nil
         expect(account).to be_valid
       end
 
-      it 'requires unique username if not nil' do
-        expect{
-          FactoryBot.create(:openstax_accounts_account, username: account.username)
-        }.to raise_error(ActiveRecord::RecordInvalid)
-      end
-
-      it 'allows multiple accounts saved with nil username' do
+      it 'allows multiple accounts saved with the same username' do
         FactoryBot.create(:openstax_accounts_account, username: nil)
-        expect{
+        expect do
           FactoryBot.create(:openstax_accounts_account, username: nil)
-        }.not_to raise_error
+        end.not_to raise_error
+
+        FactoryBot.create(:openstax_accounts_account, username: 'test')
+        expect do
+          FactoryBot.create(:openstax_accounts_account, username: 'test')
+        end.not_to raise_error
       end
 
       it 'requires a role' do

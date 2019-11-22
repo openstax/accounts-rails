@@ -1,7 +1,6 @@
 module OpenStax
   module Accounts
     class AnonymousAccount < Account
-
       include Singleton
 
       before_save { false }
@@ -9,6 +8,7 @@ module OpenStax
       def initialize(attributes=nil)
         super
         self.id           = nil
+        self.uuid         = nil
         self.openstax_uid = nil
         self.username     = 'anonymous'
         self.first_name   = 'Guest'
@@ -18,7 +18,6 @@ module OpenStax
       def is_anonymous?
         true
       end
-
     end
   end
 end

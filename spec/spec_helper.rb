@@ -43,6 +43,8 @@ RSpec.configure do |config|
   config.order = :random
 end
 
+RSpec::Matchers.define_negated_matcher :not_change, :change
+
 Shoulda::Matchers.configure do |config|
   config.integrate do |with|
     with.test_framework :rspec
@@ -80,7 +82,7 @@ def mock_omniauth_request(
   OpenStruct.new(
     env: {
       'omniauth.auth' => OpenStruct.new(
-        uid: raw_info[:id],
+        uid: raw_info[:uuid],
         provider: 'openstax',
         info: OpenStruct.new(info),
         credentials: OpenStruct.new(access_token: 'foo'),

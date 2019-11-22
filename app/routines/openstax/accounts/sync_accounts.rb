@@ -4,9 +4,7 @@
 
 module OpenStax
   module Accounts
-
     class SyncAccounts
-
       lev_routine transaction: :no_transaction
 
       protected
@@ -27,7 +25,7 @@ module OpenStax
         updated_app_accounts = []
         app_accounts.each do |app_account|
           account = OpenStax::Accounts::Account.find_by(
-            openstax_uid: app_account.account.openstax_uid
+            uuid: app_account.account.uuid
           ) || app_account.account
           account.syncing = true
 
@@ -45,10 +43,7 @@ module OpenStax
         end
 
         OpenStax::Accounts::Api.mark_account_updates_as_read(updated_app_accounts)
-
       end
-
     end
-
   end
 end

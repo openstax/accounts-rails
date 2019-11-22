@@ -12,13 +12,13 @@
           headings: ['UID', 'Username (click to sign in as)', 'Name'],
           widths: ['20%', '40%', '40%'],
           data_procs: [
-            lambda { |account| account.openstax_uid },
-            lambda { |account|
+            ->(account) { account.openstax_uid },
+            ->(account) {
               link_to account.username, become_dev_account_path(
                                           account.openstax_uid
                                         ), method: :post
             },
-            lambda { |account| account.name || '---' }
+            ->(account) { account.name || '---' }
           ]
         }
       ) %>

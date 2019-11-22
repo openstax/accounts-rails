@@ -40,8 +40,7 @@ module OpenStax
       end
 
       def failure
-        redirect_back key: :accounts_return_to,
-                      alert: "Authentication failed, please try again."
+        redirect_back key: :accounts_return_to, alert: "Authentication failed, please try again."
       end
 
       def profile

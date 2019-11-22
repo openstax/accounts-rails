@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+# This command will automatically be run when you run "rails" from the root of your application.
+
+ENGINE_ROOT = File.expand_path('..', __dir__)
+ENGINE_PATH = File.expand_path('../lib/openstax/accounts/engine', __dir__)
+
+require 'rails/all'
+
+APP_PATH = File.expand_path('spec/dummy/config/application', ENGINE_ROOT)
+
+require 'rails/commands'

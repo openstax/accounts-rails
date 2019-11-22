@@ -95,7 +95,7 @@ module OpenStax
           support_identifier = "cs_#{SecureRandom.hex(4)}"
           result = described_class.handle(
             request: mock_omniauth_request(
-              id: existing_account.openstax_uid,
+              id: 42,
               first_name: "1234",
               last_name: "5678",
               title: "900",
@@ -107,7 +107,7 @@ module OpenStax
           )
 
           account = result.outputs.account.reload
-          expect(account.id).to eq existing_account.id
+          expect(account.openstax_uid).to eq 42
           expect(account.first_name).to eq "1234"
           expect(account.last_name).to eq "5678"
           expect(account.title).to eq "900"

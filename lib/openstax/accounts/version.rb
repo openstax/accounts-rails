@@ -1,5 +1,5 @@
 module OpenStax
   module Accounts
-    VERSION = "8.1.1"
+    VERSION = "9.0.0"
   end
 end
