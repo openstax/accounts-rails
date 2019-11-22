@@ -6,13 +6,15 @@ OpenStax::Accounts::Engine.routes.draw do
   # This is provided by OmniAuth and is not in the SessionsController
   get '/auth/openstax', as: 'openstax_login'
 
-  # User profile route
-  namespace :dev do
-    resources :accounts, only: [:index, :create] do
-      post 'become', on: :member
-      get 'search', on: :collection
+  if OpenStax::Accounts.configuration.enable_stubbing?
+    # User profile route
+    namespace :dev do
+      resources :accounts, only: [:index, :create] do
+        post 'become', on: :member
+        get 'search', on: :collection
+      end
     end
-  end if OpenStax::Accounts.configuration.enable_stubbing?
+  end
 
   # OmniAuth local routes (SessionsController)
   scope module: 'sessions' do
