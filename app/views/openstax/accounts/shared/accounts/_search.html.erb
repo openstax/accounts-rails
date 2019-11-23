@@ -1,12 +1,10 @@
 <%
-   # Clients of this partial can override the following variables:
-   search_action_path ||= nil
-   method ||= :get
-   remote ||= false
-   form_html ||=  {id: 'search-form',
-                   class: 'form-inline'}
-   search_types ||= ['Any', 'Username', 'Name',
-                     'First Name', 'Last Name', 'Email']
+  # Clients of this partial can override the following variables:
+  search_action_path ||= nil
+  method ||= :get
+  remote ||= false
+  form_html ||=  {id: 'search-form', class: 'form-inline'}
+  search_types ||= ['Any', 'Username', 'Name', 'First Name', 'Last Name', 'Email']
 %>
 
 <%= lev_form_for :search,
@@ -26,6 +24,9 @@
 
 <% end %>
 
+<div id="search-results">
+  <%= render partial: 'openstax/accounts/dev/accounts/search_results' %>
+</div>
 
 <script>
   var input = $('input[name="search[query]"]');

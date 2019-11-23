@@ -1,7 +1,6 @@
 module OpenStax
   module Accounts
     class AccountsSearch
-
       lev_handler
 
       paramify :search do
@@ -50,17 +49,16 @@ module OpenStax
                   page: search_params.page,
                   per_page: search_params.per_page}
         out = run(OpenStax::Accounts::SearchAccounts, params).outputs
-        outputs[:total_count] = out[:total_count]
+        outputs.total_count = out.total_count
 
-        if !@max_items.nil? && outputs[:total_count] > @max_items
+        if !@max_items.nil? && outputs.total_count > @max_items
           fatal_error(code: :too_many_items,
                       message: "The number of matches exceeded the allowed limit of #{
                         @max_items} matches. Please refine your query and try again.")
         end
 
-        outputs[:items] = out[:items].to_a
+        outputs.items = out.items.to_a
       end
-
     end
   end
 end

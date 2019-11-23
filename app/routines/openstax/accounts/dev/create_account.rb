@@ -1,5 +1,4 @@
-# Routine for creating an account, only for use when stubbing and
-# not on production.
+# Routine for creating an account, only for use when stubbing and not on production.
 
 module OpenStax
   module Accounts
@@ -11,30 +10,33 @@ module OpenStax
 
         def exec(inputs={})
           fatal_error(code: :cannot_create_account_in_production) if Rails.env.production?
-          fatal_error(code: :can_only_create_account_when_stubbing) if !OpenStax::Accounts.configuration.enable_stubbing?
+          fatal_error(code: :can_only_create_account_when_stubbing) \
+            unless OpenStax::Accounts.configuration.enable_stubbing?
 
           username = inputs[:username]
-          while username.nil? || Account.where(username: username).exists? do
-            username = SecureRandom.hex(3).to_s
+          if username.blank?
+            while username.blank? || Account.where(username: username).exists? do
+              username = SecureRandom.hex(3).to_s
+            end
+          else
+            fatal_error(
+              code: :account_already_exists,
+              message: "One or more accounts with username \"#{username}\" already exist."
+            ) if Account.where(username: username).exists?
           end
 
-          account = OpenStax::Accounts::Account.new
+          outputs.account = OpenStax::Accounts::Account.create(
+            openstax_uid: -SecureRandom.hex(4).to_i(16)/2,
+            access_token: SecureRandom.hex.to_s,
+            username: username,
+            role: inputs[:role] || :unknown_role,
+            uuid: SecureRandom.uuid,
+            support_identifier: "cs_#{SecureRandom.hex(4)}",
+            is_test: true
+          )
 
-          account.openstax_uid = -SecureRandom.hex(4).to_i(16)/2
-          account.access_token = SecureRandom.hex.to_s
-          account.username = username
-          account.role = inputs[:role] || :unknown_role
-          account.uuid = SecureRandom.uuid
-          account.support_identifier = "cs_#{SecureRandom.hex(4)}"
-          account.is_test = true
-
-          account.save
-
-          transfer_errors_from(account, {type: :verbatim}, true)
-
-          outputs[:account] = account
+          transfer_errors_from(outputs.account, {type: :verbatim}, true)
         end
-
       end
     end
   end

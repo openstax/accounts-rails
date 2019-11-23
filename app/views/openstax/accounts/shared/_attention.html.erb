@@ -1,3 +1,11 @@
 <% handler_errors.each do |error| %>
-  <%= error.translate %>
+  <div class="error"><%= error.translate %></div>
+<% end %>
+
+<% if flash.alert %>
+  <div class="alert"><%= flash.alert %></div>
+<% end %>
+
+<% if flash.notice %>
+  <div class="notice"><%= flash.notice %></div>
 <% end %>

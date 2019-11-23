@@ -11,7 +11,6 @@ OpenStax::Accounts::Engine.routes.draw do
     namespace :dev do
       resources :accounts, only: [:index, :create] do
         post 'become', on: :member
-        get 'search', on: :collection
       end
     end
   end
