@@ -15,12 +15,11 @@ module OpenStax
 
         if OpenStax::Accounts.configuration.enable_stubbing
           # We can only stub finding by username b/c accounts-rails doesn't persist emails
-          openstax_uid = Account.find_by(username: username)&.openstax_uid ||
-                         -SecureRandom.hex(4).to_i(16)/2
-          uuid = SecureRandom.uuid
+          uuid = Account.find_by(username: username)&.uuid || SecureRandom.uuid
+          openstax_uid = -SecureRandom.hex(4).to_i(16)/2
           support_identifier = "cs_#{SecureRandom.hex(4)}"
         else
-          response = Api.find_or_create_account(
+          response = OpenStax::Accounts::Api.find_or_create_account(
             email: email, username: username, password: password,
             first_name: first_name, last_name: last_name, full_name: full_name,
             salesforce_contact_id: salesforce_contact_id, faculty_status: faculty_status,
@@ -35,9 +34,7 @@ module OpenStax
           support_identifier = struct.support_identifier
         end
 
-        account = Account.find_or_initialize_by(uuid: uuid)
-
-        unless account.persisted?
+        outputs.account = Account.find_or_initialize_by(uuid: uuid) do |account|
           while username.nil? || Account.where(username: username).exists? do
             username = SecureRandom.hex(3).to_s
           end
@@ -56,8 +53,7 @@ module OpenStax
           account.save!
         end
 
-        transfer_errors_from(account, {type: :verbatim}, true)
-        outputs.account = account
+        transfer_errors_from outputs.account, { type: :verbatim }, true
       end
     end
   end
