@@ -34,10 +34,8 @@ module OpenStax
           support_identifier = struct.support_identifier
         end
 
-        outputs.account = Account.find_or_initialize_by(uuid: uuid) do |account|
-          while username.nil? || Account.where(username: username).exists? do
-            username = SecureRandom.hex(3).to_s
-          end
+        outputs.account = Account.find_or_create_by(uuid: uuid) do |account|
+          account.openstax_uid = openstax_uid
           account.username = username
           account.first_name = first_name
           account.last_name = last_name
@@ -47,10 +45,8 @@ module OpenStax
           account.faculty_status = faculty_status || :no_faculty_info
           account.role = role || :unknown_role
           account.school_type = school_type || :unknown_school_type
-          account.openstax_uid = openstax_uid
           account.support_identifier = support_identifier
           account.is_test = is_test
-          account.save!
         end
 
         transfer_errors_from outputs.account, { type: :verbatim }, true
