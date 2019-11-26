@@ -1,5 +1,4 @@
 <div class="openstax-accounts development-login">
-
   <%= render partial: 'openstax/accounts/shared/attention' %>
 
   <h3>Create an Account</h3>
@@ -11,7 +10,7 @@
 
 
     <div class="form-group">
-      <%= f.text_field :username, placeholder: "Username" %>&nbsp;
+      <%= f.text_field :username, placeholder: 'Username' %>&nbsp;
       <%= f.select :role, OpenStax::Accounts::Account.roles.keys.map{|rr| [rr, rr]} %>&nbsp;
       <%= f.submit 'Create', class: 'btn btn-primary' %>
     </div>
@@ -23,15 +22,13 @@
   <p>You need to login, but we're not connected to the Accounts server.<br>
   Search for a user below and click the sign in link next to him or her.</p>
 
-  <%= render :partial => 'openstax/accounts/shared/accounts/search',
-             :locals => {
-               :search_action_path => openstax_accounts.search_dev_accounts_path,
-               :remote => true,
-               :method => :get
+  <%= render partial: 'openstax/accounts/shared/accounts/search',
+             locals: {
+               search_action_path: openstax_accounts.dev_accounts_path,
+               search_results_partial: 'openstax/accounts/dev/accounts/search_results',
+               remote: true,
+               method: :get
              } %>
 
   <br>
-
-  <div id="search-results"></div>
-
 </div>

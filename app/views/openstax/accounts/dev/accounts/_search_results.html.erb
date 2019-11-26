@@ -1,5 +1,5 @@
-<% total_count = @handler_result.outputs[:total_count]
-   accounts = @handler_result.outputs[:items] %>
+<% total_count = @handler_result.outputs.total_count
+   accounts = @handler_result.outputs.items || [] %>
 
 <div id='search-results-count'>
   <%= pluralize(total_count, 'user') %> found.
@@ -9,14 +9,13 @@
   <%= osu.action_list(
         records: accounts,
         list: {
-          headings: ['UID', 'Username (click to sign in as)', 'Name'],
-          widths: ['20%', '40%', '40%'],
+          headings: ['UID', 'UUID', 'Username (click to sign in as)', 'Name'],
+          widths: ['20%', '20%', '30%', '30%'],
           data_procs: [
             ->(account) { account.openstax_uid },
+            ->(account) { account.uuid },
             ->(account) {
-              link_to account.username, become_dev_account_path(
-                                          account.openstax_uid
-                                        ), method: :post
+              link_to account.username, become_dev_account_path(account.id), method: :post
             },
             ->(account) { account.name || '---' }
           ]

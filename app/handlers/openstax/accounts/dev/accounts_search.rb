@@ -2,7 +2,6 @@ module OpenStax
   module Accounts
     module Dev
       class AccountsSearch < OpenStax::Accounts::AccountsSearch
-
         paramify :search do
           attribute :type, type: String
           attribute :query, type: String
@@ -21,7 +20,6 @@ module OpenStax
         def authorized?
           !Rails.env.production?
         end
-
       end
     end
   end
