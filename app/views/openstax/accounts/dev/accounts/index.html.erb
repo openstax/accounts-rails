@@ -25,6 +25,7 @@
   <%= render partial: 'openstax/accounts/shared/accounts/search',
              locals: {
                search_action_path: openstax_accounts.dev_accounts_path,
+               search_results_partial: 'openstax/accounts/dev/accounts/search_results',
                remote: true,
                method: :get
              } %>

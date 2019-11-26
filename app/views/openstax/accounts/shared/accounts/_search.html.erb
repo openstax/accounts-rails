@@ -1,6 +1,7 @@
 <%
   # Clients of this partial can override the following variables:
   search_action_path ||= nil
+  search_results_partial ||= nil
   method ||= :get
   remote ||= false
   form_html ||=  {id: 'search-form', class: 'form-inline'}
@@ -25,7 +26,9 @@
 <% end %>
 
 <div id="search-results">
-  <%= render partial: 'openstax/accounts/dev/accounts/search_results' %>
+  <% unless search_results_partial.blank? %>
+    <%= render partial: search_results_partial %>
+  <% end %>
 </div>
 
 <script>
