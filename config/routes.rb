@@ -4,7 +4,7 @@ OpenStax::Accounts::Engine.routes.draw do
 
   # Shortcut to OmniAuth route that redirects to the Accounts server
   # This is provided by OmniAuth and is not in the SessionsController
-  get '/auth/openstax', as: 'openstax_login'
+  get '/auth/openstax', to: ->(env) { [ 404, {}, [ '' ] ] }, as: 'openstax_login'
 
   if OpenStax::Accounts.configuration.enable_stubbing?
     # User profile route
