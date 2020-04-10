@@ -60,9 +60,9 @@ module OpenStax
       # to the default Accounts logout URL.
       attr_writer :logout_redirect_url
 
-      # forwardable_login_param_keys
+      # forwardable_login_params
       # Which params are forwarded on the accounts login path
-      attr_accessor :forwardable_login_param_keys
+      attr_accessor :forwardable_login_params
 
       # max_user_updates_per_request
       # When the user profile sync operation is called, this parameter will limit
@@ -119,10 +119,10 @@ module OpenStax
         @max_search_items = 10
         @logout_redirect_url = nil
         @return_to_url_approver = nil
-        @forwardable_login_param_keys = [
+        @forwardable_login_params = [
           :signup_at,
           :go,
-          :sp          # "signed payload"; "sp" for short to keep nested parameter names short
+          sp: {} # "signed payload"; "sp" to keep nested parameter names short.
         ]
         @max_user_updates_per_request = 250
         @sso_cookie_name = 'ox'

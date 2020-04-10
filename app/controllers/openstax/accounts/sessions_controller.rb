@@ -10,8 +10,7 @@ module OpenStax
         if configuration.enable_stubbing?
           redirect_to dev_accounts_path
         else
-          forwardable_params =
-            params.permit(*configuration.forwardable_login_param_keys.map(&:to_s)).to_h
+          forwardable_params = params.permit(*configuration.forwardable_login_params).to_h
           redirect_to openstax_login_path(forwardable_params)
         end
       end

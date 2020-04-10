@@ -67,5 +67,13 @@ module OpenStax::Accounts
 
       get :new, params: { return_to: 'http://jimmy' }
     end
+
+    it 'should include sp param hash when redirecting' do
+      allow(OpenStax::Accounts.configuration).to receive(:enable_stubbing?) {false}
+      params = { sp: { foo: 'bar', test: 'true' } }
+      get :new, params: params
+      expect(response).to redirect_to(controller.openstax_login_path(params))
+    end
+
   end
 end
