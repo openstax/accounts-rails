@@ -33,7 +33,8 @@ module OpenStax
                   id: 4,
                   username: 'fuego',
                   uuid: uuid_2,
-                  support_identifier: support_identifier_2
+                  support_identifier: support_identifier_2,
+                  is_kip: true
                 },
                 unread_updates: 2,
                 default_contact_info_id: 5
@@ -65,10 +66,13 @@ module OpenStax
           expect(account.role).to eq 'instructor'
           expect(account.support_identifier).to eq support_identifier_1
           expect(account.is_test).to eq true
+          expect(account.is_kip).to be_nil
+
           expect(account_2.username).to eq 'fuego'
           expect(account_2.openstax_uid).to eq 4
           expect(account_2.support_identifier).to eq support_identifier_2
           expect(account_2.is_test).to be_nil
+          expect(account_2.is_kip).to eq true
 
           expect(controller_class.last_action).to eq :updated
           expect(controller_class.last_json).to eq [

@@ -34,6 +34,7 @@ ActiveRecord::Schema.define(version: 1001) do
     t.citext "support_identifier"
     t.boolean "is_test"
     t.integer "school_type", default: 0, null: false
+    t.boolean "is_kip"
     t.index ["access_token"], name: "index_openstax_accounts_accounts_on_access_token", unique: true
     t.index ["faculty_status"], name: "index_openstax_accounts_accounts_on_faculty_status"
     t.index ["first_name"], name: "index_openstax_accounts_accounts_on_first_name"

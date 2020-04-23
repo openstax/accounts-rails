@@ -14,12 +14,18 @@ module OpenStax::Accounts
       :school_type,
       :salesforce_contact_id,
       :support_identifier,
-      :is_test
+      :is_test,
+      :is_kip
     ]
 
     attr_accessor :syncing
 
-    enum faculty_status: [:no_faculty_info, :pending_faculty, :confirmed_faculty, :rejected_faculty]
+    enum faculty_status: [
+      :no_faculty_info,
+      :pending_faculty,
+      :confirmed_faculty,
+      :rejected_faculty
+    ]
     enum role: [
       :unknown_role,
       :student,
@@ -31,7 +37,13 @@ module OpenStax::Accounts
       :adjunct,
       :homeschool
     ]
-    enum school_type: [:unknown_school_type, :other_school_type, :college]
+    enum school_type: [
+      :unknown_school_type,
+      :other_school_type,
+      :college,
+      :high_school,
+      :k12_school
+    ]
 
     validates :faculty_status, :role, :school_type, presence: true
 

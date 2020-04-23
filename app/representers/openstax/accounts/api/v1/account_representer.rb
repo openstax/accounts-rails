@@ -5,7 +5,6 @@ module OpenStax
     module Api
       module V1
         class AccountRepresenter < Roar::Decorator
-
           # This representer is used to communicate with Accounts
           # and so must allow read/write on all properties
           # Do not use it in create/update APIs!
@@ -89,21 +88,26 @@ module OpenStax
           property :uuid,
                    type: String,
                    schema_info: {
-                     description: "The UUID as set by Accounts"
+                     description: 'The UUID as set by Accounts'
                    }
 
           property :support_identifier,
                    type: String,
                    schema_info: {
-                     description: "The support_identifier as set by Accounts"
+                     description: 'The support_identifier as set by Accounts'
                    }
 
           property :is_test,
                    type: :boolean,
                    schema_info: {
-                     description: "Whether or not this is a test account"
+                     description: 'Whether or not this is a test account'
                    }
 
+          property :is_kip,
+                   type: :boolean,
+                   schema_info: {
+                     description: 'Whether or not this is a Key Institutional Partner account'
+                   }
         end
       end
     end
