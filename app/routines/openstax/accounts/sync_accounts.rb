@@ -10,7 +10,6 @@ module OpenStax
       protected
 
       def exec(options={})
-
         return if OpenStax::Accounts.configuration.enable_stubbing?
 
         response = OpenStax::Accounts::Api.get_application_account_updates
