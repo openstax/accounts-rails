@@ -11,7 +11,7 @@ RSpec.describe "Forwards params", type: :request do
     def set_login_param
       login_params[:signup_at] = "foo"
       login_params[:go] = "bar"
-      login_params[:sp] = "blah"
+      login_params[:sp] = { 'test' => '42' }
     end
   end
 
@@ -29,8 +29,8 @@ RSpec.describe "Forwards params", type: :request do
     test_forwards(key: :go, value: "bar")
   end
 
-  it "should forward go" do
-    test_forwards(key: :sp, value: "blah")
+  it "should forward sp" do
+    test_forwards(key: :sp, value: { 'test' => '42' })
   end
 
   def test_forwards(key:, value:)
