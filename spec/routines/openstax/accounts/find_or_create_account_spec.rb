@@ -43,12 +43,13 @@ module OpenStax
             }\",\"support_identifier\":\"cs_#{SecureRandom.hex(4)}\"}"
           )
         )
-        is_test = [true, false].sample
+        is_kip = [ true, false ].sample
+        is_test = [ true, false ].sample
         expect(OpenStax::Accounts::Api).to receive(:find_or_create_account).with(
           email: 'bob@example.com', username: nil, password: nil,
           first_name: 'Bob', last_name: 'Smith', full_name: 'Bob Smith',
           salesforce_contact_id: 'b0b', faculty_status: :rejected_faculty, role: :instructor,
-          school_type: :college, school_location: :domestic_school, is_test: is_test
+          school_type: :college, school_location: :domestic_school, is_kip: is_kip, is_test: is_test
         ).and_return(find_or_create_account_response)
 
         described_class.call(
@@ -61,6 +62,7 @@ module OpenStax
           role: :instructor,
           school_type: :college,
           school_location: :domestic_school,
+          is_kip: is_kip,
           is_test: is_test
         )
       end
