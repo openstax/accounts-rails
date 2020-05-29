@@ -9,8 +9,9 @@ module OpenStax
           # and so must allow read/write on all properties
           # Do not use it in create/update APIs!
 
-          # Otherwise, this representer can be used directly or subclassed
-          # for an object that delegates openstax_uid, username, first_name, last_name, full_name, # title, faculty_status, role, school_type and salesforce_contact_id to an account
+          # This representer can be used directly or subclassed for an object that delegates
+          # openstax_uid, username, first_name, last_name, full_name, title, faculty_status,
+          # role, school_type, school_location and salesforce_contact_id to an account
 
           include Roar::JSON
 
@@ -82,6 +83,14 @@ module OpenStax
                    schema_info: {
                      description: "One of #{
                        OpenStax::Accounts::Account.school_types.keys.map(&:to_s).inspect
+                     }"
+                   }
+
+          property :school_location,
+                   type: String,
+                   schema_info: {
+                     description: "One of #{
+                       OpenStax::Accounts::Account.school_locations.keys.map(&:to_s).inspect
                      }"
                    }
 

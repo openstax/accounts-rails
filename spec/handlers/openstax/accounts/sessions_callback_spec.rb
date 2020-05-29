@@ -78,6 +78,22 @@ module OpenStax
         end
       end
 
+      context "school_location" do
+        it "sets the school_location on the account" do
+          result = described_class.handle(
+            request: mock_omniauth_request(school_location: "domestic_school")
+          )
+          expect(result.outputs.account).to be_domestic_school
+        end
+
+        it "deals with unknown school_location (e.g. if Accounts update but this repo not)" do
+          result = described_class.handle(
+            request: mock_omniauth_request(school_location: "howdy_ho")
+          )
+          expect(result.outputs.account).to be_unknown_school_location
+        end
+      end
+
       context "salesforce_contact_id" do
         it "sets the salesforce_contact_id on the account" do
           sf_contact_id = 'SomeSfId'

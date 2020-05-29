@@ -32,6 +32,8 @@ module OpenStax
             role: inputs[:role] || :unknown_role,
             uuid: SecureRandom.uuid,
             support_identifier: "cs_#{SecureRandom.hex(4)}",
+            school_type: inputs[:school_type] || :unknown_school_type,
+            school_location: inputs[:school_location] || :unknown_school_location,
             is_test: true
           )
 
