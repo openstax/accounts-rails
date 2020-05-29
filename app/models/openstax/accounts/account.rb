@@ -12,6 +12,7 @@ module OpenStax::Accounts
       :self_reported_role,
       :faculty_status,
       :school_type,
+      :school_location,
       :salesforce_contact_id,
       :support_identifier,
       :is_test,
@@ -26,6 +27,7 @@ module OpenStax::Accounts
       :confirmed_faculty,
       :rejected_faculty
     ]
+
     enum role: [
       :unknown_role,
       :student,
@@ -37,15 +39,23 @@ module OpenStax::Accounts
       :adjunct,
       :homeschool
     ]
+
     enum school_type: [
       :unknown_school_type,
       :other_school_type,
       :college,
       :high_school,
-      :k12_school
+      :k12_school,
+      :home_school
     ]
 
-    validates :faculty_status, :role, :school_type, presence: true
+    enum school_location: [
+      :unknown_school_location,
+      :domestic_school,
+      :foreign_school
+    ]
+
+    validates :faculty_status, :role, :school_type, :school_location, presence: true
 
     validates :uuid, presence: true, uniqueness: true
     validates :support_identifier, uniqueness: { allow_nil: true }

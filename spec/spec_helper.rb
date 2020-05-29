@@ -65,6 +65,7 @@ def mock_omniauth_request(
     faculty_status: 'no_faculty_info',
     self_reported_role: 'unknown_role',
     school_type: 'unknown_school_type',
+    school_location: 'unknown_school_location',
     salesforce_contact_id: nil
   )
   bd = binding

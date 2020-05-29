@@ -21,6 +21,8 @@ module OpenStax
                   self_reported_role: 'instructor',
                   uuid: uuid_1,
                   support_identifier: support_identifier_1,
+                  school_type: 'college',
+                  school_location: 'domestic_school',
                   is_test: true
                 },
                 unread_updates: 1,
@@ -34,6 +36,8 @@ module OpenStax
                   username: 'fuego',
                   uuid: uuid_2,
                   support_identifier: support_identifier_2,
+                  school_type: 'home_school',
+                  school_location: 'foreign_school',
                   is_kip: true
                 },
                 unread_updates: 2,
@@ -65,12 +69,16 @@ module OpenStax
           expect(account.username).to eq 'user'
           expect(account.role).to eq 'instructor'
           expect(account.support_identifier).to eq support_identifier_1
+          expect(account.school_type).to eq 'college'
+          expect(account.school_location).to eq 'domestic_school'
           expect(account.is_test).to eq true
           expect(account.is_kip).to be_nil
 
           expect(account_2.username).to eq 'fuego'
           expect(account_2.openstax_uid).to eq 4
           expect(account_2.support_identifier).to eq support_identifier_2
+          expect(account_2.school_type).to eq 'home_school'
+          expect(account_2.school_location).to eq 'foreign_school'
           expect(account_2.is_test).to be_nil
           expect(account_2.is_kip).to eq true
 
