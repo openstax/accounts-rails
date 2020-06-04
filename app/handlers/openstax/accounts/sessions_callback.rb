@@ -34,6 +34,7 @@ module OpenStax
             account.faculty_status ||= :no_faculty_info
             account.role ||= :unknown_role
             account.school_type ||= :unknown_school_type
+            account.school_location ||= :unknown_school_location
           end
 
           outputs.account.save if outputs.account.changed?

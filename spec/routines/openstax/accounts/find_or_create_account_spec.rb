@@ -3,9 +3,7 @@ require 'vcr_helper'
 
 module OpenStax
   module Accounts
-
     RSpec.describe FindOrCreateAccount, type: :routine, vcr: VCR_OPTS do
-
       before(:all) do
         @previous_url = OpenStax::Accounts.configuration.openstax_accounts_url
         @previous_enable_stubbing = OpenStax::Accounts.configuration.enable_stubbing
@@ -45,12 +43,13 @@ module OpenStax
             }\",\"support_identifier\":\"cs_#{SecureRandom.hex(4)}\"}"
           )
         )
-        is_test = [true, false].sample
+        is_kip = [ true, false ].sample
+        is_test = [ true, false ].sample
         expect(OpenStax::Accounts::Api).to receive(:find_or_create_account).with(
           email: 'bob@example.com', username: nil, password: nil,
           first_name: 'Bob', last_name: 'Smith', full_name: 'Bob Smith',
-          salesforce_contact_id: 'b0b', faculty_status: :rejected_faculty,
-          role: :instructor, school_type: :college, is_test: is_test
+          salesforce_contact_id: 'b0b', faculty_status: :rejected_faculty, role: :instructor,
+          school_type: :college, school_location: :domestic_school, is_kip: is_kip, is_test: is_test
         ).and_return(find_or_create_account_response)
 
         described_class.call(
@@ -62,6 +61,8 @@ module OpenStax
           faculty_status: :rejected_faculty,
           role: :instructor,
           school_type: :college,
+          school_location: :domestic_school,
+          is_kip: is_kip,
           is_test: is_test
         )
       end
@@ -71,8 +72,6 @@ module OpenStax
         OpenStax::Accounts.configuration.enable_stubbing = @previous_enable_stubbing
         OpenStax::Accounts::Api.client.site = @previous_url
       end
-
     end
-
   end
 end
