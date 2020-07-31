@@ -117,6 +117,12 @@ module OpenStax
                    schema_info: {
                      description: 'Whether or not this is a Key Institutional Partner account'
                    }
+
+          property :grant_tutor_access,
+                   type: :boolean,
+                   schema_info: {
+                     description: 'Whether or not the account should be granted Tutor access'
+                   }
         end
       end
     end

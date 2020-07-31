@@ -38,7 +38,8 @@ module OpenStax
                   support_identifier: support_identifier_2,
                   school_type: 'home_school',
                   school_location: 'foreign_school',
-                  is_kip: true
+                  is_kip: true,
+                  grant_tutor_access: true
                 },
                 unread_updates: 2,
                 default_contact_info_id: 5
@@ -73,6 +74,7 @@ module OpenStax
           expect(account.school_location).to eq 'domestic_school'
           expect(account.is_test).to eq true
           expect(account.is_kip).to be_nil
+          expect(account.grant_tutor_access).to be_nil
 
           expect(account_2.username).to eq 'fuego'
           expect(account_2.openstax_uid).to eq 4
@@ -81,6 +83,7 @@ module OpenStax
           expect(account_2.school_location).to eq 'foreign_school'
           expect(account_2.is_test).to be_nil
           expect(account_2.is_kip).to eq true
+          expect(account_2.grant_tutor_access).to eq true
 
           expect(controller_class.last_action).to eq :updated
           expect(controller_class.last_json).to eq [
