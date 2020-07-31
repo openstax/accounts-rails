@@ -16,7 +16,8 @@ module OpenStax::Accounts
       :salesforce_contact_id,
       :support_identifier,
       :is_test,
-      :is_kip
+      :is_kip,
+      :grant_tutor_access
     ]
 
     attr_accessor :syncing

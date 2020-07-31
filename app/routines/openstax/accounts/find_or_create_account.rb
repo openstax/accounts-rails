@@ -7,7 +7,8 @@ module OpenStax
 
       def exec(email: nil, username: nil, password: nil, first_name: nil, last_name: nil,
                full_name: nil, title: nil, salesforce_contact_id: nil, faculty_status: nil,
-               role: nil, school_type: nil, school_location: nil, is_kip: nil, is_test: nil)
+               role: nil, school_type: nil, school_location: nil, is_kip: nil,
+               grant_tutor_access: nil, is_test: nil)
         raise(
           ArgumentError,
           'You must specify either an email address or a username (and an optional password)'
@@ -24,7 +25,7 @@ module OpenStax
             first_name: first_name, last_name: last_name, full_name: full_name,
             salesforce_contact_id: salesforce_contact_id, faculty_status: faculty_status,
             role: role, school_type: school_type, school_location: school_location,
-            is_kip: is_kip, is_test: is_test
+            is_kip: is_kip, grant_tutor_access: grant_tutor_access, is_test: is_test
           )
           fatal_error(code: :invalid_inputs) unless (200..202).include?(response.status)
 
@@ -49,6 +50,7 @@ module OpenStax
           account.school_location = school_location || :unknown_school_location
           account.support_identifier = support_identifier
           account.is_kip = is_kip
+          account.grant_tutor_access = grant_tutor_access
           account.is_test = is_test
         end
 
