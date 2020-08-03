@@ -53,9 +53,16 @@ module OpenStax
       # If more would be returned, the result will be empty instead
       attr_accessor :max_search_items
 
+      # logout_handler
+      # Handles logging out and redirecting user when they've requested logout
+      # if specified, the logout_redirect_url has no effect
+      attr_accessor :logout_handler
+
       # logout_redirect_url
       # A URL to redirect to after the app logs out, can be a string or a Proc.
       # If a Proc (or lambda), it will be called with the logout request.
+      #
+      # Only used if the logout_handler above is not specified
       # If this field is nil or if the Proc returns nil, the logout will redirect
       # to the default Accounts logout URL.
       attr_writer :logout_redirect_url
@@ -117,6 +124,7 @@ module OpenStax
         @account_user_mapper = OpenStax::Accounts::DefaultAccountUserMapper
         @min_search_characters = 3
         @max_search_items = 10
+        @logout_handler = nil
         @logout_redirect_url = nil
         @return_to_url_approver = nil
         @forwardable_login_params = [
