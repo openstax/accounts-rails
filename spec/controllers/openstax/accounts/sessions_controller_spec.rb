@@ -9,6 +9,7 @@ module OpenStax::Accounts
                                         openstax_uid: 10 }
 
     after(:all) {
+      OpenStax::Accounts.configuration.logout_handler = nil
       OpenStax::Accounts.configuration.logout_redirect_url = nil
       OpenStax::Accounts.configuration.return_to_url_approver = nil
     }
@@ -40,6 +41,16 @@ module OpenStax::Accounts
       allow(OpenStax::Accounts.configuration).to receive(:enable_stubbing?) {false}
       expect(my_lambda).to receive(:call).with(anything())
 
+      controller.sign_in account
+      delete :destroy
+    end
+
+    it 'can let a logout handler do everything' do
+      logout = ->(request) { "http://www.google.com" }
+      OpenStax::Accounts.configuration.logout_redirect_url = logout
+      expect(logout).not_to receive(:call)
+      expect(controller).to receive(:sign_out!)
+      OpenStax::Accounts.configuration.logout_handler = ->(c){ c.sign_out! }
       controller.sign_in account
       delete :destroy
     end

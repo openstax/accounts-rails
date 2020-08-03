@@ -27,14 +27,18 @@ module OpenStax
       end
 
       def destroy
-        sign_out!
-
-        # Unless we are stubbing, we redirect to a configurable URL, which is normally
-        # (or at least eventually) the Accounts logout URL so that users can't sign back
-        # in automagically.
-        redirect_to configuration.enable_stubbing? ?
-                    main_app.root_url :
-                    configuration.logout_redirect_url(request)
+        # if a handler is configured, let it handle everything
+        if configuration.logout_handler
+          configuration.logout_handler.call(self)
+        else
+          # Unless we are stubbing, we redirect to a configurable URL, which is normally
+          # (or at least eventually) the Accounts logout URL so that users can't sign back
+          # in automagically.
+          sign_out!
+          redirect_to configuration.enable_stubbing? ?
+                        main_app.root_url :
+                        configuration.logout_redirect_url(request)
+        end
       end
 
       def failure
