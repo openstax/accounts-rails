@@ -8,7 +8,7 @@ module OpenStax::Accounts
                                         username: 'some_user',
                                         openstax_uid: 10 }
 
-    after(:all) {
+    after(:each) {
       OpenStax::Accounts.configuration.logout_handler = nil
       OpenStax::Accounts.configuration.logout_redirect_url = nil
       OpenStax::Accounts.configuration.return_to_url_approver = nil
@@ -35,6 +35,7 @@ module OpenStax::Accounts
     end
 
     it 'should get signout redirect URL from configured setting' do
+      expect(OpenStax::Accounts.configuration.logout_handler).to be_nil
       my_lambda = ->(request) { "http://www.google.com" }
       OpenStax::Accounts.configuration.logout_redirect_url = my_lambda
 
