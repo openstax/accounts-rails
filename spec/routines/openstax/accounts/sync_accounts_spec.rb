@@ -108,6 +108,43 @@ module OpenStax
           OpenStax::Accounts.configuration.enable_stubbing = true
         end
       end
+
+      it 'loops when syncing more than the maximum number of accounts' do
+        controller_class = ::Api::ApplicationUsersController
+        uuid = SecureRandom.uuid
+        support_identifier = "cs_#{SecureRandom.hex(4)}"
+        first_request = true
+        allow_any_instance_of(controller_class).to receive(:updates).twice do |controller|
+          controller.render json: first_request ? [
+            {
+              id: 1,
+              application_id: 1,
+              user: {
+                id: 2,
+                username: 'user',
+                self_reported_role: 'instructor',
+                uuid: uuid,
+                support_identifier: support_identifier,
+                school_type: 'college',
+                school_location: 'domestic_school',
+                is_test: true
+              },
+              unread_updates: 1,
+              default_contact_info_id: 1
+            }
+          ] * OpenStax::Accounts.configuration.max_user_updates_per_request : []
+
+          first_request = false
+        end
+
+        begin
+          OpenStax::Accounts.configuration.enable_stubbing = false
+
+          expect { SyncAccounts.call }.to change { Account.count }.by(1)
+        ensure
+          OpenStax::Accounts.configuration.enable_stubbing = true
+        end
+      end
     end
   end
 end

@@ -81,7 +81,9 @@ module OpenStax
       # On success, returns an OAuth2::Response object.
       def self.get_application_account_updates(options = {})
         limit = OpenStax::Accounts.configuration.max_user_updates_per_request
-        request(:get, "application_users/updates#{ '?limit=' + limit.to_s if !limit.blank? }", options)
+        request(
+          :get, "application_users/updates#{ '?limit=' + limit.to_s if !limit.blank? }", options
+        )
       end
 
       # Marks account updates as "read".
