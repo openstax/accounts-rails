@@ -24,6 +24,13 @@ module OmniAuth
         @raw_info ||= access_token.get('/api/user.json').parsed.symbolize_keys
       end
 
+      protected
+
+      def ssl?
+        return true if Rails.env.production?
+
+        super
+      end
     end
   end
 end
