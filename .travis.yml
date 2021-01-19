@@ -13,4 +13,6 @@ env:
     - OX_AR_DB_USER=postgres
     - OX_AR_DB_PASS=
     - OX_AR_TEST_DB=travis_ci_test
+  - "RAILS_VERSION=5.2.4.3"
+  - "RAILS_VERSION=6.1.1"
 before_script: bundle exec rake --trace db:create db:schema:load db:seed

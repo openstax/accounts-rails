@@ -5,6 +5,7 @@ module OpenStax::Accounts
     SYNC_ATTRIBUTES = [
       :openstax_uid,
       :username,
+      :is_administrator,
       :first_name,
       :last_name,
       :full_name,
