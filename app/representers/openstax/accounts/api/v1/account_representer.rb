@@ -30,6 +30,12 @@ module OpenStax
                      required: true
                    }
 
+          property :is_administrator,
+                    type: :boolean,
+                    schema_info: {
+                      description: 'Whether or not this user is an administrator on Accounts'
+                    }
+
           property :first_name,
                    type: String,
                    schema_info: {
