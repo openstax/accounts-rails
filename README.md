@@ -190,3 +190,9 @@ In that folder's config folder, create a `secret_settings.yml` file according to
 instructions in `secret_settings.yml.example`. Run the example server in the normal way (bundle install..., migrate db, rails server).
 7. Navigate to the home page, http://localhost:4000.  Click log in and play around.  You can also refresh the accounts site and see yourself logged in, log out, etc.
 8. For fun, change example/config/openstax_accounts.rb to set `enable_stubbing` to `true`.  Now when you click login you'll be taken to a developer-only page where you can login as other users, generate new users, create new users, etc.
+
+Additional Documentation
+------------------------
+
+Additional documentation is in the [accounts-rails wiki](https://github.com/openstax/accounts-rails/wiki).
+
