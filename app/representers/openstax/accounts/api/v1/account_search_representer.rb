@@ -1,3 +1,5 @@
+require 'openstax_api'
+
 module OpenStax
   module Accounts
     module Api
