@@ -2,7 +2,7 @@ accounts-rails
 =============
 
 [![Gem Version](https://badge.fury.io/rb/openstax_accounts.svg)](http://badge.fury.io/rb/openstax_accounts)
-[![Build Status](https://travis-ci.org/openstax/accounts-rails.svg?branch=master)](https://travis-ci.org/openstax/accounts-rails)
+[![Tests](https://github.com/openstax/accounts-rails/workflows/Tests/badge.svg)](https://github.com/openstax/accounts-rails/actions?query=workflow:Tests)
 [![Code Climate](https://codeclimate.com/github/openstax/accounts-rails/badges/gpa.svg)](https://codeclimate.com/github/openstax/accounts-rails)
 
 A rails engine for interfacing with OpenStax's accounts server.
@@ -195,4 +195,3 @@ Additional Documentation
 ------------------------
 
 Additional documentation is in the [accounts-rails wiki](https://github.com/openstax/accounts-rails/wiki).
-
