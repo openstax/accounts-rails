@@ -17,8 +17,8 @@ OpenStax::Accounts::Engine.routes.draw do
 
   # OmniAuth local routes (SessionsController)
   scope module: 'sessions' do
-    get 'auth/:provider/callback', action: :callback, as: :callback # Authentication success
-    get 'auth/failure', action: :failure, as: :failure              # Authentication failure
+    get 'auth/openstax/callback', action: :callback, as: :callback # Authentication success
+    get 'auth/failure', action: :failure, as: :failure             # Authentication failure
 
     get 'login', action: :new # Redirects to /auth/openstax or stub
     match 'logout', action: :destroy, # Redirects to logout path or stub
