@@ -1,4 +1,4 @@
-source "https://rubygems.org"
+source 'https://rubygems.org'
 
 # Declare your gem's dependencies in accounts-rails.gemspec.
 # Bundler will treat runtime dependencies like base dependencies, and
@@ -6,7 +6,7 @@ source "https://rubygems.org"
 gemspec
 
 # jquery-rails is used by the dummy application
-gem "jquery-rails"
+gem 'jquery-rails'
 
 # Declare any dependencies that are still in development here instead of in
 # your gemspec. These might include edge Rails or gems from your path or
@@ -16,15 +16,15 @@ gem "jquery-rails"
 # To use debugger
 gem 'byebug'
 
-rails_version = ENV["RAILS_VERSION"] || "default"
+rails_version = ENV['RAILS_VERSION'] || 'default'
 
 rails = case rails_version
-when "master"
-  {github: "rails/rails"}
-when "default"
-  ">= 6.1.1"
+when 'master'
+  [ { github: 'rails/rails' } ]
+when 'default'
+  []
 else
-  "~> #{rails_version}"
+  [ "~> #{rails_version}" ]
 end
 
-gem "rails", rails
+gem 'rails', *rails
