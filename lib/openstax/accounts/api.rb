@@ -1,7 +1,6 @@
 module OpenStax
   module Accounts
     module Api
-
       DEFAULT_API_VERSION = :v1
 
       # Executes an OpenStax Accounts API request,
@@ -113,10 +112,11 @@ module OpenStax
         @client ||= OAuth2::Client.new(
           OpenStax::Accounts.configuration.openstax_application_id,
           OpenStax::Accounts.configuration.openstax_application_secret,
-          site: OpenStax::Accounts.configuration.openstax_accounts_url
+          site: OpenStax::Accounts.configuration.openstax_accounts_url,
+          authorize_url: 'oauth/authorize',
+          token_url: 'oauth/token'
         )
       end
-
     end
   end
 end

@@ -47,7 +47,7 @@ module OpenStax
 
       def profile
         # TODO: stub profile if stubbing is enabled
-        redirect_to URI.join(configuration.openstax_accounts_url, '/profile').to_s
+        redirect_to URI.join(configuration.openstax_accounts_url, 'profile').to_s
       end
     end
   end
