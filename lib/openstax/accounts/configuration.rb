@@ -6,8 +6,12 @@ module OpenStax
       attr_reader :openstax_accounts_url
 
       def openstax_accounts_url=(url)
-        url.gsub!(/https|http/,'https') if !(url =~ /localhost/)
-        url = url + "/" if url[url.size-1] != '/'
+        # Only localhost urls are allowed to not be https
+        url.sub!('http:', 'https:') unless url.start_with?('http://localhost')
+
+        # We use URL.join with this url and it needs to end in / to make relative paths work
+        url += '/' unless url.end_with?('/')
+
         @openstax_accounts_url = url
       end
 
@@ -100,7 +104,7 @@ module OpenStax
       end
 
       def default_logout_redirect_url
-        URI.join(openstax_accounts_url, "logout").to_s
+        URI.join(openstax_accounts_url, 'logout').to_s
       end
 
       attr_writer :return_to_url_approver
@@ -114,7 +118,7 @@ module OpenStax
       def initialize
         @openstax_application_id = 'SET ME!'
         @openstax_application_secret = 'SET ME!'
-        @openstax_accounts_url = 'https://accounts.openstax.org/'
+        @openstax_accounts_url = 'https://openstax.org/accounts'
         @enable_stubbing = true
         @logout_via = :get
         @default_errors_partial = 'openstax/accounts/shared/attention'
