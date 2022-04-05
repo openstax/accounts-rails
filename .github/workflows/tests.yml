@@ -33,6 +33,7 @@ jobs:
         RAILS_VERSION:
           - 5.2.4.3
           - 6.1.1
+          - 7.0.2
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-ruby@v1
