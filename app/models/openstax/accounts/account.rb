@@ -39,7 +39,8 @@ module OpenStax::Accounts
       :designer,
       :other,
       :adjunct,
-      :homeschool
+      :homeschool,
+      :researcher
     ]
 
     enum school_type: [
