@@ -23,7 +23,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'roar', '>= 1.0'
   s.add_dependency 'lev'
   s.add_dependency 'keyword_search'
-  s.add_dependency 'openstax_utilities'
+  s.add_dependency 'openstax_utilities', '>= 5.1.1'
   s.add_dependency 'openstax_api'
   s.add_dependency 'action_interceptor'
   s.add_dependency 'pg'

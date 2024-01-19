@@ -5,6 +5,9 @@ source 'https://rubygems.org'
 # development dependencies will be added by default to the :development group.
 gemspec
 
+# TODO remove once OSU 5.1.1 published
+gem 'openstax_utilities', path: '../openstax_utilities'
+
 # jquery-rails is used by the dummy application
 gem 'jquery-rails'
 
