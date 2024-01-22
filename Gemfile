@@ -6,7 +6,8 @@ source 'https://rubygems.org'
 gemspec
 
 # TODO remove once OSU 5.1.1 published
-gem 'openstax_utilities', path: '../openstax_utilities'
+# For local development with https://github.com/openstax/openstax_utilities/pull/27
+# gem 'openstax_utilities', path: '../openstax_utilities'
 
 # jquery-rails is used by the dummy application
 gem 'jquery-rails'

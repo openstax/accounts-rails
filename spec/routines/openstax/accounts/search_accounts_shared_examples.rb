@@ -1,36 +1,31 @@
 require 'spec_helper'
 
 RSpec.shared_examples 'search accounts' do
-  let(:account_1) {
-                    FactoryBot.create(
-                      :openstax_accounts_account,
-                      first_name: 'John',
-                      last_name: 'Stravinsky',
-                      username: 'jstrav'
-                    )
-                  }
 
-  let(:account_2) do
+  let!(:account_1) do
+    FactoryBot.create :openstax_accounts_account, first_name: 'John',
+                                                  last_name: 'Stravinsky',
+                                                  username: 'jstrav'
+  end
+  let!(:account_2) do
     FactoryBot.create :openstax_accounts_account, first_name: 'Mary',
                                                   last_name: 'Mighty',
                                                   full_name: 'Mary Mighty',
                                                   username: 'mary'
   end
-
-  let(:account_3) do
+  let!(:account_3) do
     FactoryBot.create :openstax_accounts_account, first_name: 'John',
                                                   last_name: 'Stead',
                                                   username: 'jstead'
   end
 
-  let(:account_4) do
+  let!(:account_4) do
     FactoryBot.create :openstax_accounts_account, first_name: 'Bob',
                                                   last_name: 'JST',
                                                   username: 'bigbear'
   end
 
   it 'should match based on username' do
-    debugger
     outcome = described_class.call('username:jstra').outputs.items
     expect(outcome).to eq [account_1]
   end
