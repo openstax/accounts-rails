@@ -9,6 +9,7 @@ module Dummy
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults Rails::VERSION::STRING.to_f
+    config.active_support.key_generator_hash_digest_class = OpenSSL::Digest::SHA1
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers

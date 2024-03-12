@@ -1,5 +1,6 @@
 require 'omniauth'
 require 'omniauth-oauth2'
+require 'omniauth/rails_csrf_protection'
 
 module OmniAuth
   module Strategies
