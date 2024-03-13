@@ -47,7 +47,7 @@ RSpec.describe "Forwards params", type: :request do
       expect(redirect_path).to eq "/accounts/auth/openstax"
       expect(redirect_query_hash).to include(key => value)
 
-      get redirect_path_and_query
+      post redirect_path_and_query
 
       expect(redirect_path).to eq("/oauth/authorize")
       expect(redirect_query_hash).to include(key => value)

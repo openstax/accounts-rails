@@ -35,9 +35,9 @@ module OpenStax
           # (or at least eventually) the Accounts logout URL so that users can't sign back
           # in automagically.
           sign_out!
-          redirect_to configuration.enable_stubbing? ?
+          redirect_to(configuration.enable_stubbing? ?
                         main_app.root_url :
-                        configuration.logout_redirect_url(request)
+                        configuration.logout_redirect_url(request), allow_other_host: true)
         end
       end
 

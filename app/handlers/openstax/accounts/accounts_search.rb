@@ -48,6 +48,7 @@ module OpenStax
                   order_by: search_params.order_by,
                   page: search_params.page,
                   per_page: search_params.per_page}
+
         out = run(OpenStax::Accounts::SearchAccounts, params).outputs
         outputs.total_count = out.total_count
 

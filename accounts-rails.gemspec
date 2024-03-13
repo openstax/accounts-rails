@@ -15,15 +15,16 @@ Gem::Specification.new do |s|
 
   s.files = Dir['{app,config,db,lib}/**/*', 'spec/factories/**/*'] + ['MIT-LICENSE', 'README.md']
 
-  s.add_dependency 'rails', '>= 5.0', '< 7.0'
-  s.add_dependency 'omniauth', '< 2.0'
+  s.add_dependency 'rails', '>= 6.0', '< 8.0'
+  s.add_dependency 'omniauth', '> 2.0'
   s.add_dependency 'omniauth-oauth2'
+  s.add_dependency 'omniauth-rails_csrf_protection'
   s.add_dependency 'oauth2'
   s.add_dependency 'representable'
   s.add_dependency 'roar', '>= 1.0'
-  s.add_dependency 'lev'
+  s.add_dependency 'lev', '>= 12.1.0'
   s.add_dependency 'keyword_search'
-  s.add_dependency 'openstax_utilities'
+  s.add_dependency 'openstax_utilities', '>= 5.1.1'
   s.add_dependency 'openstax_api'
   s.add_dependency 'action_interceptor'
   s.add_dependency 'pg'

@@ -4,7 +4,7 @@ module OpenStax
   module Accounts
 
     RSpec.describe AccountsSearch do
-      
+
       let!(:account_1)          { FactoryBot.create :openstax_accounts_account,
                                                   first_name: 'John',
                                                   last_name: 'Stravinsky',
